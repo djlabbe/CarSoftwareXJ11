@@ -84,7 +84,7 @@ public class GuiManager {
 		tripMileage.setText("Trip: " + car.tripOdometer + " miles | ");
 		totalMileage.setText("Total: " + car.odometer + " miles | ");
 		currentSpeed.setText(car.currentSpeed + " MPH | ");
-		currentFuel.setText(df.format(car.percentFuel) + "% Fuel ");
+		currentFuel.setText(df.format(car.getFuelPercent()) + "% Fuel ");
 	    mainFrame.setVisible(true);
 	}
 	
@@ -144,14 +144,16 @@ public class GuiManager {
 		powerButton = new JButton("ON/OFF");
 	    powerButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            System.out.println("ON/OFF pressed.");
+	            car.togglePower();
+	            // System.out.println("Car is on? " + car.isOn);
 	         }          
 	      });
 	    
 	    refuelButton = new JButton("Refuel");
 	    refuelButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            System.out.println("Refuel pressed.");
+	            car.refuel();
+	            currentFuel.setText(df.format(car.getFuelPercent()) + "% Fuel ");
 	         }          
 	      });
 		
@@ -168,7 +170,7 @@ public class GuiManager {
 	         public void actionPerformed(ActionEvent e) {
 	        	car.accelerate();
 	        	currentSpeed.setText(car.currentSpeed + " MPH | ");
-	        	currentFuel.setText(df.format(car.percentFuel) + "% Fuel ");
+	        	currentFuel.setText(df.format(car.getFuelPercent()) + "% Fuel ");
 	         }          
 	      });
 	    

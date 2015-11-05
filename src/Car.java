@@ -1,7 +1,5 @@
 public class Car {
 	
-	public enum CurrentPanel {RADIO, PHONE, MAP, ANALYTICS};
-	
 	final double FUELCAPACITY = 13.0;
 	
 	boolean isOn;
@@ -10,7 +8,6 @@ public class Car {
 	protected int currentSpeed = 0;
 	protected double currentFuel = FUELCAPACITY;
 	protected double percentFuel = currentFuel / FUELCAPACITY * 100;
-	;
 	protected Phone phone;
 	protected Radio radio;
 	protected Map map;
@@ -45,10 +42,15 @@ public class Car {
 	
 	public void refuel() {
 		currentFuel = FUELCAPACITY;
+		updateFuelPercent();
 	}
 	
-	public void updateFuelPercent() {
+	public void  updateFuelPercent() {
 		percentFuel = currentFuel / FUELCAPACITY;
+	}
+	
+	public double getFuelPercent() {
+		return percentFuel;
 	}
 
 }

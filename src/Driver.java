@@ -3,14 +3,11 @@
 public class Driver {
 	
 	// local variables
-	int pin, totalDriveTime, totalDriveDistance, averageSpeed, maxSpeed, fuelUsed, mpg, totalRadioTime, totalPhoneTime;
-	String name;
-	double amFav1, amFav2, fmFav1, fmFav2;
-	// contact speedDial1, speedDial2;
-	public void setName(String input)
-	{
-		name = input;
-	}
+	private int pin, totalDriveTime, totalDriveDistance, averageSpeed, maxSpeed, fuelUsed, mpg, totalRadioTime, totalPhoneTime;
+	private String name;
+	protected double amFav1, amFav2, fmFav1, fmFav2;
+	protected Contact speedDial1, speedDial2;
+	
 	
 	public String getName()
 	{
@@ -34,6 +31,12 @@ public class Driver {
 	public void setFmFav2(double freq)
 	{
 		fmFav2 = freq;
+	}
+	public void setSpeedDial1(Contact contact) {
+		speedDial1 = contact;
+	}
+	public void setSpeedDial2(Contact contact) {
+		speedDial2 = contact;
 	}
 
 }
