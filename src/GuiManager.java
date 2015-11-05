@@ -3,6 +3,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import java.text.DecimalFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GuiManager {
 	
@@ -11,11 +13,12 @@ public class GuiManager {
 	private JFrame mainFrame;
 	private JPanel labelPanel, navPanel, corePanel, appPanel, emptyPanel;
 	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel;
-	private JLabel tripMileage, totalMileage, currentSpeed, currentFuel;
+	protected JLabel tripMileage, totalMileage, currentSpeed, currentFuel;
 	private JButton radioButton, phoneButton, mapButton, 
 					dataButton, powerButton, gasButton, brakeButton, refuelButton;
 	
-	DecimalFormat df = new DecimalFormat("#,###,##0.00");
+	private DecimalFormat df = new DecimalFormat("#,###,##0.00");
+	protected Timer timer;
 	
 	public GuiManager(Car car) {
 		this.car = car;
@@ -144,8 +147,12 @@ public class GuiManager {
 		powerButton = new JButton("ON/OFF");
 	    powerButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            car.togglePower();
-	            // System.out.println("Car is on? " + car.isOn);
+	        	 if (car.togglePower() && car.currentSpeed == 0) {
+	     			runLoop();
+	     		} else if (car.currentSpeed == 0) {
+	     			timer.cancel();
+	     			timer.purge();
+	     		}
 	         }          
 	      });
 	    
@@ -160,16 +167,14 @@ public class GuiManager {
 	    brakeButton = new JButton("BRAKE");
 	    brakeButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	        	 car.decelerate();
-	        	 currentSpeed.setText(car.currentSpeed + " MPH | ");
+	        	 currentSpeed.setText(car.decelerate() + " MPH | ");
 	         }          
 	      });
 	    
 	    gasButton = new JButton("GAS");
 	    gasButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	        	car.accelerate();
-	        	currentSpeed.setText(car.currentSpeed + " MPH | ");
+	        	currentSpeed.setText(car.accelerate() + " MPH | ");
 	        	currentFuel.setText(df.format(car.getFuelPercent()) + "% Fuel ");
 	         }          
 	      });
@@ -179,6 +184,18 @@ public class GuiManager {
 	    corePanel.add(brakeButton);
 	    corePanel.add(gasButton);
 	    
+	}
+	
+public void runLoop() {
+		int begin = 0; //timer starts after 1 second.
+		int timeinterval = 1000; //timer executes every 10 seconds.
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+		  @Override
+		  public void run() {
+			 currentSpeed.setText(car.coast() + " MPH | ");
+		  }
+		},begin, timeinterval);
 	}
 
 }

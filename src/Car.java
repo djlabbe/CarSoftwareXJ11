@@ -3,8 +3,8 @@ public class Car {
 	final double FUELCAPACITY = 13.0;
 	
 	boolean isOn;
-	protected int odometer = 0;
-	protected int tripOdometer = 0;
+	protected double odometer = 0;
+	protected double tripOdometer = 0;
 	protected int currentSpeed = 0;
 	protected double currentFuel = FUELCAPACITY;
 	protected double percentFuel = currentFuel / FUELCAPACITY * 100;
@@ -13,18 +13,26 @@ public class Car {
 	protected Map map;
 	protected Analytics analytics;
 	
+	
 	public boolean togglePower()
 	{
-		// If isOn is true - set it to false, if it is false - set to true
-		isOn = isOn ? false : true;
-		return false;
+		isOn = (isOn && currentSpeed == 0) ? false : true;
+		if (isOn) {
+			System.out.println("Car on");
+		} else {
+			System.out.println("Car off");
+		}
+		return isOn;
 	}
+	
 	
 	public int accelerate() {
 		// If current speed is less than max, add 5
-		currentSpeed = currentSpeed >= 120 ? 120 : currentSpeed + 5;
-		currentFuel -= 0.1;
-		updateFuelPercent();
+		if (isOn) {
+			currentSpeed = currentSpeed >= 120 ? 120 : currentSpeed + 5;
+			currentFuel -= 0.1;
+			updateFuelPercent();
+		}
 		return currentSpeed;
 	}
 	
@@ -35,14 +43,19 @@ public class Car {
 	}
 	
 	public int coast() {
-		// If current speed is more than 0, add subtract 1
-		currentSpeed = currentSpeed <= 1 ? 0 : currentSpeed - 1;
+		// If current speed is more than 0, subtract 1
+		currentSpeed = currentSpeed <= 1 ? 0 : (currentSpeed - 1);
 		return currentSpeed;
 	}
 	
 	public void refuel() {
-		currentFuel = FUELCAPACITY;
-		updateFuelPercent();
+		if (currentSpeed == 0 && !isOn) {
+			currentFuel = FUELCAPACITY;
+			updateFuelPercent();
+		}
+		else {
+			System.out.println("Unable to refuel, car must be off.");
+		}
 	}
 	
 	public void  updateFuelPercent() {
