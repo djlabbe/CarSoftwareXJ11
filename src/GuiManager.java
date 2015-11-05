@@ -6,6 +6,8 @@ import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/*Timer/Loop code structure found on Stackoverflow*/
+
 public class GuiManager {
 	
 	private Car car;
@@ -187,8 +189,8 @@ public class GuiManager {
 	}
 	
 public void runLoop() {
-		int begin = 0; //timer starts after 1 second.
-		int timeinterval = 1000; //timer executes every 10 seconds.
+		int begin = 0; 
+		int timeinterval = 1000;
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 		  @Override

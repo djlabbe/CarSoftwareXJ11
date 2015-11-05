@@ -13,38 +13,46 @@ public class Car {
 	protected Map map;
 	protected Analytics analytics;
 	
-	
-	public boolean togglePower()
-	{
-		isOn = (isOn && currentSpeed == 0) ? false : true;
-		if (isOn) {
-			System.out.println("Car on");
+	public boolean togglePower() {
+		if (isOn && currentSpeed == 0) {
+			isOn = false;
+			System.out.println("Car turned off.");
+		} else if (isOn && currentSpeed > 0){
+			System.out.println("Can't turn off while driving.");
 		} else {
-			System.out.println("Car off");
+			isOn = true;
+			System.out.println("Car turned on.");
 		}
 		return isOn;
 	}
 	
 	
 	public int accelerate() {
-		// If current speed is less than max, add 5
 		if (isOn) {
 			currentSpeed = currentSpeed >= 120 ? 120 : currentSpeed + 5;
 			currentFuel -= 0.1;
 			updateFuelPercent();
+			System.out.println("Speed increased by 5 MPH.");
+		} else {
+			System.out.println("Can't accelerate -- car is off.");
 		}
 		return currentSpeed;
 	}
 	
 	public int decelerate() {
-		// If current speed is more than 0, add subtract 10
 		currentSpeed = currentSpeed <= 10 ? 0 : currentSpeed - 10;
+		System.out.println("Brake applied.");
 		return currentSpeed;
 	}
 	
 	public int coast() {
-		// If current speed is more than 0, subtract 1
-		currentSpeed = currentSpeed <= 1 ? 0 : (currentSpeed - 1);
+		if (currentSpeed <= 1) {
+			currentSpeed = 0;
+			System.out.println("Idle...");
+		} else {
+			currentSpeed--;
+			System.out.println("Coasting...");
+		}
 		return currentSpeed;
 	}
 	
@@ -52,6 +60,7 @@ public class Car {
 		if (currentSpeed == 0 && !isOn) {
 			currentFuel = FUELCAPACITY;
 			updateFuelPercent();
+			System.out.println("Refueled successfully.");
 		}
 		else {
 			System.out.println("Unable to refuel, car must be off.");
