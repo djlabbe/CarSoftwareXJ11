@@ -6,27 +6,27 @@ import java.text.DecimalFormat;
 
 public class GuiManager {
 	
+	private Car car;
+	
 	private JFrame mainFrame;
 	private JPanel labelPanel, navPanel, corePanel, appPanel, emptyPanel;
+	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel;
 	private JLabel tripMileage, totalMileage, currentSpeed, currentFuel;
 	private JButton radioButton, phoneButton, mapButton, 
 					dataButton, powerButton, gasButton, brakeButton, refuelButton;
 	
-	private Car car;
-	
 	DecimalFormat df = new DecimalFormat("#,###,##0.00");
 	
-	// Run the GUI
 	public GuiManager(Car car) {
 		this.car = car;
 		prepareGUI();
 	}
 
-	// Prepare for contents of the frame
 	private void prepareGUI() {
 		mainFrame = new JFrame("XJ-11");
 		mainFrame.setSize(800, 600);
 		mainFrame.setLayout(new BorderLayout());
+		mainFrame.setResizable(false);
 		mainFrame.addWindowListener(new WindowAdapter() {
 	         public void windowClosing(WindowEvent windowEvent){
 	            System.exit(0);
@@ -34,7 +34,6 @@ public class GuiManager {
 	      });   
 	}
 
-	//Display the contents of the GUI
 	protected void showScreen() {
 		
 		labelPanel = new JPanel();
@@ -44,8 +43,27 @@ public class GuiManager {
 		navPanel.setLayout(new BoxLayout(navPanel, 1));
 		navPanel.setBackground(Color.WHITE);
 		
-		appPanel = new JPanel(new CardLayout());
+		appPanel = new JPanel();
+		appPanel.setLayout(new CardLayout());
 		appPanel.setBackground(Color.DARK_GRAY);
+		
+		radioPanel = new JPanel();
+		radioPanel.setBackground(Color.GREEN);
+		
+		phonePanel = new JPanel();
+		phonePanel.setBackground(Color.RED);
+		
+		mapPanel = new JPanel();
+		mapPanel.setBackground(Color.CYAN);
+		
+		analyticsPanel = new JPanel();
+		analyticsPanel.setBackground(Color.MAGENTA);
+		
+		appPanel.add(radioPanel, "RADIOPANEL");
+		appPanel.add(phonePanel, "PHONEPANEL");
+		appPanel.add(mapPanel, "MAPPANEL");
+		appPanel.add(analyticsPanel, "ANALYTICSPANEL");
+		
 		
 		corePanel = new JPanel();
 		corePanel.setBackground(Color.GRAY);
@@ -67,7 +85,6 @@ public class GuiManager {
 		totalMileage.setText("Total: " + car.odometer + " miles | ");
 		currentSpeed.setText(car.currentSpeed + " MPH | ");
 		currentFuel.setText(df.format(car.percentFuel) + "% Fuel ");
-		
 	    mainFrame.setVisible(true);
 	}
 	
@@ -84,33 +101,36 @@ public class GuiManager {
 	    labelPanel.add(currentFuel);
 	}
 	
-	// Prepare the navigation Panel buttons.
 	private void setupNavPanel() {
 		radioButton = new JButton("Radio");
 	    radioButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            System.out.println("Radio pressed.");
+	        	CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
+	        	cardLayout.show(appPanel, "RADIOPANEL");
 	         }          
 	      });
 	    
 	    phoneButton = new JButton("Phone");
 	    phoneButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            System.out.println("Phone pressed.");
+	        	CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
+		        cardLayout.show(appPanel, "PHONEPANEL");
 	         }          
 	      });
 
 	    mapButton = new JButton("Map");
 	    mapButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	             System.out.println("Map pressed.");
+	        	 CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
+			     cardLayout.show(appPanel, "MAPPANEL");
 	         }          
 	      });
 	    
 	    dataButton = new JButton("Data");
 	    dataButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            System.out.println("Data pressed.");
+	        	 CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
+			     cardLayout.show(appPanel, "ANALYTICSPANEL");
 	         }          
 	      });
 	    
@@ -120,7 +140,6 @@ public class GuiManager {
 	    navPanel.add(dataButton);
 	}
 	
-	// Prepare the core Panel buttons.
 	private void setupCorePanel() {
 		powerButton = new JButton("ON/OFF");
 	    powerButton.addActionListener(new ActionListener() {
