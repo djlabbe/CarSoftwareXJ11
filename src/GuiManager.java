@@ -11,24 +11,18 @@ public class GuiManager {
 					dataButton, powerButton, gasButton, brakeButton, refuelButton;
 	
 
-	/**
-	 * Launch the application.
-	 */
+	// Launch application
 	public static void main(String[] args) {
 		GuiManager guiManager = new GuiManager();
 		guiManager.showScreen();
 	}
 
-	/**
-	 * Create the application.
-	 */
+	// Run the GUI
 	public GuiManager() {
 		prepareGUI();
 	}
 
-	/**
-	 * prepareGUI the contents of the frame.
-	 */
+	// Prepare for contents of the frame
 	private void prepareGUI() {
 		mainFrame = new JFrame("XJ-11");
 		mainFrame.setSize(800, 600);
@@ -38,14 +32,15 @@ public class GuiManager {
 	         }        
 	      });   
 	}
-	
+
+	//Display the contents of the GUI
 	private void showScreen() {
 		
 		setupLabelPanel();
 		setupNavPanel();
 		setupCorePanel();
 	
-		// Need better way to space out the labels. 
+		// #TODO Need better way to space out the labels. 
 		tripMileage.setText("Trip: ___ miles     ");
 		totalMileage.setText("     Total: ___ miles");
 		currentSpeed.setText("          __ MPH  ");
@@ -93,6 +88,7 @@ public class GuiManager {
 	    labelPanel.add(currentFuel);
 	}
 	
+	// Prepare the navigation Panel buttons.
 	private void setupNavPanel() {
 		radioButton = new JButton("Radio");
 	    radioButton.addActionListener(new ActionListener() {
@@ -128,6 +124,7 @@ public class GuiManager {
 	    navPanel.add(dataButton);
 	}
 	
+	// Prepare the core Panel buttons.
 	private void setupCorePanel() {
 		powerButton = new JButton("ON/OFF");
 	    powerButton.addActionListener(new ActionListener() {
