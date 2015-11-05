@@ -2,23 +2,23 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class GuiManager {
+import java.text.DecimalFormat;
 
+public class GuiManager {
+	
 	private JFrame mainFrame;
-	private JPanel labelPanel, navPanel, appPanel, corePanel;
+	private JPanel labelPanel, navPanel, corePanel, appPanel, emptyPanel;
 	private JLabel tripMileage, totalMileage, currentSpeed, currentFuel;
 	private JButton radioButton, phoneButton, mapButton, 
 					dataButton, powerButton, gasButton, brakeButton, refuelButton;
 	
-
-	// Launch application
-	public static void main(String[] args) {
-		GuiManager guiManager = new GuiManager();
-		guiManager.showScreen();
-	}
-
+	private Car car;
+	
+	DecimalFormat df = new DecimalFormat("#,###,##0.00");
+	
 	// Run the GUI
-	public GuiManager() {
+	public GuiManager(Car car) {
+		this.car = car;
 		prepareGUI();
 	}
 
@@ -26,6 +26,7 @@ public class GuiManager {
 	private void prepareGUI() {
 		mainFrame = new JFrame("XJ-11");
 		mainFrame.setSize(800, 600);
+		mainFrame.setLayout(new BorderLayout());
 		mainFrame.addWindowListener(new WindowAdapter() {
 	         public void windowClosing(WindowEvent windowEvent){
 	            System.exit(0);
@@ -34,49 +35,44 @@ public class GuiManager {
 	}
 
 	//Display the contents of the GUI
-	private void showScreen() {
+	protected void showScreen() {
 		
+		labelPanel = new JPanel();
+		labelPanel.setBackground(Color.GRAY);
+		
+		navPanel = new JPanel();
+		navPanel.setLayout(new BoxLayout(navPanel, 1));
+		navPanel.setBackground(Color.WHITE);
+		
+		appPanel = new JPanel(new CardLayout());
+		appPanel.setBackground(Color.DARK_GRAY);
+		
+		corePanel = new JPanel();
+		corePanel.setBackground(Color.GRAY);
+		
+		emptyPanel = new JPanel();
+		emptyPanel.setBackground(Color.GRAY);
+		
+		mainFrame.add("North", labelPanel);
+		mainFrame.add("West", navPanel);
+		mainFrame.add("South", corePanel);
+		mainFrame.add("Center", appPanel);
+		mainFrame.add("East", emptyPanel);
+
 		setupLabelPanel();
 		setupNavPanel();
 		setupCorePanel();
-	
-		// #TODO Need better way to space out the labels. 
-		tripMileage.setText("Trip: ___ miles     ");
-		totalMileage.setText("     Total: ___ miles");
-		currentSpeed.setText("          __ MPH  ");
-		currentFuel.setText("           __% Fuel");
+		
+		tripMileage.setText("Trip: " + car.tripOdometer + " miles | ");
+		totalMileage.setText("Total: " + car.odometer + " miles | ");
+		currentSpeed.setText(car.currentSpeed + " MPH | ");
+		currentFuel.setText(df.format(car.percentFuel) + "% Fuel ");
 		
 	    mainFrame.setVisible(true);
 	}
 	
 	private void setupLabelPanel() {
-		labelPanel = new JPanel();
-		labelPanel.setSize(800,100);
-		labelPanel.setLocation(0,0);
-		labelPanel.setBackground(Color.GRAY);
 		
-		navPanel = new JPanel();
-		navPanel.setSize(100, 400);
-		navPanel.setLocation(0, 100);
-		navPanel.setBackground(Color.WHITE);
-		
-		appPanel = new JPanel();
-		appPanel.setSize(700, 600);
-		appPanel.setLocation(100,100);
-		appPanel.setBackground(Color.BLACK);
-		
-		corePanel = new JPanel();
-		corePanel.setSize(800, 100);
-		corePanel.setLocation(0,500);
-		corePanel.setBackground(Color.GRAY);
-		
-		
-		mainFrame.add(labelPanel);
-		mainFrame.add(navPanel);
-		mainFrame.add(corePanel);
-		mainFrame.add(appPanel);
-		
-	
 		tripMileage = new JLabel("");  	
 		totalMileage = new JLabel("");  
 	    currentSpeed = new JLabel("");
@@ -107,7 +103,7 @@ public class GuiManager {
 	    mapButton = new JButton("Map");
 	    mapButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            System.out.println("Map pressed.");
+	             System.out.println("Map pressed.");
 	         }          
 	      });
 	    
@@ -143,14 +139,17 @@ public class GuiManager {
 	    brakeButton = new JButton("BRAKE");
 	    brakeButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            System.out.println("BRAKE pressed.");
+	        	 car.decelerate();
+	        	 currentSpeed.setText(car.currentSpeed + " MPH | ");
 	         }          
 	      });
 	    
 	    gasButton = new JButton("GAS");
 	    gasButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            System.out.println("GAS pressed.");
+	        	car.accelerate();
+	        	currentSpeed.setText(car.currentSpeed + " MPH | ");
+	        	currentFuel.setText(df.format(car.percentFuel) + "% Fuel ");
 	         }          
 	      });
 	    
