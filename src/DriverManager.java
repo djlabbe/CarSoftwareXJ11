@@ -1,4 +1,4 @@
-/* Most Login functionality code adapted from "3 Steps to Create Login Dialog in Java Swing"
+/* Basic Login functionality code adapted from "3 Steps to Create Login Dialog in Java Swing"
  * http://www.zentut.com/java-swing/simple-login-dialog/ */
 
 import java.awt.*;
@@ -7,14 +7,11 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
 
-// #TODO Add user-name functionality
-
 public class DriverManager extends JDialog{
 	
 	int userEnteredPin;
 	Driver currentDriver;
 	ArrayList<Driver> knownDrivers;
-	
 	
 	private JTextField usernameEntry;
     private JPasswordField passwordEntry;
@@ -22,7 +19,6 @@ public class DriverManager extends JDialog{
     private JLabel passwordLabel;
     private JButton btnLogin;
     private JButton btnRegister;
-    private boolean loginSuccessful;
 	
 	public DriverManager(Frame parent) {
 		
@@ -72,7 +68,6 @@ public class DriverManager extends JDialog{
 	                        "Welcome to the XJ-11.",
 	                        "Login",
 	                        JOptionPane.INFORMATION_MESSAGE);
-	                loginSuccessful = true;
 	                currentDriver = authResult;
 	                dispose();
 	            } else {
@@ -82,7 +77,6 @@ public class DriverManager extends JDialog{
 	                        JOptionPane.ERROR_MESSAGE);
 	                usernameEntry.setText("");
 	                passwordEntry.setText("");
-	                loginSuccessful = false;
 	
 	            }
 	        }
@@ -96,7 +90,6 @@ public class DriverManager extends JDialog{
                         "Welcome to the XJ-11.",
                         "Login",
                         JOptionPane.INFORMATION_MESSAGE);
-                loginSuccessful = true;
                 currentDriver = registerResult;
                 dispose();
 	        	
@@ -112,11 +105,11 @@ public class DriverManager extends JDialog{
 	    setResizable(false);
 	    setLocationRelativeTo(null);
 		
-		register("Doug", "1111");
-		register("Sparsh", "abcd");
-		register("Ryan", "2222");
-		register("Alex", "wxyz");
-		register("Josh", "password");
+		register("doug", "1111");
+		register("sparsh", "abcd");
+		register("ryan", "2222");
+		register("alex", "wxyz");
+		register("josh", "password");
 	}
 	
 	 public String getUsername() {
@@ -126,15 +119,11 @@ public class DriverManager extends JDialog{
 	 public String getPassword() {
 	      return new String(passwordEntry.getPassword());
 	  }
-	 
-	 public boolean isSucceeded() {
-	        return loginSuccessful;
-	    }
 	
 	public Driver authenticate(String usernameInput, String passwordInput) {
 		Driver loggedInDriver = null;
 			for (int i = 0; i < knownDrivers.size(); i++) {
-				if (knownDrivers.get(i).getUsername().equals(usernameInput) &&
+				if (knownDrivers.get(i).getUsername().equals(usernameInput.toLowerCase()) &&
 						knownDrivers.get(i).getPassword().equals(passwordInput) ) {
 					loggedInDriver = knownDrivers.get(i);
 				} 
@@ -143,7 +132,7 @@ public class DriverManager extends JDialog{
 	}
 	
 	public Driver register(String inputUsername, String inputPassword) {
-		Driver registeredDriver = new Driver(inputUsername, inputPassword);
+		Driver registeredDriver = new Driver(inputUsername.toLowerCase(), inputPassword);
 		knownDrivers.add(registeredDriver);
 		return registeredDriver;
 	}

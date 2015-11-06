@@ -59,8 +59,12 @@ public class Car {
 	public int accelerate() {
 		if (isOn) {
 			currentSpeed = currentSpeed >= 120 ? 120 : currentSpeed + 5;
-			currentFuel -= 0.1;
-			updateFuelPercent();
+			updateFuel();
+			
+			if (currentSpeed > currentDriver.getMaxSpeed()) {
+				currentDriver.setMaxSpeed(currentSpeed);
+			}
+			
 			System.out.println("Speed increased by 5 MPH.");
 		} else {
 			System.out.println("Can't accelerate -- car is off.");
@@ -88,7 +92,7 @@ public class Car {
 	public void refuel() {
 		if (currentSpeed == 0 && !isOn) {
 			currentFuel = FUELCAPACITY;
-			updateFuelPercent();
+			percentFuel = currentFuel / FUELCAPACITY;
 			System.out.println("Refueled successfully.");
 		}
 		else {
@@ -96,8 +100,16 @@ public class Car {
 		}
 	}
 	
-	public void  updateFuelPercent() {
+	public Driver getCurrentDriver() {
+		return currentDriver;
+	}
+
+	
+	
+	public void  updateFuel() {
 		percentFuel = currentFuel / FUELCAPACITY;
+		currentFuel -= 0.1;
+		currentDriver.incrementFuelUsed();
 	}
 	
 	public double getFuelPercent() {
@@ -136,5 +148,6 @@ public class Car {
 	public void setCurrentDriver(Driver newDriver) {
 		currentDriver = newDriver;
 	}
-
+	
+	
 }

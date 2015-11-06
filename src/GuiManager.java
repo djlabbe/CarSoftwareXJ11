@@ -202,6 +202,10 @@ public void runLoop() {
 		  @Override
 		  public void run() {
 			 currentSpeed.setText(car.coast() + " MPH | ");
+			 Driver driver = car.getCurrentDriver();
+			 driver.incrementTotalDriveTime();
+			 driver.incrementTotalDriveDistance(car.getCurrentSpeed() / 60 / 60);
+			 driver.computeAverageSpeed();
 		  }
 		},begin, timeinterval);
 	}
