@@ -3,8 +3,7 @@
 public class Driver {
 	
 	// local variables
-	final double FUELRATE = 0.1;
-	
+
 	private String username;
 	private String password;
 	private int totalDriveTime;
@@ -77,7 +76,7 @@ public class Driver {
 	}
 
 	public void incrementFuelUsed() {
-		fuelUsed += FUELRATE;
+		fuelUsed += Car.FUELRATE;
 	}
 	
 	public double computeMpg() {

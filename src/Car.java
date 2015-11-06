@@ -4,11 +4,12 @@ import javax.swing.JFrame;
 
 public class Car {
 	
-	final double FUELCAPACITY = 13.0;
+	protected static final double FUELCAPACITY = 13.0;
+	protected static final double FUELRATE = 0.02;
 	
 	boolean isOn;
 	private double odometer;
-	private double tripOdometer;
+	private double sessionOdometer;
 	private int currentSpeed;
 	private double currentFuel;
 	private double percentFuel;
@@ -21,7 +22,7 @@ public class Car {
 	public Car() {
 		isOn = false;
 		odometer = 0;
-		tripOdometer = 0;
+		sessionOdometer = 0;
 		currentSpeed = 0;
 		currentFuel = FUELCAPACITY;
 		percentFuel = currentFuel / FUELCAPACITY * 100;
@@ -107,8 +108,8 @@ public class Car {
 	
 	
 	public void  updateFuel() {
-		percentFuel = currentFuel / FUELCAPACITY;
-		currentFuel -= 0.1;
+		percentFuel = currentFuel / FUELCAPACITY * 100;
+		currentFuel -= FUELRATE;
 		currentDriver.incrementFuelUsed();
 	}
 	
@@ -131,18 +132,18 @@ public class Car {
 	}
 
 
-	public void setOdometer(double odometer) {
-		this.odometer = odometer;
+	public void incrementOdometer(double increment) {
+		odometer += increment;
 	}
 
 
-	public double getTripOdometer() {
-		return tripOdometer;
+	public double getSessionOdometer() {
+		return sessionOdometer;
 	}
 
 
 	public void setTripOdometer(double tripOdometer) {
-		this.tripOdometer = tripOdometer;
+		this.sessionOdometer = tripOdometer;
 	}
 	
 	public void setCurrentDriver(Driver newDriver) {

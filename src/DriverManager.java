@@ -64,10 +64,6 @@ public class DriverManager extends JDialog{
 	        public void actionPerformed(ActionEvent e) {
 	        	Driver authResult = authenticate(getUsername(), getPassword());
 	            if (authResult != null) {
-	                JOptionPane.showMessageDialog(DriverManager.this,
-	                        "Welcome to the XJ-11.",
-	                        "Login",
-	                        JOptionPane.INFORMATION_MESSAGE);
 	                currentDriver = authResult;
 	                dispose();
 	            } else {
@@ -86,10 +82,6 @@ public class DriverManager extends JDialog{
 	    btnRegister.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	        	Driver registerResult = register(getUsername(), getPassword());
-	    		JOptionPane.showMessageDialog(DriverManager.this,
-                        "Welcome to the XJ-11.",
-                        "Login",
-                        JOptionPane.INFORMATION_MESSAGE);
                 currentDriver = registerResult;
                 dispose();
 	        	

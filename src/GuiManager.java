@@ -20,9 +20,9 @@ public class GuiManager {
 	private JFrame mainFrame;
 	private JPanel labelPanel, navPanel, corePanel, appPanel, emptyPanel;
 	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel;
-	private JLabel tripMileage, totalMileage, currentSpeed, currentFuel;
+	private JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
 	private JButton radioButton, phoneButton, mapButton, 
-					dataButton, powerButton, gasButton, brakeButton, refuelButton, loginButton;
+					statsButton, powerButton, gasButton, brakeButton, refuelButton, loginButton;
 	
 	private DecimalFormat df = new DecimalFormat("#,###,##0.00");
 	private Timer timer;
@@ -52,14 +52,14 @@ public class GuiManager {
 		
 		navPanel = new JPanel();
 		navPanel.setLayout(new BoxLayout(navPanel, 1));
-		navPanel.setBackground(Color.WHITE);
+		navPanel.setBackground(Color.GRAY);
 		
 		appPanel = new JPanel();
 		appPanel.setLayout(new CardLayout());
 		appPanel.setBackground(Color.DARK_GRAY);
 		
 		radioPanel = new JPanel();
-		radioPanel.setBackground(Color.GREEN);
+		radioPanel.setBackground(Color.LIGHT_GRAY);
 		
 		phonePanel = new JPanel();
 		phonePanel.setBackground(Color.RED);
@@ -92,21 +92,29 @@ public class GuiManager {
 		setupNavPanel();
 		setupCorePanel();
 		
-		tripMileage.setText("Trip: " + car.getTripOdometer() + " miles | ");
-		totalMileage.setText("Total: " + car.getOdometer() + " miles | ");
-		currentSpeed.setText(car.getCurrentSpeed() + " MPH | ");
+		sessionMileage.setFont (sessionMileage.getFont().deriveFont (16.0f));
+		sessionMileage.setText("Session: " + car.getSessionOdometer() + " miles ");
+		
+		totalMileage.setFont (totalMileage.getFont().deriveFont (32.0f));
+		totalMileage.setText("| " + df.format(car.getOdometer()) + " miles | ");
+		
+		currentSpeed.setFont (currentSpeed.getFont().deriveFont (32.0f));
+		currentSpeed.setText(car.coast() + " MPH | ");
+		
+		currentFuel.setFont (currentFuel.getFont().deriveFont (16.0f));
 		currentFuel.setText(df.format(car.getFuelPercent()) + "% Fuel ");
+	
 	    mainFrame.setVisible(true);
 	}
 	
 	private void setupLabelPanel() {
 		
-		tripMileage = new JLabel("");  	
+		sessionMileage = new JLabel("");  	
 		totalMileage = new JLabel("");  
 	    currentSpeed = new JLabel("");
 	    currentFuel = new JLabel("");
 	    
-	    labelPanel.add(tripMileage);
+	    labelPanel.add(sessionMileage);
 	    labelPanel.add(totalMileage);
 	    labelPanel.add(currentSpeed);
 	    labelPanel.add(currentFuel);
@@ -137,8 +145,8 @@ public class GuiManager {
 	         }          
 	      });
 	    
-	    dataButton = new JButton("Data");
-	    dataButton.addActionListener(new ActionListener() {
+	    statsButton = new JButton("Stats");
+	    statsButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
 	        	 CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
 			     cardLayout.show(appPanel, "ANALYTICSPANEL");
@@ -148,7 +156,7 @@ public class GuiManager {
 	    navPanel.add(radioButton);
 	    navPanel.add(phoneButton);
 	    navPanel.add(mapButton);
-	    navPanel.add(dataButton);
+	    navPanel.add(statsButton);
 	}
 	
 	private void setupCorePanel() {
@@ -157,8 +165,6 @@ public class GuiManager {
 		loginButton = new JButton("Login");
 	    loginButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	        	 
-	        	 // #TODO Re-authenticate user.
 	        	 car.login();
 	         }          
 	      });
@@ -214,11 +220,18 @@ public void runLoop() {
 		timer.scheduleAtFixedRate(new TimerTask() {
 		  @Override
 		  public void run() {
-			 currentSpeed.setText(car.coast() + " MPH | ");
+			  
 			 Driver driver = car.getCurrentDriver();
+			 double deltaDistance = (car.getCurrentSpeed() / 60 / 60);
+			 
+			 car.incrementOdometer(deltaDistance);
+			 
 			 driver.incrementTotalDriveTime();
-			 driver.incrementTotalDriveDistance(car.getCurrentSpeed() / 60 / 60);
+			 driver.incrementTotalDriveDistance(deltaDistance);
 			 driver.computeAverageSpeed();
+			 
+			 currentSpeed.setText(car.coast() + " MPH | ");
+			 totalMileage.setText("| " + df.format(car.getOdometer()) + " miles | ");
 		  }
 		},begin, timeinterval);
 	}
