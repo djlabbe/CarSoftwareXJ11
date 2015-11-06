@@ -3,11 +3,22 @@
 public class Driver {
 	
 	// local variables
-	private int pin, totalDriveTime, totalDriveDistance, averageSpeed, maxSpeed, fuelUsed, mpg, totalRadioTime, totalPhoneTime;
+	private String password;
+	private int totalDriveTime;
+	private int totalDriveDistance;
+	private int averageSpeed;
+	private int maxSpeed;
+	private int fuelUsed;
+	private int mpg;
+	private int totalRadioTime;
+	private int totalPhoneTime;
 	private String name;
 	protected double amFav1, amFav2, fmFav1, fmFav2;
 	protected Contact speedDial1, speedDial2;
 	
+	public Driver(String newDriverPassword) {
+		password = newDriverPassword;
+	}
 	
 	public String getName()
 	{
@@ -37,6 +48,10 @@ public class Driver {
 	}
 	public void setSpeedDial2(Contact contact) {
 		speedDial2 = contact;
+	}
+	
+	public String getPassword() {
+		return password;
 	}
 
 }

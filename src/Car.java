@@ -12,6 +12,7 @@ public class Car {
 	protected Radio radio;
 	protected Map map;
 	protected Analytics analytics;
+	protected Driver currentDriver;
 	
 	public boolean togglePower() {
 		if (isOn && currentSpeed == 0) {

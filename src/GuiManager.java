@@ -36,7 +36,8 @@ public class GuiManager {
 	         public void windowClosing(WindowEvent windowEvent){
 	            System.exit(0);
 	         }        
-	      });   
+	      });  
+		mainFrame.setLocationRelativeTo(null);
 	}
 
 	protected void showScreen() {
