@@ -22,7 +22,7 @@ public class GuiManager {
 	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel;
 	private JLabel tripMileage, totalMileage, currentSpeed, currentFuel;
 	private JButton radioButton, phoneButton, mapButton, 
-					dataButton, powerButton, gasButton, brakeButton, refuelButton;
+					dataButton, powerButton, gasButton, brakeButton, refuelButton, loginButton;
 	
 	private DecimalFormat df = new DecimalFormat("#,###,##0.00");
 	private Timer timer;
@@ -152,6 +152,18 @@ public class GuiManager {
 	}
 	
 	private void setupCorePanel() {
+		
+		
+		loginButton = new JButton("Login");
+	    loginButton.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	        	 
+	        	 // #TODO Re-authenticate user.
+	        	 car.login();
+	         }          
+	      });
+		
+		
 		powerButton = new JButton("ON/OFF");
 	    powerButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
@@ -187,6 +199,7 @@ public class GuiManager {
 	         }          
 	      });
 	    
+	    corePanel.add(loginButton);
 	    corePanel.add(powerButton);
 	    corePanel.add(refuelButton);
 	    corePanel.add(brakeButton);
