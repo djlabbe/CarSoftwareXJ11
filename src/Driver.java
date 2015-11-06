@@ -13,8 +13,8 @@ public class Driver {
 	private int totalRadioTime;
 	private int totalPhoneTime;
 	private String name;
-	protected double amFav1, amFav2, fmFav1, fmFav2;
-	protected Contact speedDial1, speedDial2;
+	private double amFav1, amFav2, fmFav1, fmFav2;
+	private Contact speedDial1, speedDial2;
 	
 	public Driver(String newDriverPassword) {
 		password = newDriverPassword;

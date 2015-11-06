@@ -1,3 +1,10 @@
+/*Timer code structure found on Stack-overflow*/
+
+/*Main screen consists of the full window JFrame which contains a 5 JPanels arranged in Border Layout.
+ *The center (main) panel is called the appPanel which itself has a CardLayout meaning it behaves like a stack
+ *of cards. The four sub-panels are radioPanel, phonePanel, mapPanel, and analyticsPanel. Each can be made to be
+ *the active panel within the appPanel.*/
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -6,8 +13,6 @@ import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/*Timer/Loop code structure found on Stackoverflow*/
-
 public class GuiManager {
 	
 	private Car car;
@@ -15,12 +20,12 @@ public class GuiManager {
 	private JFrame mainFrame;
 	private JPanel labelPanel, navPanel, corePanel, appPanel, emptyPanel;
 	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel;
-	protected JLabel tripMileage, totalMileage, currentSpeed, currentFuel;
+	private JLabel tripMileage, totalMileage, currentSpeed, currentFuel;
 	private JButton radioButton, phoneButton, mapButton, 
 					dataButton, powerButton, gasButton, brakeButton, refuelButton;
 	
 	private DecimalFormat df = new DecimalFormat("#,###,##0.00");
-	protected Timer timer;
+	private Timer timer;
 	
 	public GuiManager(Car car) {
 		this.car = car;
@@ -87,9 +92,9 @@ public class GuiManager {
 		setupNavPanel();
 		setupCorePanel();
 		
-		tripMileage.setText("Trip: " + car.tripOdometer + " miles | ");
-		totalMileage.setText("Total: " + car.odometer + " miles | ");
-		currentSpeed.setText(car.currentSpeed + " MPH | ");
+		tripMileage.setText("Trip: " + car.getTripOdometer() + " miles | ");
+		totalMileage.setText("Total: " + car.getOdometer() + " miles | ");
+		currentSpeed.setText(car.getCurrentSpeed() + " MPH | ");
 		currentFuel.setText(df.format(car.getFuelPercent()) + "% Fuel ");
 	    mainFrame.setVisible(true);
 	}
@@ -150,9 +155,9 @@ public class GuiManager {
 		powerButton = new JButton("ON/OFF");
 	    powerButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	        	 if (car.togglePower() && car.currentSpeed == 0) {
+	        	 if (car.togglePower() && car.getCurrentSpeed() == 0) {
 	     			runLoop();
-	     		} else if (car.currentSpeed == 0) {
+	     		} else if (car.getCurrentSpeed() == 0) {
 	     			timer.cancel();
 	     			timer.purge();
 	     		}
