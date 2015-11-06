@@ -15,6 +15,7 @@ public class DriverManager extends JDialog{
 	Driver currentDriver;
 	ArrayList<Driver> knownDrivers;
 	
+	
 	private JTextField usernameEntry;
     private JPasswordField passwordEntry;
     private JLabel usernameLabel;
@@ -90,8 +91,14 @@ public class DriverManager extends JDialog{
 	    btnRegister = new JButton("Register");
 	    btnRegister.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	        	
-	    		// #TODO Register new driver
+	        	Driver registerResult = register(getUsername(), getPassword());
+	    		JOptionPane.showMessageDialog(DriverManager.this,
+                        "Welcome to the XJ-11.",
+                        "Login",
+                        JOptionPane.INFORMATION_MESSAGE);
+                loginSuccessful = true;
+                currentDriver = registerResult;
+                dispose();
 	        	
 	    	}
 	    });
@@ -105,10 +112,11 @@ public class DriverManager extends JDialog{
 	    setResizable(false);
 	    setLocationRelativeTo(null);
 		
-		register("aaaa");
-		register("1111");
-		register("bbbb");
-		register("abcd");
+		register("Doug", "1111");
+		register("Sparsh", "abcd");
+		register("Ryan", "2222");
+		register("Alex", "wxyz");
+		register("Josh", "password");
 	}
 	
 	 public String getUsername() {
@@ -126,15 +134,16 @@ public class DriverManager extends JDialog{
 	public Driver authenticate(String usernameInput, String passwordInput) {
 		Driver loggedInDriver = null;
 			for (int i = 0; i < knownDrivers.size(); i++) {
-				if (knownDrivers.get(i).getPassword().equals(passwordInput)) {
+				if (knownDrivers.get(i).getUsername().equals(usernameInput) &&
+						knownDrivers.get(i).getPassword().equals(passwordInput) ) {
 					loggedInDriver = knownDrivers.get(i);
 				} 
 			}
 		return loggedInDriver;
 	}
 	
-	public Driver register(String inputPassword) {
-		Driver registeredDriver = new Driver(inputPassword);
+	public Driver register(String inputUsername, String inputPassword) {
+		Driver registeredDriver = new Driver(inputUsername, inputPassword);
 		knownDrivers.add(registeredDriver);
 		return registeredDriver;
 	}

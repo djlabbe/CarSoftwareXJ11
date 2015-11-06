@@ -3,6 +3,7 @@
 public class Driver {
 	
 	// local variables
+	private String username;
 	private String password;
 	private int totalDriveTime;
 	private int totalDriveDistance;
@@ -12,17 +13,17 @@ public class Driver {
 	private int mpg;
 	private int totalRadioTime;
 	private int totalPhoneTime;
-	private String name;
 	private double amFav1, amFav2, fmFav1, fmFav2;
 	private Contact speedDial1, speedDial2;
 	
-	public Driver(String newDriverPassword) {
+	public Driver(String newDriverUsername, String newDriverPassword) {
+		username = newDriverUsername;
 		password = newDriverPassword;
 	}
 	
-	public String getName()
+	public String getUsername()
 	{
-		return name;
+		return username;
 	}
 	
 	public void setAmFav1(double freq)
@@ -52,6 +53,10 @@ public class Driver {
 	
 	public String getPassword() {
 		return password;
+	}
+	
+	public String toString() {
+		return username;
 	}
 
 }
