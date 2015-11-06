@@ -27,11 +27,13 @@ public class GuiManager {
 	private DecimalFormat df = new DecimalFormat("#,###,##0.00");
 	private Timer timer;
 	
+	// GUI operates for a specific car object which is passed in on GUI initialization.
 	public GuiManager(Car car) {
 		this.car = car;
 		prepareGUI();
 	}
 
+	// Make a new JFrame (main window) and center it.
 	private void prepareGUI() {
 		mainFrame = new JFrame("XJ-11");
 		mainFrame.setSize(800, 600);
@@ -44,7 +46,8 @@ public class GuiManager {
 	      });  
 		mainFrame.setLocationRelativeTo(null);
 	}
-
+	
+	// Build the elements inside the frame and make visible.
 	protected void showScreen() {
 		
 		labelPanel = new JPanel();
@@ -53,6 +56,10 @@ public class GuiManager {
 		navPanel = new JPanel();
 		navPanel.setLayout(new BoxLayout(navPanel, 1));
 		navPanel.setBackground(Color.GRAY);
+		
+		/* The appPanel uses a "CardLayout" which works like a stack of playing cards,
+		 * appPanel will contain 4 other panels which can individually be made active.
+		 */
 		
 		appPanel = new JPanel();
 		appPanel.setLayout(new CardLayout());
@@ -70,11 +77,11 @@ public class GuiManager {
 		analyticsPanel = new JPanel();
 		analyticsPanel.setBackground(Color.MAGENTA);
 		
+		// Add four panels to appPanel.
 		appPanel.add(radioPanel, "RADIOPANEL");
 		appPanel.add(phonePanel, "PHONEPANEL");
 		appPanel.add(mapPanel, "MAPPANEL");
 		appPanel.add(analyticsPanel, "ANALYTICSPANEL");
-		
 		
 		corePanel = new JPanel();
 		corePanel.setBackground(Color.GRAY);
@@ -82,12 +89,14 @@ public class GuiManager {
 		emptyPanel = new JPanel();
 		emptyPanel.setBackground(Color.GRAY);
 		
+		// Add all panels to the main frame
 		mainFrame.add("North", labelPanel);
 		mainFrame.add("West", navPanel);
 		mainFrame.add("South", corePanel);
 		mainFrame.add("Center", appPanel);
 		mainFrame.add("East", emptyPanel);
 
+		// Setup the contents of each panel.
 		setupLabelPanel();
 		setupNavPanel();
 		setupCorePanel();
@@ -107,6 +116,7 @@ public class GuiManager {
 	    mainFrame.setVisible(true);
 	}
 	
+	// LabelPanel is a HeadsUpDisplay of necessary information for the driver.
 	private void setupLabelPanel() {
 		
 		sessionMileage = new JLabel("");  	
@@ -120,6 +130,7 @@ public class GuiManager {
 	    labelPanel.add(currentFuel);
 	}
 	
+	// NavPanel contains buttons that toggle the display of appPanel.
 	private void setupNavPanel() {
 		radioButton = new JButton("Radio");
 	    radioButton.addActionListener(new ActionListener() {
@@ -159,9 +170,9 @@ public class GuiManager {
 	    navPanel.add(statsButton);
 	}
 	
+	// CorePanel displays core car functionality such as Power, Gas, and Brake.
 	private void setupCorePanel() {
-		
-		
+
 		loginButton = new JButton("Login");
 	    loginButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
@@ -212,16 +223,21 @@ public class GuiManager {
 	    corePanel.add(gasButton);
 	    
 	}
+
+	/* The main loop and timing mechanism for driving,
+	 * A TimerTask is scheduled to run every 1 second which then updates the 
+	 * speed and position of the car while logging associated data.
+	 */
 	
-public void runLoop() {
-		int begin = 0; 
-		int timeinterval = 1000;
+	public void runLoop() {
+		int begin = 0; // start immediately 
+		int timeinterval = 1000; // tick every 1 second
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 		  @Override
 		  public void run() {
 			  
-			 Driver driver = car.getCurrentDriver();
+			 Driver driver = car.getCurrentDriver(); 
 			 double deltaDistance = (car.getCurrentSpeed() / 60 / 60);
 			 
 			 car.incrementOdometer(deltaDistance);

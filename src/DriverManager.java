@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
 
+@SuppressWarnings("serial")
 public class DriverManager extends JDialog{
 	
 	int userEnteredPin;
@@ -20,6 +21,7 @@ public class DriverManager extends JDialog{
     private JButton btnLogin;
     private JButton btnRegister;
 	
+    // Create the pop-up login frame
 	public DriverManager(Frame parent) {
 		
 		super(parent, "XJ-11 Login", true);
@@ -58,9 +60,12 @@ public class DriverManager extends JDialog{
         panel.setBorder(new LineBorder(Color.GRAY));
 	
         btnLogin = new JButton("Login");
-        
         btnLogin.addActionListener(new ActionListener() {
 		 
+        	/* When Login is pressed attempt to authenticate entered credentials.
+        	 * If success set the current driver to the matching driver stored in knownDrivers.
+        	 * If authentication fails, user can try to login again.
+        	 */
 	        public void actionPerformed(ActionEvent e) {
 	        	Driver authResult = authenticate(getUsername(), getPassword());
 	            if (authResult != null) {
@@ -78,6 +83,7 @@ public class DriverManager extends JDialog{
 	        }
 	    });
 	
+        // User can register as a new driver by entering name and password and pressing register.     
 	    btnRegister = new JButton("Register");
 	    btnRegister.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -97,6 +103,7 @@ public class DriverManager extends JDialog{
 	    setResizable(false);
 	    setLocationRelativeTo(null);
 		
+	    // Some test users
 		register("doug", "1111");
 		register("sparsh", "abcd");
 		register("ryan", "2222");
@@ -112,6 +119,9 @@ public class DriverManager extends JDialog{
 	      return new String(passwordEntry.getPassword());
 	  }
 	
+	/* Authenticate user by searching knownDrivers for matching login credentials, return the matching
+	 * driver on success, or null if fail.
+	 */
 	public Driver authenticate(String usernameInput, String passwordInput) {
 		Driver loggedInDriver = null;
 			for (int i = 0; i < knownDrivers.size(); i++) {
@@ -123,11 +133,10 @@ public class DriverManager extends JDialog{
 		return loggedInDriver;
 	}
 	
+	// Register a new driver by instantiating a new driver and storing it in knownDrivers
 	public Driver register(String inputUsername, String inputPassword) {
 		Driver registeredDriver = new Driver(inputUsername.toLowerCase(), inputPassword);
 		knownDrivers.add(registeredDriver);
 		return registeredDriver;
 	}
-	
-
 }

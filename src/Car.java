@@ -7,7 +7,7 @@ public class Car {
 	protected static final double FUELCAPACITY = 13.0;
 	protected static final double FUELRATE = 0.02;
 	
-	boolean isOn;
+	private boolean isOn;
 	private double odometer;
 	private double sessionOdometer;
 	private int currentSpeed;
@@ -101,12 +101,6 @@ public class Car {
 		}
 	}
 	
-	public Driver getCurrentDriver() {
-		return currentDriver;
-	}
-
-	
-	
 	public void  updateFuel() {
 		percentFuel = currentFuel / FUELCAPACITY * 100;
 		currentFuel -= FUELRATE;
@@ -116,39 +110,35 @@ public class Car {
 	public double getFuelPercent() {
 		return percentFuel;
 	}
-
-	public double getCurrentSpeed() {
-		return currentSpeed;
-	}
-
-
-	public void setCurrentSpeed(int currentSpeed) {
-		this.currentSpeed = currentSpeed;
-	}
-
 	
-	public double getOdometer() {
-		return odometer;
-	}
-
-
-	public void incrementOdometer(double increment) {
-		odometer += increment;
-	}
-
-
-	public double getSessionOdometer() {
-		return sessionOdometer;
-	}
-
-
-	public void setTripOdometer(double tripOdometer) {
-		this.sessionOdometer = tripOdometer;
+	public Driver getCurrentDriver() {
+		return currentDriver;
 	}
 	
 	public void setCurrentDriver(Driver newDriver) {
 		currentDriver = newDriver;
 	}
+
+	public double getCurrentSpeed() {
+		return currentSpeed;
+	}
+
+	public double getOdometer() {
+		return odometer;
+	}
+
+	public void incrementOdometer(double increment) {
+		odometer += increment;
+	}
+
+	public double getSessionOdometer() {
+		return sessionOdometer;
+	}
+	public void setSessionOdometer(double tripOdometer) {
+		this.sessionOdometer = tripOdometer;
+	}
+	
+	
 	
 	
 }
