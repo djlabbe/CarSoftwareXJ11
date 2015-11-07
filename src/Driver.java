@@ -1,8 +1,4 @@
-// driver class is personal for each and every driver
-// therefore the variables inside the driver will be initialized using the GUI
 public class Driver {
-	
-	// local variables
 
 	private String username;
 	private String password;
@@ -14,7 +10,7 @@ public class Driver {
 	private double mpg;
 	private int totalRadioTime;
 	private int totalPhoneTime;
-	private double amFav1, amFav2, fmFav1, fmFav2;
+	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3;
 	protected Contact speedDial1, speedDial2;
 	
 	public Driver(String newDriverUsername, String newDriverPassword) {
@@ -28,7 +24,6 @@ public class Driver {
 		mpg = 0;
 		totalRadioTime = 0;
 		totalPhoneTime = 0;
-		
 		speedDial1 = null;
 		speedDial2 = null;
 	}
@@ -84,44 +79,20 @@ public class Driver {
 		return mpg;
 	}
 	
+	public int getTotalRadioTime() {
+		return totalRadioTime;
+	}
+	
 	public void incrementTotalRadioTime() {
 		totalRadioTime++;
 	}
 	
+	public int getTotalPhoneTime() {
+		return totalPhoneTime;
+	}
+	
 	public void incrementTotalPhoneTime() {
 		totalPhoneTime++;
-	}
-	
-	public double getAmFav1() {
-		return amFav1;
-	}
-	
-	public void setAmFav1(double newStation) {
-		amFav1 = newStation;
-	}
-
-	public double getAmFav2() {
-		return amFav2;
-	}
-
-	public void setAmFav2(double newStation) {
-		amFav2 = newStation;
-	}
-	
-	public double getFmFav1() {
-		return fmFav1;
-	}
-	
-	public void setFmFav1(double newStation) {
-		fmFav1 = newStation;
-	}
-
-	public double getFmFav2() {
-		return fmFav2;
-	}
-
-	public void setFmFav2(double newStation) {
-		fmFav2 = newStation;
 	}
 	
 	public Contact getSpeedDial1() {

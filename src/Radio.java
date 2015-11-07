@@ -5,36 +5,40 @@ public class Radio {
 	private boolean isOn;
 	private boolean isAm;
 	private int volume;
+
+	private int amStationIndex;
+	private int fmStationIndex;
 	
-	private double amFav1;
-	private double amFav2;
-	private double fmFav1;
-	private double fmFav2;
+	private ArrayList<RadioStation> availableAmStations;
+	private ArrayList<RadioStation> availableFmStations;
+
+	protected RadioStation amFav1;
+	protected RadioStation amFav2;
+	protected RadioStation amFav3;
+	protected RadioStation fmFav1;
+	protected RadioStation fmFav2;
+	protected RadioStation fmFav3;
 	
-	private ArrayList<Double> availableAmStations;
-	private ArrayList<Double> availableFmStations;
-	
-	private double currentStation;
-	public int amStationIndex;
-	public int fmStationIndex;
+	protected RadioStation currentStation;
 	
 	public Radio () {
 		isOn = false;
 		isAm = true;
 		volume = 5;
 		
-		availableAmStations = new ArrayList<Double>();
-		availableFmStations = new ArrayList<Double>();
+		availableAmStations = new ArrayList<RadioStation>();
+		availableFmStations = new ArrayList<RadioStation>();
 		
-		availableAmStations.add(550.0);
-		availableAmStations.add(620.0);
-		availableAmStations.add(910.0);
-		availableAmStations.add(1060.0);
 		
-		availableFmStations.add(93.9);
-		availableFmStations.add(94.5);
-		availableFmStations.add(100.7);
-		availableFmStations.add(102.5);
+		availableAmStations.add(new RadioStation(550.0));
+		availableAmStations.add(new RadioStation(620.0));
+		availableAmStations.add(new RadioStation(910.0));
+		availableAmStations.add(new RadioStation(1060.0));
+		
+		availableFmStations.add(new RadioStation(93.9));
+		availableFmStations.add(new RadioStation(94.5));
+		availableFmStations.add(new RadioStation(100.7));
+		availableFmStations.add(new RadioStation(102.5));
 		
 		currentStation = availableAmStations.get(0);
 		amStationIndex = 0;
@@ -64,16 +68,18 @@ public class Radio {
 	
 	public int volUp() {
 		volume++;
+		if (volume > 10) {
+			volume = 10;
+		}
 		return volume;
 	}
 	
 	public int volDown() {
 		volume--;
+		if (volume < 0) {
+			volume = 0;
+		}
 		return volume;
-	}
-	
-	public double getCurrentStation() {
-		return currentStation;
 	}
 	
 	public void seekUp() {
@@ -108,27 +114,13 @@ public class Radio {
 		}
 	}
 	
-	public double getAmFav1() {
-		return amFav1;
-	}
-	
-	public double getAmFav2() {
-		return amFav2;
-	}
-
-	public double getFmFav1() {
-		return fmFav1;
-	}
-	
-	public double getFmFav2() {
-		return fmFav2;
-	}
-	
 	public void setUserFavorites(Driver currentDriver) {
-		amFav1 = currentDriver.getAmFav1();
-		amFav2 = currentDriver.getAmFav2();
-		fmFav1 = currentDriver.getFmFav1();
-		fmFav2 = currentDriver.getFmFav2();
+		amFav1 = currentDriver.amFav1;
+		amFav2 = currentDriver.amFav2;
+		amFav3 = currentDriver.amFav3;
+		fmFav1 = currentDriver.fmFav1;
+		fmFav2 = currentDriver.fmFav2;
+		fmFav3 = currentDriver.fmFav3;
 	}
 	
 	public String getModLabel() {
