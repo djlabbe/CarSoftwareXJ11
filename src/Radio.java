@@ -51,6 +51,11 @@ public class Radio {
 	
 	public void toggleMod() {
 		isAm = !isAm;
+		if (isAm) {
+			currentStation = availableAmStations.get(amStationIndex);
+		} else {
+			currentStation = availableFmStations.get(fmStationIndex);
+		}
 	}
 	
 	public int getVolume() {
@@ -124,6 +129,11 @@ public class Radio {
 		amFav2 = currentDriver.getAmFav2();
 		fmFav1 = currentDriver.getFmFav1();
 		fmFav2 = currentDriver.getFmFav2();
+	}
+	
+	public String getModLabel() {
+		String mod = isAm ? "AM" : "FM";
+		return mod;
 	}
 	
 }

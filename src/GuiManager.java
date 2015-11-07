@@ -13,6 +13,8 @@ import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
+// #TODO Add min and max volume
+
 public class GuiManager {
 	
 	private Car car;
@@ -22,7 +24,7 @@ public class GuiManager {
 	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel;
 	private JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
 	
-	private JLabel stationLabel, modulusLabel;
+	private JLabel stationLabel, modulusLabel, radioVolumeLabel;
 	
 	private JButton radioButton, phoneButton, mapButton, 
 					statsButton, powerButton, gasButton, brakeButton, refuelButton, loginButton;
@@ -232,7 +234,7 @@ public class GuiManager {
 	// RadioPanel plays radio
 		private void setupRadioPanel() {
 			
-			// TOP PANEL
+			// TOP RADIO PANEL
 			JPanel topRadioPanel = new JPanel();
 			topRadioPanel.setBackground(Color.LIGHT_GRAY);
 			
@@ -268,12 +270,12 @@ public class GuiManager {
 		         public void actionPerformed(ActionEvent e) {
 		            car.radio.toggleMod();
 		            stationLabel.setText(Double.toString(car.radio.getCurrentStation()));
-		            System.out.println("Radio swithched modulation.");
+		            modulusLabel.setText(car.radio.getModLabel());
 		         }          
 		      });
 			topRadioPanel.add(amFmButton);
 			
-			// LEFT PANEL
+			// LEFT RADIO PANEL
 			JPanel leftRadioPanel = new JPanel();
 			leftRadioPanel.setLayout(new BoxLayout(leftRadioPanel, 1));
 			leftRadioPanel.setBackground(Color.LIGHT_GRAY);
@@ -286,12 +288,12 @@ public class GuiManager {
 		    volumeUpButton.addActionListener(new ActionListener() {
 		         public void actionPerformed(ActionEvent e) {
 		            car.radio.volUp();
-		            System.out.println("Radio volume UP");
+		            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
 		         }          
 		      });
 			leftRadioPanel.add(volumeUpButton);
 			
-			JLabel radioVolumeLabel = new JLabel(car.radio.getVolume() + "");
+			radioVolumeLabel = new JLabel(Integer.toString(car.radio.getVolume()));
 			leftRadioPanel.add(radioVolumeLabel);
 			
 			
@@ -299,12 +301,12 @@ public class GuiManager {
 		    volumeDownButton.addActionListener(new ActionListener() {
 		         public void actionPerformed(ActionEvent e) {
 		            car.radio.volDown();
-		            System.out.println("Radio volume DOWN");
+		            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
 		         }          
 		      });
 			leftRadioPanel.add(volumeDownButton);
 			
-			// Center Radio Panel
+			// CENTER RADIO PANEL
 			
 			JPanel centerRadioPanel = new JPanel();
 			centerRadioPanel.setBackground(Color.WHITE);
@@ -312,8 +314,7 @@ public class GuiManager {
 			stationLabel = new JLabel(Double.toString(car.radio.getCurrentStation()));
 			centerRadioPanel.add(stationLabel);
 			
-			// #TODO setup AM/FM text label
-			modulusLabel = new JLabel("AM/FM");
+			modulusLabel = new JLabel(car.radio.getModLabel());
 			centerRadioPanel.add(modulusLabel);
 		
 			
