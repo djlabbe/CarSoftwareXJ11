@@ -21,6 +21,9 @@ public class GuiManager {
 	private JPanel labelPanel, navPanel, corePanel, appPanel, emptyPanel;
 	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel;
 	private JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
+	
+	private JLabel stationLabel, modulusLabel;
+	
 	private JButton radioButton, phoneButton, mapButton, 
 					statsButton, powerButton, gasButton, brakeButton, refuelButton, loginButton;
 	
@@ -65,7 +68,7 @@ public class GuiManager {
 		appPanel.setLayout(new CardLayout());
 		appPanel.setBackground(Color.DARK_GRAY);
 		
-		radioPanel = new JPanel();
+		radioPanel = new JPanel(new BorderLayout());
 		radioPanel.setBackground(Color.LIGHT_GRAY);
 		
 		phonePanel = new JPanel();
@@ -100,6 +103,8 @@ public class GuiManager {
 		setupLabelPanel();
 		setupNavPanel();
 		setupCorePanel();
+		setupRadioPanel();
+		
 		
 		sessionMileage.setFont (sessionMileage.getFont().deriveFont (16.0f));
 		sessionMileage.setText("Session: " + car.getSessionOdometer() + " miles ");
@@ -181,7 +186,7 @@ public class GuiManager {
 	      });
 		
 		
-		powerButton = new JButton("ON/OFF");
+		powerButton = new JButton("On | Off");
 	    powerButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
 	        	 if (car.togglePower() && car.getCurrentSpeed() == 0) {
@@ -223,6 +228,115 @@ public class GuiManager {
 	    corePanel.add(gasButton);
 	    
 	}
+	
+	// RadioPanel plays radio
+		private void setupRadioPanel() {
+			
+			// TOP PANEL
+			JPanel topRadioPanel = new JPanel();
+			topRadioPanel.setBackground(Color.LIGHT_GRAY);
+			
+			JButton radioPowerButton = new JButton("On | Off");
+		    radioPowerButton.addActionListener(new ActionListener() {
+		         public void actionPerformed(ActionEvent e) {
+		            car.radio.togglePower();
+		            System.out.println("Radio power toggled");
+		         }          
+		      });
+			topRadioPanel.add(radioPowerButton);
+			
+			JButton seekDownButton = new JButton(" << ");
+		    seekDownButton.addActionListener(new ActionListener() {
+		         public void actionPerformed(ActionEvent e) {
+		            car.radio.seekDown();
+		            stationLabel.setText(Double.toString(car.radio.getCurrentStation()));
+		         }          
+		      });
+			topRadioPanel.add(seekDownButton);
+			
+			JButton seekUpButton = new JButton(" >> ");
+		    seekUpButton.addActionListener(new ActionListener() {
+		         public void actionPerformed(ActionEvent e) {
+		            car.radio.seekUp();
+		            stationLabel.setText(Double.toString(car.radio.getCurrentStation()));
+		         }          
+		      });
+			topRadioPanel.add(seekUpButton);
+			
+			JButton amFmButton = new JButton("AM | FM");
+		    amFmButton.addActionListener(new ActionListener() {
+		         public void actionPerformed(ActionEvent e) {
+		            car.radio.toggleMod();
+		            stationLabel.setText(Double.toString(car.radio.getCurrentStation()));
+		            System.out.println("Radio swithched modulation.");
+		         }          
+		      });
+			topRadioPanel.add(amFmButton);
+			
+			// LEFT PANEL
+			JPanel leftRadioPanel = new JPanel();
+			leftRadioPanel.setLayout(new BoxLayout(leftRadioPanel, 1));
+			leftRadioPanel.setBackground(Color.LIGHT_GRAY);
+			
+			JLabel radioVolumeTitleLabel = new JLabel("Vol");
+			leftRadioPanel.add(radioVolumeTitleLabel);
+		
+			
+			JButton volumeUpButton = new JButton(" + ");
+		    volumeUpButton.addActionListener(new ActionListener() {
+		         public void actionPerformed(ActionEvent e) {
+		            car.radio.volUp();
+		            System.out.println("Radio volume UP");
+		         }          
+		      });
+			leftRadioPanel.add(volumeUpButton);
+			
+			JLabel radioVolumeLabel = new JLabel(car.radio.getVolume() + "");
+			leftRadioPanel.add(radioVolumeLabel);
+			
+			
+			JButton volumeDownButton = new JButton(" - ");
+		    volumeDownButton.addActionListener(new ActionListener() {
+		         public void actionPerformed(ActionEvent e) {
+		            car.radio.volDown();
+		            System.out.println("Radio volume DOWN");
+		         }          
+		      });
+			leftRadioPanel.add(volumeDownButton);
+			
+			// Center Radio Panel
+			
+			JPanel centerRadioPanel = new JPanel();
+			centerRadioPanel.setBackground(Color.WHITE);
+		
+			stationLabel = new JLabel(Double.toString(car.radio.getCurrentStation()));
+			centerRadioPanel.add(stationLabel);
+			
+			// #TODO setup AM/FM text label
+			modulusLabel = new JLabel("AM/FM");
+			centerRadioPanel.add(modulusLabel);
+		
+			
+			
+			// Bottom Radio Panel
+			
+			JPanel bottomRadioPanel = new JPanel();
+			bottomRadioPanel.setBackground(Color.LIGHT_GRAY);
+			
+			
+			
+			
+			
+			
+			//setup 4 panels
+			radioPanel.add("North", topRadioPanel);
+			radioPanel.add("West", leftRadioPanel);
+			radioPanel.add("South", bottomRadioPanel);
+			radioPanel.add("Center", centerRadioPanel);
+			
+		}
+	
+	
 
 	/* The main loop and timing mechanism for driving,
 	 * A TimerTask is scheduled to run every 1 second which then updates the 
@@ -237,14 +351,16 @@ public class GuiManager {
 		  @Override
 		  public void run() {
 			  
-			 Driver driver = car.getCurrentDriver(); 
 			 double deltaDistance = (car.getCurrentSpeed() / 60 / 60);
-			 
+	
 			 car.incrementOdometer(deltaDistance);
 			 
-			 driver.incrementTotalDriveTime();
-			 driver.incrementTotalDriveDistance(deltaDistance);
-			 driver.computeAverageSpeed();
+			 car.currentDriver.incrementTotalDriveTime();
+			 car.currentDriver.incrementTotalDriveDistance(deltaDistance);
+			 car.currentDriver.computeAverageSpeed();
+			 if (car.radio.getIsOn()) {
+				 car.currentDriver.incrementTotalPhoneTime();
+			 }
 			 
 			 currentSpeed.setText(car.coast() + " MPH | ");
 			 totalMileage.setText("| " + df.format(car.getOdometer()) + " miles | ");

@@ -12,7 +12,7 @@ public class DriverManager extends JDialog{
 	
 	int userEnteredPin;
 	Driver currentDriver;
-	ArrayList<Driver> knownDrivers;
+	private ArrayList<Driver> knownDrivers;
 	
 	private JTextField usernameEntry;
     private JPasswordField passwordEntry;

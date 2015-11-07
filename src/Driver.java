@@ -15,7 +15,7 @@ public class Driver {
 	private int totalRadioTime;
 	private int totalPhoneTime;
 	private double amFav1, amFav2, fmFav1, fmFav2;
-	private Contact speedDial1, speedDial2;
+	protected Contact speedDial1, speedDial2;
 	
 	public Driver(String newDriverUsername, String newDriverPassword) {
 		username = newDriverUsername;

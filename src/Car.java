@@ -13,11 +13,11 @@ public class Car {
 	private int currentSpeed;
 	private double currentFuel;
 	private double percentFuel;
-	private Phone phone;
-	private Radio radio;
-	private Map map;
-	private Analytics analytics;
-	private Driver currentDriver;
+	protected Radio radio;
+	protected Phone phone;
+	protected Map map;
+	protected Analytics analytics;
+	protected Driver currentDriver;
 	
 	public Car() {
 		isOn = false;
@@ -30,6 +30,7 @@ public class Car {
 		radio = new Radio();
 		map = new Map();
 		analytics = new Analytics();
+		radio = new Radio();
 		login();
 	}
 	
@@ -40,6 +41,7 @@ public class Car {
 		DriverManager driverManager = new DriverManager(frame);
         driverManager.setVisible(true);
         currentDriver = driverManager.currentDriver;
+        radio.setUserFavorites(currentDriver);
         System.out.println(currentDriver + " logged in.");
 	}
 	
@@ -137,8 +139,4 @@ public class Car {
 	public void setSessionOdometer(double tripOdometer) {
 		this.sessionOdometer = tripOdometer;
 	}
-	
-	
-	
-	
 }
