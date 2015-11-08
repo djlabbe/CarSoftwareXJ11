@@ -6,4 +6,12 @@ public class Contact {
 		name = nameToAdd;
 		phoneNumber = numberToAdd;
 	}
+	
+	public int getPhoneNumber() {
+		return phoneNumber;
+	}
+	
+	public String getName() {
+		return name;
+	}
 }
