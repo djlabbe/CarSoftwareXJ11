@@ -1,3 +1,8 @@
+/* Car models functions related to the engine and movement of the vehicle.
+ * A Car has Radio, Phone, Map, and Analytics
+ * A Car has a currentDriver which is set by the DriverManger through the driver login functionality.
+ */
+
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
@@ -31,9 +36,9 @@ public class Car {
 		map = new Map();
 		analytics = new Analytics();
 		radio = new Radio();
-		login();
 	}
 	
+	// Call the login pop-up window and activate the new driver. 
 	public void login() {
 		final JFrame frame = new JFrame("Login");
         frame.setSize(300, 100);
@@ -41,10 +46,18 @@ public class Car {
 		DriverManager driverManager = new DriverManager(frame);
         driverManager.setVisible(true);
         currentDriver = driverManager.currentDriver;
-        radio.setUserFavorites(currentDriver);
         System.out.println(currentDriver + " logged in.");
+        setUserFavorites();
 	}
 	
+	// Retrieve saved driver settings for radio and phone.
+	public void setUserFavorites() {
+		radio.setUserFavorites(currentDriver);
+	}
+	
+	/* Turn the car on and off.
+	 * Car can only be turned off is it is currently running and is not moving. 
+	 */
 	public boolean togglePower() {
 		if (isOn && currentSpeed == 0) {
 			isOn = false;
@@ -58,7 +71,10 @@ public class Car {
 		return isOn;
 	}
 	
-	
+	/* Accelerates the car. Called when driver presses gas.
+	 * Only works if the car is on.
+	 * Car can go up to a max speed of 120 MPH.
+	 */
 	public int accelerate() {
 		if (isOn) {
 			currentSpeed = currentSpeed >= 120 ? 120 : currentSpeed + 5;
@@ -75,12 +91,18 @@ public class Car {
 		return currentSpeed;
 	}
 	
+	/* Decelerates the car. Called when driver applies the brake.
+	 * Car can not go below 0 MPH.
+	 */
 	public int decelerate() {
 		currentSpeed = currentSpeed <= 10 ? 0 : currentSpeed - 10;
 		System.out.println("Brake applied.");
 		return currentSpeed;
 	}
 	
+	/* Car is coasting - is called once per second while the car is on.
+	 * Car loses 1 MPH per second, can not go below 0 MPH.
+	 */
 	public int coast() {
 		if (currentSpeed <= 1) {
 			currentSpeed = 0;
@@ -92,6 +114,9 @@ public class Car {
 		return currentSpeed;
 	}
 	
+	/* Sets the car's fuel to 100%. Called when driver presses refuel button
+	 * Only works when the car is stopped and turned off.
+	 */
 	public void refuel() {
 		if (currentSpeed == 0 && !isOn) {
 			currentFuel = FUELCAPACITY;
@@ -103,6 +128,9 @@ public class Car {
 		}
 	}
 	
+	/* Calculates the percent fuel remaining, used for the GUI display 
+	 * Also updates the associated driver statistic.
+	 */
 	public void  updateFuel() {
 		percentFuel = currentFuel / FUELCAPACITY * 100;
 		currentFuel -= FUELRATE;
@@ -136,7 +164,7 @@ public class Car {
 	public double getSessionOdometer() {
 		return sessionOdometer;
 	}
-	public void setSessionOdometer(double tripOdometer) {
-		this.sessionOdometer = tripOdometer;
+	public void incrementSessionOdometer(double increment) {
+		sessionOdometer += increment;
 	}
 }

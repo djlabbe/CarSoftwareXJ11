@@ -1,10 +1,11 @@
+/* Represent a user of the Car. Has a username, password, and multiple data tracking fields. 
+ * Stores favorites for each user that are loaded by the Radio and Phone when the driver logs into the Car.*/
 public class Driver {
 
 	private String username;
 	private String password;
 	private int totalDriveTime;
 	private double totalDriveDistance;
-	private double averageSpeed;
 	private int maxSpeed;
 	private double fuelUsed;
 	private double mpg;
@@ -18,12 +19,17 @@ public class Driver {
 		password = newDriverPassword;
 		totalDriveTime = 0;
 		totalDriveDistance = 0;
-		averageSpeed = 0;
 		maxSpeed = 0;
 		fuelUsed = 0;
 		mpg = 0;
 		totalRadioTime = 0;
 		totalPhoneTime = 0;
+		amFav1 = null;
+		amFav2 = null;
+		amFav3 = null;
+		fmFav1 = null;
+		fmFav2 = null;
+		fmFav3 = null;
 		speedDial1 = null;
 		speedDial2 = null;
 	}
@@ -54,8 +60,7 @@ public class Driver {
 	}
 	
 	public double computeAverageSpeed() {
-		averageSpeed = totalDriveDistance / totalDriveTime;
-		return averageSpeed;
+		return totalDriveDistance / totalDriveTime;
 	}
 	
 	public int getMaxSpeed() {
@@ -111,8 +116,42 @@ public class Driver {
 		speedDial2 = contact;
 	}
 	
+	public void setFav(boolean isAm, int favIndex, RadioStation station) {
+		if (isAm) {
+			switch (favIndex) {
+			case 1:
+				amFav1 = station;
+				break;
+			case 2:
+				amFav2 = station;
+				break;
+			case 3:
+				amFav3 = station;
+				break;
+			default:
+				System.out.println("Error setting driver radio am favorite");
+				break;
+			}
+		} else {
+			switch (favIndex) {
+			case 1:
+				fmFav1 = station;
+				break;
+			case 2:
+				fmFav2 = station;
+				break;
+			case 3:
+				fmFav3 = station;
+				break;
+			default:
+				System.out.println("Error setting driver radio fm favorite");
+				break;
+			}
+		}
+	}
+	
 	public String toString() {
-		return username;
+		return "\"Driver: " + username + "\"";
 	}
 
 }
