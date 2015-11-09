@@ -72,8 +72,8 @@ public class GuiManager {
 		radioPanel = new JPanel(new BorderLayout());
 		radioPanel.setBackground(Color.LIGHT_GRAY);
 		
-		phonePanel = new JPanel();
-		phonePanel.setBackground(Color.RED);
+		phonePanel = new JPanel(new BorderLayout());
+		phonePanel.setBackground(Color.WHITE);
 		
 		mapPanel = new JPanel();
 		mapPanel.setBackground(Color.CYAN);
@@ -105,6 +105,7 @@ public class GuiManager {
 		setupNavPanel();
 		setupCorePanel();
 		setupRadioPanel();
+		setupPhonePanel();
 		
 		sessionMileage.setFont (sessionMileage.getFont().deriveFont (12.0f));
 		sessionMileage.setText("Session: " + car.getSessionOdometer() + " miles ");
@@ -405,6 +406,92 @@ public class GuiManager {
 			radioPanel.add("East", rightRadioPanel);
 			
 		}
+		
+		// setupPhonePanel creates a phone
+		private void setupPhonePanel()
+		{
+			// leftPhonePanel is the dial pad
+			JPanel dialpadPanel = new JPanel();
+			dialpadPanel.setLayout(new GridLayout(4,3));
+			
+			// The for loop makes buttons 1-9, #, 0, *
+			int i;
+			for(i = 1; i < 13; i++)
+			{
+				final String input = Integer.toString(i);
+				JButton button;
+				
+				// creates the * button
+				if(i == 10)
+				{
+					button = new JButton("*");
+					button.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							car.phone.dialNumber("*");
+						}
+					});
+				}
+				
+				// creates the 0 button
+				else if(i == 11)
+				{
+					button = new JButton("0");
+					button.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							car.phone.dialNumber("0");
+						}
+					});
+				}
+				
+				// creates the # button
+				else if(i == 12)
+				{
+					button = new JButton("#");
+					button.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							car.phone.dialNumber("#");
+						}
+					});
+				}
+				
+				// creates buttons 1-9
+				else
+				{
+					button = new JButton(Integer.toString(i));
+					button.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							car.phone.dialNumber(input);
+						}
+					});
+				}
+				button.setBackground(Color.white);
+				dialpadPanel.add(button);
+			}
+			
+			JPanel leftPhonePanel = new JPanel(new BorderLayout());
+			JPanel emptyPanel1 = new JPanel();
+			emptyPanel1.setBackground(Color.white);
+			JPanel emptyPanel2 = new JPanel();
+			emptyPanel2.setBackground(Color.white);
+			JPanel emptyPanel3= new JPanel();
+			emptyPanel3.setBackground(Color.white);
+			JPanel emptyPanel4 = new JPanel();
+			emptyPanel4.setBackground(Color.white);
+			
+			leftPhonePanel.add("Center", dialpadPanel);
+			leftPhonePanel.add("North", emptyPanel1);
+			leftPhonePanel.add("South", emptyPanel2);
+			leftPhonePanel.add("West", emptyPanel3);
+			leftPhonePanel.add("East", emptyPanel4);
+			
+			
+				
+			phonePanel.add("West", leftPhonePanel);
+
+			
+		}
+		
+
 	
 	/* The main loop and timing mechanism for driving,
 	 * A TimerTask is scheduled to run every 1 second which then updates the 
