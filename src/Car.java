@@ -47,7 +47,9 @@ public class Car {
         driverManager.setVisible(true);
         currentDriver = driverManager.currentDriver;
         System.out.println(currentDriver + " logged in.");
-        setUserFavorites();
+        if (currentDriver != null) {
+        	setUserFavorites();
+        }
 	}
 	
 	// Retrieve saved driver settings for radio and phone.

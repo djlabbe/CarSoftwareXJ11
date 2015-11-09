@@ -19,7 +19,7 @@ public class GuiManager {
 	
 	private JFrame mainFrame;
 	private JPanel labelPanel, navPanel, corePanel, appPanel, emptyPanel;
-	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel;
+	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel, centerRadioPanel;
 	private JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
 	
 	private JLabel stationLabel, modulusLabel, radioVolumeLabel;
@@ -241,6 +241,12 @@ public class GuiManager {
 		    radioPowerButton.addActionListener(new ActionListener() {
 		         public void actionPerformed(ActionEvent e) {
 		            car.radio.togglePower();
+		            if (car.radio.getIsOn()) {
+		            	centerRadioPanel.setVisible(true);
+		            } else {
+		            	centerRadioPanel.setVisible(false);
+		            }
+		            
 		            System.out.println("Radio power toggled");
 		         }          
 		      });
@@ -310,8 +316,9 @@ public class GuiManager {
 			
 			// CENTER RADIO PANEL
 			
-			JPanel centerRadioPanel = new JPanel();
+			centerRadioPanel = new JPanel();
 			centerRadioPanel.setBackground(Color.WHITE);
+			centerRadioPanel.setVisible(false);
 		
 			stationLabel = new JLabel(Double.toString(car.radio.currentStation.getStation()));
 			stationLabel.setFont (stationLabel.getFont().deriveFont (55.0f));

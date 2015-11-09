@@ -121,6 +121,7 @@ public class Radio {
 				fmStationIndex = 0;
 			}
 			currentStation = availableFmStations.get(fmStationIndex);
+			System.out.println("User seeked up");
 		}
 	}
 	
@@ -141,6 +142,7 @@ public class Radio {
 			}
 			currentStation = availableFmStations.get(fmStationIndex);
 		}
+		System.out.println("User seeked down");
 	}
 	
 	/* Jump to the selected favorite based on the button pressed.

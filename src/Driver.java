@@ -151,7 +151,7 @@ public class Driver {
 	}
 	
 	public String toString() {
-		return "\"Driver: " + username + "\"";
+		return "username";
 	}
 
 }
