@@ -133,6 +133,11 @@ public class Car {
 	/* Calculates the percent fuel remaining, used for the GUI display 
 	 * Also updates the associated driver statistic.
 	 */
+	
+	public boolean getIsOn() {
+		return isOn;
+	}
+	
 	public void  updateFuel() {
 		percentFuel = currentFuel / FUELCAPACITY * 100;
 		currentFuel -= FUELRATE;
@@ -169,4 +174,5 @@ public class Car {
 	public void incrementSessionOdometer(double increment) {
 		sessionOdometer += increment;
 	}
+	
 }

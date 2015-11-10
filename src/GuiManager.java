@@ -27,6 +27,8 @@ public class GuiManager {
 	private JButton radioButton, phoneButton, mapButton, 
 					statsButton, powerButton, gasButton, brakeButton, refuelButton, loginButton;
 	
+	private JSlider mapSlider;
+	
 	private DecimalFormat df = new DecimalFormat("#,###,##0.00");
 	private Timer timer;
 	
@@ -73,13 +75,13 @@ public class GuiManager {
 		radioPanel.setBackground(Color.LIGHT_GRAY);
 		
 		phonePanel = new JPanel(new BorderLayout());
-		phonePanel.setBackground(Color.WHITE);
+		phonePanel.setBackground(Color.LIGHT_GRAY);
 		
-		mapPanel = new JPanel();
-		mapPanel.setBackground(Color.CYAN);
+		mapPanel = new JPanel(new BorderLayout());
+		mapPanel.setBackground(Color.LIGHT_GRAY);
 		
 		analyticsPanel = new JPanel();
-		analyticsPanel.setBackground(Color.MAGENTA);
+		analyticsPanel.setBackground(Color.LIGHT_GRAY);
 		
 		// Add four panels to appPanel.
 		appPanel.add(radioPanel, "RADIOPANEL");
@@ -106,6 +108,7 @@ public class GuiManager {
 		setupCorePanel();
 		setupRadioPanel();
 		setupPhonePanel();
+		setupMapPanel();
 		
 		sessionMileage.setFont (sessionMileage.getFont().deriveFont (12.0f));
 		sessionMileage.setText("Session: " + car.getSessionOdometer() + " miles ");
@@ -230,7 +233,10 @@ public class GuiManager {
 	    corePanel.add(gasButton);
 	}
 	
-	// RADIOPANEL PLAYS RADIO
+	/******************************************/
+	/************  RADIO PANEL  ***************/
+	/******************************************/
+
 		private void setupRadioPanel() {
 			
 			// TOP RADIO PANEL
@@ -398,7 +404,7 @@ public class GuiManager {
 			JPanel rightRadioPanel = new JPanel();
 			rightRadioPanel.setBackground(Color.LIGHT_GRAY);
 			
-			//setup 4 panels
+			// Setup the radio panels
 			radioPanel.add("North", topRadioPanel);
 			radioPanel.add("West", leftRadioPanel);
 			radioPanel.add("South", bottomRadioPanel);
@@ -407,7 +413,10 @@ public class GuiManager {
 			
 		}
 		
-		// setupPhonePanel creates a phone
+		/******************************************/
+		/************  PHONE PANEL  ***************/
+		/******************************************/
+		
 		private void setupPhonePanel()
 		{
 			// leftPhonePanel is the dial pad
@@ -484,20 +493,64 @@ public class GuiManager {
 			leftPhonePanel.add("West", emptyPanel3);
 			leftPhonePanel.add("East", emptyPanel4);
 			
+			phonePanel.add("West", leftPhonePanel);	
+		}
+		
+		/******************************************/
+		/*************  MAP PANEL  ****************/
+		/******************************************/
 			
-				
-			phonePanel.add("West", leftPhonePanel);
-
+		
+		private void setupMapPanel() {
+			int routeDistance = (int)car.map.getCurrentRoute().getRouteDistance();
+			mapSlider = new JSlider(0, routeDistance, 0);
+			setSliderSpacing(routeDistance);
+			mapSlider.setPaintLabels(true);
+			mapSlider.setEnabled(false);
+			mapPanel.add("Center", mapSlider);
+		
+			JComboBox<String> routeSelector = new JComboBox<String>(car.map.getRouteList());
+			mapPanel.add("North", routeSelector);
+			routeSelector.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+						JComboBox<String> cb = (JComboBox<String>)e.getSource();
+						int routeIndex = cb.getSelectedIndex();
+						if (car.getCurrentSpeed() > 0) {
+							System.out.println("Can not change routes while driving");
+						} else {
+							car.map.setCurrentRoute(routeIndex);
+							int routeDistance = (int)car.map.getCurrentRoute().getRouteDistance();
+							mapSlider.setMaximum(routeDistance);
+							setSliderSpacing(routeDistance);
+								
+						}
+				}
+			});
+		}
+		
+		private void setSliderSpacing(int routeDistance) {
+			if (routeDistance >= 4) {
+				mapSlider.setMajorTickSpacing((int)car.map.getCurrentRoute().getRouteDistance() / 4);
+				mapSlider.setLabelTable(mapSlider.createStandardLabels((int)routeDistance / 4));
+			}
+			else {
+				mapSlider.setMajorTickSpacing(1);
+				mapSlider.setLabelTable(mapSlider.createStandardLabels(1));
+			}
 			
 		}
 		
-
-	
+		Runnable updateSliderPosition = new Runnable () {
+			public void run() {
+				mapSlider.setValue((int)car.map.getCurrentRoute().getDistanceIntoRoute());
+			}
+		};	
+		
 	/* The main loop and timing mechanism for driving,
 	 * A TimerTask is scheduled to run every 1 second which then updates the 
 	 * speed and position of the car while logging associated data.
 	 */
-	
+		
 	public void runLoop() {
 		int begin = 0; // start immediately 
 		int timeinterval = 1000; // tick every 1 second
@@ -509,7 +562,9 @@ public class GuiManager {
 			 double deltaDistance = (car.getCurrentSpeed() / 60 / 60);
 	
 			 car.incrementOdometer(deltaDistance);
-			 
+
+			 car.map.getCurrentRoute().incrementDistanceIntoRoute(deltaDistance);
+			 SwingUtilities.invokeLater(updateSliderPosition);
 			 car.currentDriver.incrementTotalDriveTime();
 			 car.currentDriver.incrementTotalDriveDistance(deltaDistance);
 			 car.currentDriver.computeAverageSpeed();
@@ -518,6 +573,7 @@ public class GuiManager {
 			 }
 			 currentSpeed.setText(car.coast() + " MPH | ");
 			 totalMileage.setText("| " + df.format(car.getOdometer()) + " miles | ");
+			 
 		  }
 		},begin, timeinterval);
 	}
