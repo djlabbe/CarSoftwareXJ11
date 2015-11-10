@@ -52,6 +52,10 @@ public class GuiManager {
 		mainFrame.setLocationRelativeTo(null);
 	}
 	
+	/******************************************/
+	/**********  HOMESCREEN SETUP  ************/
+	/******************************************/
+	
 	// Build the elements inside the frame and make visible.
 	protected void showScreen() {
 		
@@ -139,7 +143,10 @@ public class GuiManager {
 	    labelPanel.add(currentFuel);
 	}
 	
-	// NavPanel contains buttons that toggle the display of appPanel.
+	/******************************************/
+	/*************  NAV PANEL  ****************/
+	/******************************************/
+	
 	private void setupNavPanel() {
 		radioButton = new JButton("Radio");
 	    radioButton.addActionListener(new ActionListener() {
@@ -178,6 +185,10 @@ public class GuiManager {
 	    navPanel.add(mapButton);
 	    navPanel.add(statsButton);
 	}
+	
+	/******************************************/
+	/************  CORE PANEL  ***************/
+	/******************************************/
 	
 	// CorePanel displays core car functionality such as Power, Gas, and Brake.
 	private void setupCorePanel() {
@@ -237,315 +248,326 @@ public class GuiManager {
 	/************  RADIO PANEL  ***************/
 	/******************************************/
 
-		private void setupRadioPanel() {
+	private void setupRadioPanel() {
 			
-			// TOP RADIO PANEL
+		// TOP RADIO PANEL
 			
-			JPanel topRadioPanel = new JPanel();
-			topRadioPanel.setBackground(Color.LIGHT_GRAY);
+		JPanel topRadioPanel = new JPanel();
+		topRadioPanel.setBackground(Color.LIGHT_GRAY);
 			
-			JButton radioPowerButton = new JButton("On | Off");
-		    radioPowerButton.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		            car.radio.togglePower();
-		            if (car.radio.getIsOn()) {
-		            	centerRadioPanel.setVisible(true);
-		            } else {
-		            	centerRadioPanel.setVisible(false);
-		            }
-		            
-		            System.out.println("Radio power toggled");
-		         }          
-		      });
-			topRadioPanel.add(radioPowerButton);
+		JButton radioPowerButton = new JButton("On | Off");
+		radioPowerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				car.radio.togglePower();
+		        if (car.radio.getIsOn()) {
+		            centerRadioPanel.setVisible(true);
+		        } else {
+		            centerRadioPanel.setVisible(false);
+		        }
+		        System.out.println("Radio power toggled");
+		    }          
+		});
+		
+		JButton seekDownButton = new JButton(" << ");
+	    seekDownButton.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	            car.radio.seekDown();
+	            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+	         }          
+	      });
+		
+		JButton seekUpButton = new JButton(" >> ");
+	    seekUpButton.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	            car.radio.seekUp();
+	            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+	         }          
+	      });
 			
-			JButton seekDownButton = new JButton(" << ");
-		    seekDownButton.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		            car.radio.seekDown();
+		JButton amFmButton = new JButton("AM | FM");
+	    amFmButton.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	            car.radio.toggleMod();
+	            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+	            modulusLabel.setText(car.radio.getModLabel());
+	         }          
+	      });
+	    
+	    topRadioPanel.add(radioPowerButton);
+	    topRadioPanel.add(seekDownButton);
+	    topRadioPanel.add(seekUpButton);
+		topRadioPanel.add(amFmButton);
+			
+		// LEFT RADIO PANEL
+		
+		JPanel leftRadioPanel = new JPanel();
+		leftRadioPanel.setLayout(new BoxLayout(leftRadioPanel, 1));
+		leftRadioPanel.setBackground(Color.LIGHT_GRAY);
+		
+		JLabel radioVolumeTitleLabel = new JLabel("Vol");
+		radioVolumeTitleLabel.setFont (radioVolumeTitleLabel.getFont().deriveFont (28.0f));
+		
+		JButton volumeUpButton = new JButton(" + ");
+	    volumeUpButton.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	            car.radio.volUp();
+	            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
+	         }          
+	     });
+		
+		radioVolumeLabel = new JLabel(Integer.toString(car.radio.getVolume()));
+		radioVolumeLabel.setFont (radioVolumeLabel.getFont().deriveFont (40.0f));
+		
+		JButton volumeDownButton = new JButton(" - ");
+	    volumeDownButton.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	            car.radio.volDown();
+	            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
+	         }          
+	    });
+	    
+	    leftRadioPanel.add(radioVolumeTitleLabel);
+	    leftRadioPanel.add(volumeUpButton);
+	    leftRadioPanel.add(radioVolumeLabel);
+		leftRadioPanel.add(volumeDownButton);
+			
+		// CENTER RADIO PANEL
+		
+		centerRadioPanel = new JPanel();
+		centerRadioPanel.setBackground(Color.WHITE);
+		centerRadioPanel.setVisible(false);
+	
+		stationLabel = new JLabel(Double.toString(car.radio.currentStation.getStation()));
+		stationLabel.setFont (stationLabel.getFont().deriveFont (55.0f));
+		centerRadioPanel.add(stationLabel);
+		
+		modulusLabel = new JLabel(car.radio.getModLabel());
+		modulusLabel.setFont (modulusLabel.getFont().deriveFont (44.0f));
+		centerRadioPanel.add(modulusLabel);
+	
+		// BOTTOM RADIO PANEL
+		
+		JPanel bottomRadioPanel = new JPanel();
+		bottomRadioPanel.setBackground(Color.LIGHT_GRAY);
+		
+		JButton setButton = new JButton("Set Favorite");
+	    setButton.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	            car.radio.toggleSetIsActive();
+	            System.out.println("User toggled radio favorite set");
+	         }          
+	    });
+				
+		JButton fav1Button = new JButton(" 1 ");
+	    fav1Button.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	        	if (car.radio.isSetIsActive()) {
+	        		car.currentDriver.setFav(car.radio.getIsAm(), 1, car.radio.getCurrentStation());
+	        		car.radio.setUserFavorites(car.currentDriver);
+	        		car.radio.toggleSetIsActive();
+	        		System.out.println("User set new favorite 1.");
+	        	} else {
+	        		car.radio.goToFav(1);
 		            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-		         }          
-		      });
-			topRadioPanel.add(seekDownButton);
-			
-			JButton seekUpButton = new JButton(" >> ");
-		    seekUpButton.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		            car.radio.seekUp();
-		            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-		         }          
-		      });
-			topRadioPanel.add(seekUpButton);
-			
-			JButton amFmButton = new JButton("AM | FM");
-		    amFmButton.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		            car.radio.toggleMod();
-		            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-		            modulusLabel.setText(car.radio.getModLabel());
-		         }          
-		      });
-			topRadioPanel.add(amFmButton);
-			
-			// LEFT RADIO PANEL
-			
-			JPanel leftRadioPanel = new JPanel();
-			leftRadioPanel.setLayout(new BoxLayout(leftRadioPanel, 1));
-			leftRadioPanel.setBackground(Color.LIGHT_GRAY);
-			
-			JLabel radioVolumeTitleLabel = new JLabel("Vol");
-			radioVolumeTitleLabel.setFont (radioVolumeTitleLabel.getFont().deriveFont (28.0f));
-			leftRadioPanel.add(radioVolumeTitleLabel);
+		            System.out.println("User activating favorite 1.");
+	        	}   
+	         }          
+	    });
 		
-			
-			JButton volumeUpButton = new JButton(" + ");
-		    volumeUpButton.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		            car.radio.volUp();
-		            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
-		         }          
-		      });
-			leftRadioPanel.add(volumeUpButton);
-			
-			radioVolumeLabel = new JLabel(Integer.toString(car.radio.getVolume()));
-			radioVolumeLabel.setFont (radioVolumeLabel.getFont().deriveFont (40.0f));
-			leftRadioPanel.add(radioVolumeLabel);
-			
-			
-			JButton volumeDownButton = new JButton(" - ");
-		    volumeDownButton.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		            car.radio.volDown();
-		            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
-		         }          
-		      });
-			leftRadioPanel.add(volumeDownButton);
-			
-			// CENTER RADIO PANEL
-			
-			centerRadioPanel = new JPanel();
-			centerRadioPanel.setBackground(Color.WHITE);
-			centerRadioPanel.setVisible(false);
+		JButton fav2Button = new JButton(" 2 ");
+	    fav2Button.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	        	 if (car.radio.isSetIsActive()) {
+		        	car.currentDriver.setFav(car.radio.getIsAm(), 2, car.radio.getCurrentStation());
+		        	car.radio.setUserFavorites(car.currentDriver);
+		        	car.radio.toggleSetIsActive();
+		        	System.out.println("User set new favorite 2.");
+		         } else {
+		        	car.radio.goToFav(2);
+			        stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+			        System.out.println("User activating favorite 2.");
+		         }  
+	         }          
+	      });
 		
-			stationLabel = new JLabel(Double.toString(car.radio.currentStation.getStation()));
-			stationLabel.setFont (stationLabel.getFont().deriveFont (55.0f));
-			centerRadioPanel.add(stationLabel);
-			
-			modulusLabel = new JLabel(car.radio.getModLabel());
-			modulusLabel.setFont (modulusLabel.getFont().deriveFont (44.0f));
-			centerRadioPanel.add(modulusLabel);
+		JButton fav3Button = new JButton(" 3 ");
+	    fav3Button.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent e) {
+	        	 if (car.radio.isSetIsActive()) {
+			        car.currentDriver.setFav(car.radio.getIsAm(), 3, car.radio.getCurrentStation());
+			        car.radio.setUserFavorites(car.currentDriver);
+			        car.radio.toggleSetIsActive();
+			        System.out.println("User set new favorite 3.");
+			     } else {
+			    	 car.radio.goToFav(3);
+				     stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+				     System.out.println("User activating favorite 3.");
+			     }
+	         }          
+	      });
+	    
+	    bottomRadioPanel.add(setButton);
+	    bottomRadioPanel.add(fav1Button);
+	    bottomRadioPanel.add(fav2Button);
+		bottomRadioPanel.add(fav3Button);
 		
-			// BOTTOM RADIO PANEL
-			
-			JPanel bottomRadioPanel = new JPanel();
-			bottomRadioPanel.setBackground(Color.LIGHT_GRAY);
-			
-			JButton setButton = new JButton("Set Favorite");
-		    setButton.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		            car.radio.toggleSetIsActive();
-		            System.out.println("User toggled radio favorite set");
-		         }          
-		      });
-			bottomRadioPanel.add(setButton);
-			
-			JButton fav1Button = new JButton(" 1 ");
-		    fav1Button.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		        	if (car.radio.isSetIsActive()) {
-		        		car.currentDriver.setFav(car.radio.getIsAm(), 1, car.radio.getCurrentStation());
-		        		car.radio.setUserFavorites(car.currentDriver);
-		        		car.radio.toggleSetIsActive();
-		        		System.out.println("User set new favorite 1.");
-		        	} else {
-		        		car.radio.goToFav(1);
-			            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-			            System.out.println("User activating favorite 1.");
-		        	}   
-		         }          
-		      });
-			bottomRadioPanel.add(fav1Button);
-			
-			JButton fav2Button = new JButton(" 2 ");
-		    fav2Button.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		        	 if (car.radio.isSetIsActive()) {
-			        	car.currentDriver.setFav(car.radio.getIsAm(), 2, car.radio.getCurrentStation());
-			        	car.radio.setUserFavorites(car.currentDriver);
-			        	car.radio.toggleSetIsActive();
-			        	System.out.println("User set new favorite 2.");
-			         } else {
-			        	car.radio.goToFav(2);
-				        stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-				        System.out.println("User activating favorite 2.");
-			         }  
-		         }          
-		      });
-			bottomRadioPanel.add(fav2Button);
-			
-			JButton fav3Button = new JButton(" 3 ");
-		    fav3Button.addActionListener(new ActionListener() {
-		         public void actionPerformed(ActionEvent e) {
-		        	 if (car.radio.isSetIsActive()) {
-				        car.currentDriver.setFav(car.radio.getIsAm(), 3, car.radio.getCurrentStation());
-				        car.radio.setUserFavorites(car.currentDriver);
-				        car.radio.toggleSetIsActive();
-				        System.out.println("User set new favorite 3.");
-				     } else {
-				    	 car.radio.goToFav(3);
-					     stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-					     System.out.println("User activating favorite 3.");
-				     }
-		         }          
-		      });
-			bottomRadioPanel.add(fav3Button);
-			
-			//  RIGHT RADIO PANEL
-			JPanel rightRadioPanel = new JPanel();
-			rightRadioPanel.setBackground(Color.LIGHT_GRAY);
-			
-			// Setup the radio panels
-			radioPanel.add("North", topRadioPanel);
-			radioPanel.add("West", leftRadioPanel);
-			radioPanel.add("South", bottomRadioPanel);
-			radioPanel.add("Center", centerRadioPanel);
-			radioPanel.add("East", rightRadioPanel);
-			
-		}
+		//  RIGHT RADIO PANEL
+		JPanel rightRadioPanel = new JPanel();
+		rightRadioPanel.setBackground(Color.LIGHT_GRAY);
 		
-		/******************************************/
-		/************  PHONE PANEL  ***************/
-		/******************************************/
+		// Add radioPanels to the main radioPanel.
+		radioPanel.add("North", topRadioPanel);
+		radioPanel.add("West", leftRadioPanel);
+		radioPanel.add("South", bottomRadioPanel);
+		radioPanel.add("Center", centerRadioPanel);
+		radioPanel.add("East", rightRadioPanel);
 		
-		private void setupPhonePanel()
+	} // end setupRadioPanel
+		
+	/******************************************/
+	/************  PHONE PANEL  ***************/
+	/******************************************/
+	
+	private void setupPhonePanel()
+	{
+		// leftPhonePanel is the dial pad
+		JPanel dialpadPanel = new JPanel();
+		dialpadPanel.setLayout(new GridLayout(4,3));
+		
+		// The for loop makes buttons 1-9, #, 0, *
+		int i;
+		for(i = 1; i < 13; i++)
 		{
-			// leftPhonePanel is the dial pad
-			JPanel dialpadPanel = new JPanel();
-			dialpadPanel.setLayout(new GridLayout(4,3));
+			final String input = Integer.toString(i);
+			JButton button;
 			
-			// The for loop makes buttons 1-9, #, 0, *
-			int i;
-			for(i = 1; i < 13; i++)
+			// creates the * button
+			if(i == 10)
 			{
-				final String input = Integer.toString(i);
-				JButton button;
-				
-				// creates the * button
-				if(i == 10)
-				{
-					button = new JButton("*");
-					button.addActionListener(new ActionListener(){
-						public void actionPerformed(ActionEvent e){
-							car.phone.dialNumber("*");
-						}
-					});
-				}
-				
-				// creates the 0 button
-				else if(i == 11)
-				{
-					button = new JButton("0");
-					button.addActionListener(new ActionListener(){
-						public void actionPerformed(ActionEvent e){
-							car.phone.dialNumber("0");
-						}
-					});
-				}
-				
-				// creates the # button
-				else if(i == 12)
-				{
-					button = new JButton("#");
-					button.addActionListener(new ActionListener(){
-						public void actionPerformed(ActionEvent e){
-							car.phone.dialNumber("#");
-						}
-					});
-				}
-				
-				// creates buttons 1-9
-				else
-				{
-					button = new JButton(Integer.toString(i));
-					button.addActionListener(new ActionListener(){
-						public void actionPerformed(ActionEvent e){
-							car.phone.dialNumber(input);
-						}
-					});
-				}
-				button.setBackground(Color.white);
-				dialpadPanel.add(button);
+				button = new JButton("*");
+				button.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						car.phone.dialNumber("*");
+					}
+				});
 			}
 			
-			JPanel leftPhonePanel = new JPanel(new BorderLayout());
-			JPanel emptyPanel1 = new JPanel();
-			emptyPanel1.setBackground(Color.white);
-			JPanel emptyPanel2 = new JPanel();
-			emptyPanel2.setBackground(Color.white);
-			JPanel emptyPanel3= new JPanel();
-			emptyPanel3.setBackground(Color.white);
-			JPanel emptyPanel4 = new JPanel();
-			emptyPanel4.setBackground(Color.white);
+			// creates the 0 button
+			else if(i == 11)
+			{
+				button = new JButton("0");
+				button.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						car.phone.dialNumber("0");
+					}
+				});
+			}
 			
-			leftPhonePanel.add("Center", dialpadPanel);
-			leftPhonePanel.add("North", emptyPanel1);
-			leftPhonePanel.add("South", emptyPanel2);
-			leftPhonePanel.add("West", emptyPanel3);
-			leftPhonePanel.add("East", emptyPanel4);
+			// creates the # button
+			else if(i == 12)
+			{
+				button = new JButton("#");
+				button.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						car.phone.dialNumber("#");
+					}
+				});
+			}
 			
-			phonePanel.add("West", leftPhonePanel);	
+			// creates buttons 1-9
+			else
+			{
+				button = new JButton(Integer.toString(i));
+				button.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						car.phone.dialNumber(input);
+					}
+				});
+			}
+			button.setBackground(Color.white);
+			dialpadPanel.add(button);
 		}
 		
-		/******************************************/
-		/*************  MAP PANEL  ****************/
-		/******************************************/
-			
+		JPanel leftPhonePanel = new JPanel(new BorderLayout());
+		JPanel emptyPanel1 = new JPanel();
+		emptyPanel1.setBackground(Color.white);
+		JPanel emptyPanel2 = new JPanel();
+		emptyPanel2.setBackground(Color.white);
+		JPanel emptyPanel3= new JPanel();
+		emptyPanel3.setBackground(Color.white);
+		JPanel emptyPanel4 = new JPanel();
+		emptyPanel4.setBackground(Color.white);
 		
-		private void setupMapPanel() {
-			int routeDistance = (int)car.map.getCurrentRoute().getRouteDistance();
-			mapSlider = new JSlider(0, routeDistance, 0);
-			setSliderSpacing(routeDistance);
-			mapSlider.setPaintLabels(true);
-			mapSlider.setEnabled(false);
-			mapPanel.add("Center", mapSlider);
+		leftPhonePanel.add("Center", dialpadPanel);
+		leftPhonePanel.add("North", emptyPanel1);
+		leftPhonePanel.add("South", emptyPanel2);
+		leftPhonePanel.add("West", emptyPanel3);
+		leftPhonePanel.add("East", emptyPanel4);
 		
-			JComboBox<String> routeSelector = new JComboBox<String>(car.map.getRouteList());
-			mapPanel.add("North", routeSelector);
-			routeSelector.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-						JComboBox<String> cb = (JComboBox<String>)e.getSource();
-						int routeIndex = cb.getSelectedIndex();
-						if (car.getCurrentSpeed() > 0) {
-							System.out.println("Can not change routes while driving");
-						} else {
-							car.map.setCurrentRoute(routeIndex);
-							int routeDistance = (int)car.map.getCurrentRoute().getRouteDistance();
-							mapSlider.setMaximum(routeDistance);
-							setSliderSpacing(routeDistance);
-								
-						}
-				}
-			});
+		phonePanel.add("West", leftPhonePanel);	
+	}
+		
+	/******************************************/
+	/*************  MAP PANEL  ****************/
+	/******************************************/
+	
+	private void setupMapPanel() {
+		int routeDistance = (int)car.map.getCurrentRoute().getRouteDistance();
+		mapSlider = new JSlider(0, routeDistance, 0);
+		setSliderSpacing(routeDistance);
+		mapSlider.setPaintLabels(true);
+		mapSlider.setEnabled(false);
+		mapPanel.add("Center", mapSlider);
+	
+		JComboBox<String> routeSelector = new JComboBox<String>(car.map.getRouteList());
+		mapPanel.add("North", routeSelector);
+		routeSelector.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+					@SuppressWarnings("unchecked")
+					JComboBox<String> cb = (JComboBox<String>)e.getSource();
+					int routeIndex = cb.getSelectedIndex();
+					if (car.getCurrentSpeed() > 0) {
+						System.out.println("Can not change routes while driving");
+					} else {
+						car.map.setCurrentRoute(routeIndex);
+						int routeDistance = (int)car.map.getCurrentRoute().getRouteDistance();
+						mapSlider.setMaximum(routeDistance);
+						setSliderSpacing(routeDistance);		
+					}
+			}
+		});
+	}
+	
+	private void setSliderSpacing(int routeDistance) {
+		if (routeDistance >= 4) {
+			mapSlider.setMajorTickSpacing((int)car.map.getCurrentRoute().getRouteDistance() / 4);
+			mapSlider.setLabelTable(mapSlider.createStandardLabels((int)routeDistance / 4));
+		}
+		else {
+			mapSlider.setMajorTickSpacing(1);
+			mapSlider.setLabelTable(mapSlider.createStandardLabels(1));
 		}
 		
-		private void setSliderSpacing(int routeDistance) {
-			if (routeDistance >= 4) {
-				mapSlider.setMajorTickSpacing((int)car.map.getCurrentRoute().getRouteDistance() / 4);
-				mapSlider.setLabelTable(mapSlider.createStandardLabels((int)routeDistance / 4));
-			}
-			else {
-				mapSlider.setMajorTickSpacing(1);
-				mapSlider.setLabelTable(mapSlider.createStandardLabels(1));
-			}
-			
+	}
+	
+	// An executable to be run by the event dispatch thread to update a Swing GUI component.
+	Runnable updateSliderPosition = new Runnable () {
+		public void run() {
+			mapSlider.setValue((int)car.map.getCurrentRoute().getDistanceIntoRoute());
 		}
-		
-		Runnable updateSliderPosition = new Runnable () {
-			public void run() {
-				mapSlider.setValue((int)car.map.getCurrentRoute().getDistanceIntoRoute());
-			}
-		};	
-		
+	};	
+	
+	/******************************************/
+	/***********  ANALYTICS PANEL  ************/
+	/******************************************/
+	
+	// Analytics Panel goes here
+	
+	
+	/******************************************/
+	/*********  MAIN CAR CONTROLLER  **********/
+	/******************************************/
+	
 	/* The main loop and timing mechanism for driving,
 	 * A TimerTask is scheduled to run every 1 second which then updates the 
 	 * speed and position of the car while logging associated data.
@@ -564,7 +586,10 @@ public class GuiManager {
 			 car.incrementOdometer(deltaDistance);
 
 			 car.map.getCurrentRoute().incrementDistanceIntoRoute(deltaDistance);
+			 
+			 // Asynchronously update the map position
 			 SwingUtilities.invokeLater(updateSliderPosition);
+			 
 			 car.currentDriver.incrementTotalDriveTime();
 			 car.currentDriver.incrementTotalDriveDistance(deltaDistance);
 			 car.currentDriver.computeAverageSpeed();

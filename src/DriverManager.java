@@ -29,7 +29,7 @@ public class DriverManager extends JDialog{
 	public DriverManager(Frame parent) {
 		
 		super(parent, "XJ-11 Login", true);
-		
+
 		currentDriver = null;
 		knownDrivers = new ArrayList<Driver>();
 		
