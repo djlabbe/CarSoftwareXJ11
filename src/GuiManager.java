@@ -10,6 +10,9 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import java.text.DecimalFormat;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,6 +33,8 @@ public class GuiManager {
 	private JSlider mapSlider;
 	
 	private DecimalFormat df = new DecimalFormat("#,###,##0.00");
+	private DecimalFormat dfMap = new DecimalFormat("###.00");
+
 	private Timer timer;
 	
 	// GUI operates for a specific car object which is passed in on GUI initialization.
@@ -518,6 +523,8 @@ public class GuiManager {
 		mapSlider.setPaintLabels(true);
 		mapSlider.setEnabled(false);
 		mapPanel.add("Center", mapSlider);
+		
+		
 	
 		JComboBox<String> routeSelector = new JComboBox<String>(car.map.getRouteList());
 		mapPanel.add("North", routeSelector);
@@ -527,6 +534,7 @@ public class GuiManager {
 					JComboBox<String> cb = (JComboBox<String>)e.getSource();
 					int routeIndex = cb.getSelectedIndex();
 					if (car.getCurrentSpeed() > 0) {
+						routeSelector.setSelectedIndex(car.map.getRouteIndex(car.map.getCurrentRoute()));
 						System.out.println("Can not change routes while driving");
 					} else {
 						car.map.setCurrentRoute(routeIndex);
@@ -538,16 +546,23 @@ public class GuiManager {
 		});
 	}
 	
+	
 	private void setSliderSpacing(int routeDistance) {
-		if (routeDistance >= 4) {
 			mapSlider.setMajorTickSpacing((int)car.map.getCurrentRoute().getRouteDistance() / 4);
 			mapSlider.setLabelTable(mapSlider.createStandardLabels((int)routeDistance / 4));
-		}
-		else {
-			mapSlider.setMajorTickSpacing(1);
-			mapSlider.setLabelTable(mapSlider.createStandardLabels(1));
-		}
-		
+			
+			/* Convert integer labels to decimal -- Snippet adapted from from 
+			 * http://stackoverflow.com/questions/1125619/change-displayable-labels-for-a-jslider
+			 */
+			@SuppressWarnings("unchecked")
+			Enumeration<Integer> mapLabels = mapSlider.getLabelTable().keys();
+		    while (mapLabels.hasMoreElements()) {
+		        Integer i = mapLabels.nextElement();
+		        JLabel label = (JLabel) mapSlider.getLabelTable().get(i);
+		        label.setText(String.valueOf(dfMap.format((double)i/100.0)));
+		        label.setSize(50, 20);
+		    }
+			
 	}
 	
 	// An executable to be run by the event dispatch thread to update a Swing GUI component.
@@ -585,7 +600,7 @@ public class GuiManager {
 	
 			 car.incrementOdometer(deltaDistance);
 
-			 car.map.getCurrentRoute().incrementDistanceIntoRoute(deltaDistance);
+			 car.map.getCurrentRoute().incrementDistanceIntoRoute(deltaDistance * 100);
 			 
 			 // Asynchronously update the map position
 			 SwingUtilities.invokeLater(updateSliderPosition);

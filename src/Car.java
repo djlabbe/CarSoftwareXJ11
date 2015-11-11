@@ -79,8 +79,14 @@ public class Car {
 	 * Car can go up to a max speed of 120 MPH.
 	 */
 	public int accelerate() {
+		
 		if (isOn) {
-			currentSpeed = currentSpeed >= 120 ? 120 : currentSpeed + 5;
+			currentSpeed += 5;
+			
+			if (currentSpeed > 120) {
+				currentSpeed = 120;
+			}
+			
 			updateFuel();
 			
 			if (currentSpeed > currentDriver.getMaxSpeed()) {
