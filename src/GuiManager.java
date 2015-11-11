@@ -8,11 +8,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
 import java.text.DecimalFormat;
-import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,19 +20,24 @@ public class GuiManager {
 	private JFrame mainFrame;
 	private JPanel labelPanel, navPanel, corePanel, appPanel, emptyPanel;
 	private JPanel radioPanel, phonePanel, mapPanel, analyticsPanel, centerRadioPanel;
-	private JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
 	
+	
+	private JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
 	private JLabel stationLabel, modulusLabel, radioVolumeLabel;
+	private JLabel driverMiles, driverTime, driverAvgSpeed, driverMaxSpeed, driverFuelUsed, driverRadioTime, driverPhoneTime,
+			sessionMiles, sessionTime, sessionAvgSpeed, sessionMaxSpeed, sessionFuelUsed, sessionRadioTime, sessionPhoneTime;
 	
 	private JButton radioButton, phoneButton, mapButton, 
 					statsButton, powerButton, gasButton, brakeButton, refuelButton, loginButton;
 	
 	private JSlider mapSlider;
 	
-	private DecimalFormat df = new DecimalFormat("#,###,##0.00");
+	private DecimalFormat dfFuel = new DecimalFormat("#,###,##0");
 	private DecimalFormat dfMap = new DecimalFormat("###.00");
+	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 
 	private Timer timer;
+	private double deltaDistance;
 	
 	// GUI operates for a specific car object which is passed in on GUI initialization.
 	public GuiManager(Car car) {
@@ -89,7 +91,7 @@ public class GuiManager {
 		mapPanel = new JPanel(new BorderLayout());
 		mapPanel.setBackground(Color.LIGHT_GRAY);
 		
-		analyticsPanel = new JPanel();
+		analyticsPanel = new JPanel(new BorderLayout());
 		analyticsPanel.setBackground(Color.LIGHT_GRAY);
 		
 		// Add four panels to appPanel.
@@ -118,18 +120,19 @@ public class GuiManager {
 		setupRadioPanel();
 		setupPhonePanel();
 		setupMapPanel();
+		setupAnalyticsPanel();
 		
 		sessionMileage.setFont (sessionMileage.getFont().deriveFont (12.0f));
-		sessionMileage.setText("Session: " + car.getSessionOdometer() + " miles ");
+		sessionMileage.setText("Session: " + dfShort.format(car.currentSession.getDistanceDriven()) + " miles ");
 		
-		totalMileage.setFont (totalMileage.getFont().deriveFont (24.0f));
-		totalMileage.setText("| " + df.format(car.getOdometer()) + " miles | ");
+		totalMileage.setFont (totalMileage.getFont().deriveFont (30.0f));
+		totalMileage.setText("| " + dfShort.format(car.getOdometer()) + " miles | ");
 		
-		currentSpeed.setFont (currentSpeed.getFont().deriveFont (24.0f));
-		currentSpeed.setText(car.coast() + " MPH | ");
+		currentSpeed.setFont (currentSpeed.getFont().deriveFont (30.0f));
+		currentSpeed.setText(car.getCurrentSpeed() + " MPH | ");
 		
 		currentFuel.setFont (currentFuel.getFont().deriveFont (12.0f));
-		currentFuel.setText(df.format(car.getFuelPercent()) + "% Fuel ");
+		currentFuel.setText(dfFuel.format(car.getFuelPercent()) + "% Fuel ");
 	
 	    mainFrame.setVisible(true);
 	}
@@ -205,6 +208,9 @@ public class GuiManager {
 		loginButton = new JButton("Login");
 	    loginButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
+	        	 // save the current session
+	        	 car.currentDriver.saveSession(car.currentSession);
+	        	 // login new driver resets current session
 	        	 car.login();
 	        	 System.out.println("Loggin in new user...");
 	         }          
@@ -233,7 +239,7 @@ public class GuiManager {
 	    refuelButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
 	            car.refuel();
-	            currentFuel.setText(df.format(car.getFuelPercent()) + "% Fuel ");
+	            currentFuel.setText(dfFuel.format(car.getFuelPercent()) + "% Fuel ");
 	         }          
 	      });
 		
@@ -248,7 +254,7 @@ public class GuiManager {
 	    gasButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
 	        	currentSpeed.setText(car.accelerate() + " MPH | ");
-	        	currentFuel.setText(df.format(car.getFuelPercent()) + "% Fuel ");
+	        	currentFuel.setText(dfFuel.format(car.getFuelPercent()) + "% Fuel ");
 	         }          
 	      });
 	    
@@ -383,7 +389,12 @@ public class GuiManager {
 	         public void actionPerformed(ActionEvent e) {
 	        	if (car.radio.getIsOn()) {
 	        		car.radio.toggleSetIsActive();
-		            System.out.println("Set favorite actived.");
+	        		if (car.radio.getSetIsActive()) {
+	        			System.out.println("Set favorite activated.");
+	        		} else {
+	        			System.out.println("Set favorite cancelled.");
+	        		}
+		            
 	        	} 
 	         }          
 	    });
@@ -392,7 +403,7 @@ public class GuiManager {
 	    fav1Button.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
 	        	if (car.radio.getIsOn()) {
-	        		if (car.radio.isSetIsActive()) {
+	        		if (car.radio.getSetIsActive()) {
 		        		car.currentDriver.setFav(car.radio.getIsAm(), 1, car.radio.getCurrentStation());
 		        		car.radio.setUserFavorites(car.currentDriver);
 		        		car.radio.toggleSetIsActive();
@@ -410,7 +421,7 @@ public class GuiManager {
 	    fav2Button.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
 	        	 if (car.radio.getIsOn()) {
-	        		 if (car.radio.isSetIsActive()) {
+	        		 if (car.radio.getSetIsActive()) {
 	 		        	car.currentDriver.setFav(car.radio.getIsAm(), 2, car.radio.getCurrentStation());
 	 		        	car.radio.setUserFavorites(car.currentDriver);
 	 		        	car.radio.toggleSetIsActive();
@@ -428,7 +439,7 @@ public class GuiManager {
 	    fav3Button.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
 	        	 if (car.radio.getIsOn()) {
-	        		 if (car.radio.isSetIsActive()) {
+	        		 if (car.radio.getSetIsActive()) {
 	 			        car.currentDriver.setFav(car.radio.getIsAm(), 3, car.radio.getCurrentStation());
 	 			        car.radio.setUserFavorites(car.currentDriver);
 	 			        car.radio.toggleSetIsActive();
@@ -606,9 +617,124 @@ public class GuiManager {
 	/***********  ANALYTICS PANEL  ************/
 	/******************************************/
 	
-	// Analytics Panel goes here
+	private void setupAnalyticsPanel() {
+		JPanel leftAnalytics = new JPanel();
+		leftAnalytics.setLayout(new BoxLayout(leftAnalytics, 1));
+		leftAnalytics.setBackground(Color.white);
+		
+		JPanel centerAnalytics = new JPanel();
+		centerAnalytics.setLayout(new BoxLayout(centerAnalytics, 1));
+		centerAnalytics.setBackground(Color.LIGHT_GRAY);
+		
+		JPanel rightAnalytics= new JPanel();
+		rightAnalytics.setLayout(new BoxLayout(rightAnalytics, 1));
+		rightAnalytics.setBackground(Color.white);
+		
+		// Left Analytics (Labels)
+		
+		JLabel categoryTitle = new JLabel("   STATISTICS   ");
+		categoryTitle.setFont (categoryTitle.getFont().deriveFont (18.0f));
+		leftAnalytics.add(categoryTitle);
+		
+		JLabel milesLabel = new JLabel("Miles: ");
+		leftAnalytics.add(milesLabel);
+		
+		JLabel timeLabel = new JLabel("Time: ");
+		leftAnalytics.add(timeLabel);
+		
+		JLabel avgSpeedLabel = new JLabel("Avg Speed: ");
+		leftAnalytics.add(avgSpeedLabel);
+		
+		JLabel maxSpeedLabel = new JLabel("Max Speed: ");
+		leftAnalytics.add(maxSpeedLabel);
+		
+		JLabel mpgLabel = new JLabel("Fuel used: ");
+		leftAnalytics.add(mpgLabel);
+		
+		JLabel radioTimeLabel = new JLabel("RadioTime: ");
+		leftAnalytics.add(radioTimeLabel);
+		
+		JLabel phoneTimeLabel = new JLabel("PhoneTime: ");
+		leftAnalytics.add(phoneTimeLabel);
+		
+		// Center Analytics (Driver)
+		
+		JLabel driverTitle = new JLabel("   " + car.currentDriver.toString().toUpperCase() + "   ");
+		driverTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
+		centerAnalytics.add(driverTitle);
+		
+		driverMiles = new JLabel("");
+		centerAnalytics.add(driverMiles);
+				
+		driverTime = new JLabel("");
+		centerAnalytics.add(driverTime);
+				
+		driverAvgSpeed = new JLabel("");
+		centerAnalytics.add(driverAvgSpeed);
+				
+		driverMaxSpeed = new JLabel("");
+		centerAnalytics.add(driverMaxSpeed);
+				
+		driverFuelUsed = new JLabel("");
+		centerAnalytics.add(driverFuelUsed);
+				
+		driverRadioTime = new JLabel("");
+		centerAnalytics.add(driverRadioTime);
+		
+		driverPhoneTime = new JLabel("");
+		centerAnalytics.add(driverPhoneTime);
+		
+		// Right Analytics (Session)
+		
+		JLabel sessionTitle = new JLabel("   SESSION   ");
+		sessionTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
+		rightAnalytics.add(sessionTitle);
+				
+		sessionMiles = new JLabel("");
+		rightAnalytics.add(sessionMiles);
+				
+		sessionTime = new JLabel("");
+		rightAnalytics.add(sessionTime);
+				
+		sessionAvgSpeed = new JLabel("");
+		rightAnalytics.add(sessionAvgSpeed);
+				
+		sessionMaxSpeed = new JLabel("");
+		rightAnalytics.add(sessionMaxSpeed);
+				
+		sessionFuelUsed = new JLabel("");
+		rightAnalytics.add(sessionFuelUsed);
+				
+		sessionRadioTime = new JLabel("");
+		rightAnalytics.add(sessionRadioTime);
+		
+		sessionPhoneTime = new JLabel("");
+		rightAnalytics.add(sessionPhoneTime);
 	
+		analyticsPanel.add("West", leftAnalytics);
+		analyticsPanel.add("Center", centerAnalytics);
+		analyticsPanel.add("East", rightAnalytics);
 	
+	}
+
+	public void updateAnalyticsText() {
+		driverMiles.setText(" " + dfShort.format(car.currentDriver.getDistanceDriven())  + " Mi");
+		driverTime.setText(" " + Integer.toString( car.currentDriver.getTimeDriven() ) + " Sec");
+		driverAvgSpeed.setText(" " + dfShort.format( car.currentDriver.getAverageSpeed() ) + " Mph");
+		driverMaxSpeed.setText(" " + Integer.toString( car.currentDriver.getMaxSpeed() ) + " Mph");
+		driverFuelUsed.setText(" " + dfShort.format( car.currentDriver.getFuelUsed() ) + " Gal");
+		driverRadioTime.setText(" " + Integer.toString( car.currentDriver.getTotalRadioTime() ) + " Sec");
+		driverPhoneTime.setText(" " + Integer.toString( car.currentDriver.getTotalPhoneTime() ) + " Sec");
+		
+		sessionMiles.setText(" " + dfShort.format(car.currentSession.getDistanceDriven())  + " Mi");
+		sessionTime.setText(" " + Integer.toString( car.currentSession.getTimeDriven() ) + " Sec");
+		sessionAvgSpeed.setText(" " + dfShort.format( car.currentSession.getAverageSpeed() ) + " Mph");
+		sessionMaxSpeed.setText(" " + Integer.toString( car.currentSession.getMaxSpeed() ) + " Mph");
+		sessionFuelUsed.setText(" " + dfShort.format( car.currentSession.getFuelUsed() ) + " Gal");
+		sessionRadioTime.setText(" " + Integer.toString( car.currentSession.getRadioTime() ) + " Sec");
+		sessionPhoneTime.setText(" " + Integer.toString( car.currentSession.getPhoneTime() ) + " Sec");	
+	}
+
 	/******************************************/
 	/*********  MAIN CAR CONTROLLER  **********/
 	/******************************************/
@@ -625,25 +751,33 @@ public class GuiManager {
 		timer.scheduleAtFixedRate(new TimerTask() {
 		  @Override
 		  public void run() {
-			  
-			 double deltaDistance = (car.getCurrentSpeed() / 60 / 60);
-	
+			 currentSpeed.setText(car.coast() + " MPH | ");
+			 sessionMileage.setText("Session: " + dfShort.format(car.currentSession.getDistanceDriven()) + " miles ");
+			 totalMileage.setText("| " + dfShort.format(car.getOdometer()) + " miles | ");
+			 updateAnalyticsText();
+			 
+			 deltaDistance = ((double)car.getCurrentSpeed() / 60 / 60);
 			 car.incrementOdometer(deltaDistance);
 
 			 car.map.getCurrentRoute().incrementDistanceIntoRoute(deltaDistance * 100);
 			 
+			 car.currentDriver.incrementTimeDriven();
+			 car.currentSession.incrementTimeDriven();
+			 
+			 car.currentDriver.incrementDistanceDriven(deltaDistance);
+			 car.currentSession.incrementDistanceDriven(deltaDistance);
+			 
+			 car.currentDriver.updateMaxSpeed(car.getCurrentSpeed());
+			 car.currentSession.updateMaxSpeed(car.getCurrentSpeed());
+			 
+			 if (car.radio.getIsOn()) {
+				 car.currentDriver.incrementRadioTime();
+				 car.currentSession.incrementRadioTime();
+			 }
+
 			 // Asynchronously update the map position slider
 			 SwingUtilities.invokeLater(updateSliderPosition);
-			 
-			 car.currentDriver.incrementTotalDriveTime();
-			 car.currentDriver.incrementTotalDriveDistance(deltaDistance);
-			 car.currentDriver.computeAverageSpeed();
-			 if (car.radio.getIsOn()) {
-				 car.currentDriver.incrementTotalRadioTime();
-			 }
-			 currentSpeed.setText(car.coast() + " MPH | ");
-			 totalMileage.setText("| " + df.format(car.getOdometer()) + " miles | ");
-			 
+ 
 		  }
 		},begin, timeinterval);
 	}

@@ -69,7 +69,7 @@ public class Radio {
 		isOn = !isOn;
 	}
 	
-	// Switches between am and fm while maintaining the current radio station for each
+	// Switches between AM and FM while maintaining the current radio station for each
 	public void toggleMod() {
 		isAm = !isAm;
 		if (isAm) {
@@ -221,8 +221,17 @@ public class Radio {
 		String mod = isAm ? "AM" : "FM";
 		return mod;
 	}
+	
+	public void turnOn() {
+		isOn = true;
+	}
+	
+	public void turnOff() {
+		isOn = false;
+	}
+	
 
-	public boolean isSetIsActive() {
+	public boolean getSetIsActive() {
 		return isSetActive;
 	}
 

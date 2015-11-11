@@ -1,27 +1,29 @@
+import java.util.ArrayList;
+
 /* Represent a user of the Car. Has a username, password, and multiple data tracking fields. 
  * Stores favorites for each user that are loaded by the Radio and Phone when the driver logs into the Car.*/
+
 public class Driver {
 
 	private String username;
 	private String password;
-	private int totalDriveTime;
-	private double totalDriveDistance;
+	private int timeDriven; // seconds
+	private double distanceDriven; // miles
 	private int maxSpeed;
 	private double fuelUsed;
-	private double mpg;
 	private int totalRadioTime;
 	private int totalPhoneTime;
 	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3;
 	protected Contact speedDial1, speedDial2;
+	private ArrayList<Session> sessionHistory;
 	
 	public Driver(String newDriverUsername, String newDriverPassword) {
 		username = newDriverUsername;
 		password = newDriverPassword;
-		totalDriveTime = 0;
-		totalDriveDistance = 0;
+		timeDriven = 0;
+		distanceDriven = 0;
 		maxSpeed = 0;
 		fuelUsed = 0;
-		mpg = 0;
 		totalRadioTime = 0;
 		totalPhoneTime = 0;
 		amFav1 = null;
@@ -32,6 +34,7 @@ public class Driver {
 		fmFav3 = null;
 		speedDial1 = null;
 		speedDial2 = null;
+		sessionHistory = new ArrayList<Session>();
 	}
 	
 	public String getUsername()
@@ -43,32 +46,34 @@ public class Driver {
 		return password;
 	}
 	
-	public int getTotalDriveTime() {
-		return totalDriveTime;
+	public int getTimeDriven() {
+		return timeDriven;
 	}
 
-	public void incrementTotalDriveTime() {
-		totalDriveTime++;
+	public void incrementTimeDriven() {
+		timeDriven++;
 	}
 	
-	public double getTotalDriveDistance() {
-		return totalDriveDistance;
+	public double getDistanceDriven() {
+		return distanceDriven;
 	}
 	
-	public void incrementTotalDriveDistance(double increment) {
-		totalDriveDistance += increment;
+	public void incrementDistanceDriven(double increment) {
+		distanceDriven += increment;
 	}
 	
-	public double computeAverageSpeed() {
-		return totalDriveDistance / totalDriveTime;
+	public double getAverageSpeed() {
+		return distanceDriven / timeDriven * 60 * 60;
 	}
 	
 	public int getMaxSpeed() {
 		return maxSpeed;
 	}
 
-	public void setMaxSpeed(int maxSpeed) {
-		this.maxSpeed = maxSpeed;
+	public void updateMaxSpeed(int currentSpeed) {
+		if (currentSpeed > maxSpeed) {
+			maxSpeed = currentSpeed;
+		}
 	}
 
 	public double getFuelUsed() {
@@ -79,16 +84,12 @@ public class Driver {
 		fuelUsed += Car.FUELRATE;
 	}
 	
-	public double computeMpg() {
-		mpg = totalDriveDistance / fuelUsed;
-		return mpg;
-	}
 	
 	public int getTotalRadioTime() {
 		return totalRadioTime;
 	}
 	
-	public void incrementTotalRadioTime() {
+	public void incrementRadioTime() {
 		totalRadioTime++;
 	}
 	
@@ -150,8 +151,11 @@ public class Driver {
 		}
 	}
 	
+	public void saveSession(Session currentSession) {
+		sessionHistory.add(currentSession);
+	}
+	
 	public String toString() {
 		return username;
 	}
-
 }

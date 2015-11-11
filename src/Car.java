@@ -15,21 +15,19 @@ public class Car {
 	
 	private boolean isOn;
 	private double odometer;
-	private double sessionOdometer;
 	private int currentSpeed;
 	private double currentFuel;
 	private double percentFuel;
 	protected DriverManager driverManager;
+	protected Session currentSession;
 	protected Radio radio;
 	protected Phone phone;
 	protected Map map;
-	protected Analytics analytics;
 	protected Driver currentDriver;
 	
 	public Car() {
 		isOn = false;
-		odometer = 0;
-		sessionOdometer = 0;
+		odometer = 0.0;
 		currentSpeed = 0;
 		currentFuel = FUELCAPACITY;
 		percentFuel = currentFuel / FUELCAPACITY * 100;
@@ -37,7 +35,7 @@ public class Car {
 		radio = new Radio();
 		phone = new Phone();
 		map = new Map();
-		analytics = new Analytics();
+		
 	}
 	
 	// Call the login pop-up window and activate the new driver. 
@@ -50,7 +48,8 @@ public class Car {
         currentDriver = driverManager.getCurrentDriver();
         System.out.println(currentDriver + " logged in.");
         if (currentDriver != null) {
-        	setUserFavorites();
+        	currentSession = new Session(currentDriver);
+        	setUserFavorites();	
         }
 	}
 	
@@ -78,17 +77,10 @@ public class Car {
 		
 		if (isOn) {
 			currentSpeed += 5;
-			
 			if (currentSpeed > 120) {
 				currentSpeed = 120;
 			}
-			
 			updateFuel();
-			
-			if (currentSpeed > currentDriver.getMaxSpeed()) {
-				currentDriver.setMaxSpeed(currentSpeed);
-			}
-			
 			System.out.println("Speed increased by 5 MPH.");
 		} else {
 			System.out.println("Can't accelerate -- car is off.");
@@ -143,7 +135,9 @@ public class Car {
 		percentFuel = currentFuel / FUELCAPACITY * 100;
 		currentFuel -= FUELRATE;
 		currentDriver.incrementFuelUsed();
+		currentSession.incrementFuelUsed();
 	}
+	
 	
 	public double getFuelPercent() {
 		return percentFuel;
@@ -157,7 +151,7 @@ public class Car {
 		currentDriver = newDriver;
 	}
 
-	public double getCurrentSpeed() {
+	public int getCurrentSpeed() {
 		return currentSpeed;
 	}
 
@@ -169,11 +163,9 @@ public class Car {
 		odometer += increment;
 	}
 
-	public double getSessionOdometer() {
-		return sessionOdometer;
+	public Session getCurrentSession() {
+		return currentSession;
 	}
-	public void incrementSessionOdometer(double increment) {
-		sessionOdometer += increment;
-	}
+	
 	
 }
