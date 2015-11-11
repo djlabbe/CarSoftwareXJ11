@@ -23,7 +23,6 @@ public class Car {
 	protected Radio radio;
 	protected Phone phone;
 	protected Map map;
-	protected Driver currentDriver;
 
 	public Car() {
 		isOn = false;
@@ -45,17 +44,16 @@ public class Car {
 		frame.setLayout(new FlowLayout());
 		LoginGuiManager loginGuiManager = new LoginGuiManager(frame, driverManager);
 		loginGuiManager.setVisible(true);
-		currentDriver = driverManager.getCurrentDriver();
-		System.out.println(currentDriver + " logged in.");
-		if (currentDriver != null) {
-			currentSession = new Session(currentDriver);
+		System.out.println(driverManager.currentDriver + " logged in.");
+		if (driverManager.currentDriver != null) {
+			currentSession = new Session(driverManager.currentDriver);
 			setUserFavorites();	
 		}
 	}
 
 	// Retrieve saved driver settings for radio and phone.
 	public void setUserFavorites() {
-		radio.setUserFavorites(currentDriver);
+		radio.setUserFavorites(driverManager.currentDriver);
 	}
 
 	/* Turn the car on and off.
@@ -115,7 +113,7 @@ public class Car {
 	public void refuel() {
 		if (currentSpeed == 0 && !isOn) {
 			currentFuel = FUELCAPACITY;
-			percentFuel = currentFuel / FUELCAPACITY;
+			percentFuel = currentFuel / FUELCAPACITY * 100;
 			System.out.println("Refueled successfully.");
 		}
 		else {
@@ -134,7 +132,7 @@ public class Car {
 	public void  updateFuel() {
 		percentFuel = currentFuel / FUELCAPACITY * 100;
 		currentFuel -= FUELRATE;
-		currentDriver.incrementFuelUsed();
+		driverManager.currentDriver.incrementFuelUsed();
 		currentSession.incrementFuelUsed();
 	}
 
@@ -144,11 +142,7 @@ public class Car {
 	}
 
 	public Driver getCurrentDriver() {
-		return currentDriver;
-	}
-
-	public void setCurrentDriver(Driver newDriver) {
-		currentDriver = newDriver;
+		return driverManager.currentDriver;
 	}
 
 	public int getCurrentSpeed() {

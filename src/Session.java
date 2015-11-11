@@ -14,7 +14,6 @@ public class Session {
 	private int phoneTime;
 	private int radioTime;
 	
-
 	public Session(Driver driver) {	
 		this.driver = driver;
 		timeStamp = new Date();
@@ -49,8 +48,6 @@ public class Session {
 	public void incrementDistanceDriven(double increment) {
 		distanceDriven += increment;
 	}
-
-
 
 	public int getMaxSpeed() {
 		return maxSpeed;

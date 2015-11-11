@@ -32,9 +32,11 @@ public class GuiManager {
 
 	private JSlider mapSlider;
 
-	private DecimalFormat dfFuel = new DecimalFormat("#,###,##0");
+	private DecimalFormat dfFuel = new DecimalFormat("#00");
+	private DecimalFormat dfMph = new DecimalFormat("000");
 	private DecimalFormat dfMap = new DecimalFormat("###.00");
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
+	
 
 	private Timer timer;
 	private double deltaDistance;
@@ -129,7 +131,7 @@ public class GuiManager {
 		totalMileage.setText("| " + dfShort.format(car.getOdometer()) + " miles | ");
 
 		currentSpeed.setFont (currentSpeed.getFont().deriveFont (30.0f));
-		currentSpeed.setText(car.getCurrentSpeed() + " MPH | ");
+		currentSpeed.setText(dfMph.format(car.getCurrentSpeed()) + " MPH | ");
 
 		currentFuel.setFont (currentFuel.getFont().deriveFont (12.0f));
 		currentFuel.setText(dfFuel.format(car.getFuelPercent()) + "% Fuel ");
@@ -210,7 +212,7 @@ public class GuiManager {
 			public void actionPerformed(ActionEvent e) {
 				if (!car.getIsOn()) {
 					// save the current session
-					car.currentDriver.saveSession(car.currentSession);
+					car.driverManager.currentDriver.saveSession(car.currentSession);
 					// login new driver resets current session
 					car.login();
 					System.out.println("Loggin in new user...");
@@ -252,14 +254,14 @@ public class GuiManager {
 		brakeButton = new JButton("BRAKE");
 		brakeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				currentSpeed.setText(car.decelerate() + " MPH | ");
+				currentSpeed.setText(dfMph.format(car.decelerate()) + " MPH | ");
 			}          
 		});
 
 		gasButton = new JButton("GAS");
 		gasButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				currentSpeed.setText(car.accelerate() + " MPH | ");
+				currentSpeed.setText(dfMph.format(car.accelerate()) + " MPH | ");
 				currentFuel.setText(dfFuel.format(car.getFuelPercent()) + "% Fuel ");
 			}          
 		});
@@ -413,8 +415,8 @@ public class GuiManager {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
 					if (car.radio.getSetIsActive()) {
-						car.currentDriver.setFav(car.radio.getIsAm(), 1, car.radio.getCurrentStation());
-						car.radio.setUserFavorites(car.currentDriver);
+						car.driverManager.currentDriver.setFav(car.radio.getIsAm(), 1, car.radio.getCurrentStation());
+						car.radio.setUserFavorites(car.driverManager.currentDriver);
 						car.radio.toggleSetIsActive();
 						System.out.println("New favorite 1 saved.");
 					} else {
@@ -431,8 +433,8 @@ public class GuiManager {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
 					if (car.radio.getSetIsActive()) {
-						car.currentDriver.setFav(car.radio.getIsAm(), 2, car.radio.getCurrentStation());
-						car.radio.setUserFavorites(car.currentDriver);
+						car.driverManager.currentDriver.setFav(car.radio.getIsAm(), 2, car.radio.getCurrentStation());
+						car.radio.setUserFavorites(car.driverManager.currentDriver);
 						car.radio.toggleSetIsActive();
 						System.out.println("New favorite 2 saved.");
 					} else {
@@ -449,8 +451,8 @@ public class GuiManager {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
 					if (car.radio.getSetIsActive()) {
-						car.currentDriver.setFav(car.radio.getIsAm(), 3, car.radio.getCurrentStation());
-						car.radio.setUserFavorites(car.currentDriver);
+						car.driverManager.currentDriver.setFav(car.radio.getIsAm(), 3, car.radio.getCurrentStation());
+						car.radio.setUserFavorites(car.driverManager.currentDriver);
 						car.radio.toggleSetIsActive();
 						System.out.println("New favorite 3 saved.");
 					} else {
@@ -644,7 +646,7 @@ public class GuiManager {
 		bottomAnalytics.setBackground(Color.darkGray);
 		
 		// Left Analytics (Driver)
-		JLabel driverTitle = new JLabel("   " + car.currentDriver.toString().toUpperCase() + "   ");
+		JLabel driverTitle = new JLabel("   " + car.driverManager.currentDriver.toString().toUpperCase() + "   ");
 		driverTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
 		driverTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		leftAnalytics.add(driverTitle);
@@ -796,13 +798,13 @@ public class GuiManager {
 	}
 
 	public void updateAnalyticsText() {
-		driverMiles.setText(dfShort.format(car.currentDriver.getDistanceDriven()));
-		driverTime.setText(Integer.toString( car.currentDriver.getTimeDriven()));
-		driverAvgSpeed.setText(dfShort.format( car.currentDriver.getAverageSpeed()));
-		driverMaxSpeed.setText(Integer.toString( car.currentDriver.getMaxSpeed()));
-		driverFuelUsed.setText(dfShort.format( car.currentDriver.getFuelUsed()));
-		driverRadioTime.setText(Integer.toString( car.currentDriver.getTotalRadioTime()));
-		driverPhoneTime.setText(Integer.toString( car.currentDriver.getTotalPhoneTime()));
+		driverMiles.setText(dfShort.format(car.driverManager.currentDriver.getDistanceDriven()));
+		driverTime.setText(Integer.toString( car.driverManager.currentDriver.getTimeDriven()));
+		driverAvgSpeed.setText(dfShort.format( car.driverManager.currentDriver.getAverageSpeed()));
+		driverMaxSpeed.setText(Integer.toString( car.driverManager.currentDriver.getMaxSpeed()));
+		driverFuelUsed.setText(dfShort.format( car.driverManager.currentDriver.getFuelUsed()));
+		driverRadioTime.setText(Integer.toString( car.driverManager.currentDriver.getTotalRadioTime()));
+		driverPhoneTime.setText(Integer.toString( car.driverManager.currentDriver.getTotalPhoneTime()));
 
 		sessionMiles.setText(dfShort.format(car.currentSession.getDistanceDriven()));
 		sessionTime.setText(Integer.toString( car.currentSession.getTimeDriven()));
@@ -829,7 +831,7 @@ public class GuiManager {
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				currentSpeed.setText(car.coast() + " MPH | ");
+				currentSpeed.setText(dfMph.format(car.coast()) + " MPH | ");
 				sessionMileage.setText("Session: " + dfShort.format(car.currentSession.getDistanceDriven()) + " miles ");
 				totalMileage.setText("| " + dfShort.format(car.getOdometer()) + " miles | ");
 				updateAnalyticsText();
@@ -839,17 +841,17 @@ public class GuiManager {
 
 				car.map.getCurrentRoute().incrementDistanceIntoRoute(deltaDistance * 100);
 
-				car.currentDriver.incrementTimeDriven();
+				car.driverManager.currentDriver.incrementTimeDriven();
 				car.currentSession.incrementTimeDriven();
 
-				car.currentDriver.incrementDistanceDriven(deltaDistance);
+				car.driverManager.currentDriver.incrementDistanceDriven(deltaDistance);
 				car.currentSession.incrementDistanceDriven(deltaDistance);
 
-				car.currentDriver.updateMaxSpeed(car.getCurrentSpeed());
+				car.driverManager.currentDriver.updateMaxSpeed(car.getCurrentSpeed());
 				car.currentSession.updateMaxSpeed(car.getCurrentSpeed());
 
 				if (car.radio.getIsOn()) {
-					car.currentDriver.incrementRadioTime();
+					car.driverManager.currentDriver.incrementRadioTime();
 					car.currentSession.incrementRadioTime();
 				}
 

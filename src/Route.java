@@ -9,7 +9,6 @@ public class Route {
 		routeDistance = distance;
 	}
 
-
 	public String getRouteName() {
 		return routeName;
 	}
@@ -37,5 +36,4 @@ public class Route {
 	public String toString() {
 		return routeName;
 	}
-
 }
