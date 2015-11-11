@@ -74,8 +74,10 @@ public class Radio {
 		isAm = !isAm;
 		if (isAm) {
 			currentStation = availableAmStations.get(amStationIndex);
+			System.out.println("Radio switched to AM.");
 		} else {
 			currentStation = availableFmStations.get(fmStationIndex);
+			System.out.println("Radio switched to FM.");
 		}
 	}
 	
@@ -88,21 +90,21 @@ public class Radio {
 	}
 	
 	// Increments the volume, to a max of 10
-	public int volUp() {
+	public void volUp() {
 		volume++;
 		if (volume > 10) {
 			volume = 10;
 		}
-		return volume;
+		System.out.println("Radio volume up.");
 	}
 	
 	// Decrements the volume, to a min of 0.
-	public int volDown() {
+	public void volDown() {
 		volume--;
 		if (volume < 0) {
 			volume = 0;
 		}
-		return volume;
+		System.out.println("Radio volume down.");
 	}
 	
 	/* Finds the next higher available station in the list of available stations.
@@ -121,8 +123,8 @@ public class Radio {
 				fmStationIndex = 0;
 			}
 			currentStation = availableFmStations.get(fmStationIndex);
-			System.out.println("User seeked up");
 		}
+		System.out.println("Radio seek forward.");
 	}
 	
 	/* Finds the next lower available station in the list of available stations.
@@ -142,7 +144,7 @@ public class Radio {
 			}
 			currentStation = availableFmStations.get(fmStationIndex);
 		}
-		System.out.println("User seeked down");
+		System.out.println("Radio seek back.");
 	}
 	
 	/* Jump to the selected favorite based on the button pressed.

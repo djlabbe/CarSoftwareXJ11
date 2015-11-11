@@ -33,12 +33,11 @@ public class Car {
 		currentSpeed = 0;
 		currentFuel = FUELCAPACITY;
 		percentFuel = currentFuel / FUELCAPACITY * 100;
-		phone = new Phone();
+		driverManager = new DriverManager();
 		radio = new Radio();
+		phone = new Phone();
 		map = new Map();
 		analytics = new Analytics();
-		radio = new Radio();
-		driverManager = new DriverManager();
 	}
 	
 	// Call the login pop-up window and activate the new driver. 
@@ -55,10 +54,6 @@ public class Car {
         }
 	}
 	
-	public void changeUser() {
-	
-	}
-	
 	// Retrieve saved driver settings for radio and phone.
 	public void setUserFavorites() {
 		radio.setUserFavorites(currentDriver);
@@ -67,17 +62,12 @@ public class Car {
 	/* Turn the car on and off.
 	 * Car can only be turned off is it is currently running and is not moving. 
 	 */
-	public boolean togglePower() {
+	public void togglePower() {
 		if (isOn && currentSpeed == 0) {
 			isOn = false;
-			System.out.println("Car turned off.");
-		} else if (isOn && currentSpeed > 0){
-			System.out.println("Can't turn off while driving.");
-		} else {
+		} else if (!isOn && currentSpeed == 0){
 			isOn = true;
-			System.out.println("Car turned on.");
 		}
-		return isOn;
 	}
 	
 	/* Accelerates the car. Called when driver presses gas.
@@ -121,10 +111,8 @@ public class Car {
 	public int coast() {
 		if (currentSpeed <= 1) {
 			currentSpeed = 0;
-			System.out.println("Idle...");
 		} else {
 			currentSpeed--;
-			System.out.println("Coasting...");
 		}
 		return currentSpeed;
 	}

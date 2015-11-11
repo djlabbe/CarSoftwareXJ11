@@ -158,6 +158,7 @@ public class GuiManager {
 	         public void actionPerformed(ActionEvent e) {
 	        	CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
 	        	cardLayout.show(appPanel, "RADIOPANEL");
+	        	System.out.println("Show Radio");
 	         }          
 	      });
 	    
@@ -166,6 +167,7 @@ public class GuiManager {
 	         public void actionPerformed(ActionEvent e) {
 	        	CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
 		        cardLayout.show(appPanel, "PHONEPANEL");
+		        System.out.println("Show Phone");
 	         }          
 	      });
 
@@ -174,6 +176,7 @@ public class GuiManager {
 	         public void actionPerformed(ActionEvent e) {
 	        	 CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
 			     cardLayout.show(appPanel, "MAPPANEL");
+			     System.out.println("Show Map");
 	         }          
 	      });
 	    
@@ -182,6 +185,7 @@ public class GuiManager {
 	         public void actionPerformed(ActionEvent e) {
 	        	 CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
 			     cardLayout.show(appPanel, "ANALYTICSPANEL");
+			     System.out.println("Show Analytics");
 	         }          
 	      });
 	    
@@ -202,20 +206,26 @@ public class GuiManager {
 	    loginButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
 	        	 car.login();
+	        	 System.out.println("Loggin in new user...");
 	         }          
 	      });
 		
 		powerButton = new JButton("On | Off");
 	    powerButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	        	 if (car.togglePower() && car.getCurrentSpeed() == 0) {
-	        		appPanel.setVisible(true);
-	     			runLoop();
-	     		} else if (car.getCurrentSpeed() == 0) {
-	     			appPanel.setVisible(false);
-	     			timer.cancel();
-	     			timer.purge();
-	     		}
+	        	 car.togglePower();
+	        	 if (car.getIsOn() && car.getCurrentSpeed() == 0) {
+	        		 appPanel.setVisible(true);
+	        		 System.out.println("Engine turned on.");
+	        		 runLoop();
+	        	 } else if (car.getCurrentSpeed() == 0) {
+	        		appPanel.setVisible(false);
+	        		System.out.println("Engine turned off.");
+		     		timer.cancel();
+		     		timer.purge();
+	        	 } else {
+	        		 System.out.println("Can't turn off engine while car is moving.");
+	        	 }
 	         }          
 	      });
 	    
@@ -266,35 +276,44 @@ public class GuiManager {
 				car.radio.togglePower();
 		        if (car.radio.getIsOn()) {
 		            centerRadioPanel.setVisible(true);
+		            System.out.println("Radio turned on.");
+		            
 		        } else {
 		            centerRadioPanel.setVisible(false);
+		            System.out.println("Radio turned off.");
 		        }
-		        System.out.println("Radio power toggled");
+		        
 		    }          
 		});
 		
 		JButton seekDownButton = new JButton(" << ");
 	    seekDownButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            car.radio.seekDown();
-	            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+	        	if (car.radio.getIsOn()) {
+	        		car.radio.seekDown();
+		            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+	        	}
 	         }          
 	      });
 		
 		JButton seekUpButton = new JButton(" >> ");
 	    seekUpButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            car.radio.seekUp();
-	            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+	        	if (car.radio.getIsOn()) {
+	        		car.radio.seekUp();
+		            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+	        	}
 	         }          
 	      });
 			
 		JButton amFmButton = new JButton("AM | FM");
 	    amFmButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            car.radio.toggleMod();
-	            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-	            modulusLabel.setText(car.radio.getModLabel());
+	        	if (car.radio.getIsOn()) {
+	        		car.radio.toggleMod();
+		            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+		            modulusLabel.setText(car.radio.getModLabel());
+	        	}
 	         }          
 	      });
 	    
@@ -315,8 +334,10 @@ public class GuiManager {
 		JButton volumeUpButton = new JButton(" + ");
 	    volumeUpButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            car.radio.volUp();
-	            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
+	        	if (car.radio.getIsOn()) {
+	        		car.radio.volUp();
+		            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
+	        	} 
 	         }          
 	     });
 		
@@ -326,8 +347,10 @@ public class GuiManager {
 		JButton volumeDownButton = new JButton(" - ");
 	    volumeDownButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            car.radio.volDown();
-	            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
+	        	if (car.radio.getIsOn()) {
+		            car.radio.volDown();
+		            radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));	
+	        	}
 	         }          
 	    });
 	    
@@ -358,56 +381,64 @@ public class GuiManager {
 		JButton setButton = new JButton("Set Favorite");
 	    setButton.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            car.radio.toggleSetIsActive();
-	            System.out.println("User toggled radio favorite set");
+	        	if (car.radio.getIsOn()) {
+	        		car.radio.toggleSetIsActive();
+		            System.out.println("Set favorite actived.");
+	        	} 
 	         }          
 	    });
 				
 		JButton fav1Button = new JButton(" 1 ");
 	    fav1Button.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	        	if (car.radio.isSetIsActive()) {
-	        		car.currentDriver.setFav(car.radio.getIsAm(), 1, car.radio.getCurrentStation());
-	        		car.radio.setUserFavorites(car.currentDriver);
-	        		car.radio.toggleSetIsActive();
-	        		System.out.println("User set new favorite 1.");
-	        	} else {
-	        		car.radio.goToFav(1);
-		            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-		            System.out.println("User activating favorite 1.");
-	        	}   
+	        	if (car.radio.getIsOn()) {
+	        		if (car.radio.isSetIsActive()) {
+		        		car.currentDriver.setFav(car.radio.getIsAm(), 1, car.radio.getCurrentStation());
+		        		car.radio.setUserFavorites(car.currentDriver);
+		        		car.radio.toggleSetIsActive();
+		        		System.out.println("New favorite 1 saved.");
+		        	} else {
+		        		car.radio.goToFav(1);
+			            stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+			            System.out.println("Select favorite 1.");
+		        	} 
+	        	}	  
 	         }          
 	    });
 		
 		JButton fav2Button = new JButton(" 2 ");
 	    fav2Button.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	        	 if (car.radio.isSetIsActive()) {
-		        	car.currentDriver.setFav(car.radio.getIsAm(), 2, car.radio.getCurrentStation());
-		        	car.radio.setUserFavorites(car.currentDriver);
-		        	car.radio.toggleSetIsActive();
-		        	System.out.println("User set new favorite 2.");
-		         } else {
-		        	car.radio.goToFav(2);
-			        stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-			        System.out.println("User activating favorite 2.");
-		         }  
+	        	 if (car.radio.getIsOn()) {
+	        		 if (car.radio.isSetIsActive()) {
+	 		        	car.currentDriver.setFav(car.radio.getIsAm(), 2, car.radio.getCurrentStation());
+	 		        	car.radio.setUserFavorites(car.currentDriver);
+	 		        	car.radio.toggleSetIsActive();
+	 		        	System.out.println("New favorite 2 saved.");
+	 		         } else {
+	 		        	car.radio.goToFav(2);
+	 			        stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+	 			        System.out.println("Select favorite 2.");
+	 		         }  
+	        	 }
 	         }          
 	      });
 		
 		JButton fav3Button = new JButton(" 3 ");
 	    fav3Button.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	        	 if (car.radio.isSetIsActive()) {
-			        car.currentDriver.setFav(car.radio.getIsAm(), 3, car.radio.getCurrentStation());
-			        car.radio.setUserFavorites(car.currentDriver);
-			        car.radio.toggleSetIsActive();
-			        System.out.println("User set new favorite 3.");
-			     } else {
-			    	 car.radio.goToFav(3);
-				     stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
-				     System.out.println("User activating favorite 3.");
-			     }
+	        	 if (car.radio.getIsOn()) {
+	        		 if (car.radio.isSetIsActive()) {
+	 			        car.currentDriver.setFav(car.radio.getIsAm(), 3, car.radio.getCurrentStation());
+	 			        car.radio.setUserFavorites(car.currentDriver);
+	 			        car.radio.toggleSetIsActive();
+	 			        System.out.println("New favorite 3 saved.");
+	 			     } else {
+	 			    	 car.radio.goToFav(3);
+	 				     stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
+	 				     System.out.println("Select favorite 3.");
+	 			     } 
+	        	 }
 	         }          
 	      });
 	    
