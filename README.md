@@ -21,6 +21,7 @@ The XJ-11 is a modern car software system designed for use an high-end automobil
 
 ### Todos
 
- - Implement Radio, Phone, and Map
- - Add Analytics & Analytics Display
- - Design test cases and run test suite
+ - Implement Phone
+ - Add Phone Records to Analytics
+ - Design test cases and test everything!
+ - Work on other deliverables - analysis documents in particular.

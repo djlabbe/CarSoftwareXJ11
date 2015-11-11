@@ -14,10 +14,8 @@ public class Car {
 	protected static final double FUELRATE = 0.02;
 
 	private boolean isOn;
-	private double odometer;
 	private int currentSpeed;
-	private double currentFuel;
-	private double percentFuel;
+	private double odometer, currentFuel;
 	protected DriverManager driverManager;
 	protected Session currentSession;
 	protected Radio radio;
@@ -26,10 +24,9 @@ public class Car {
 
 	public Car() {
 		isOn = false;
-		odometer = 0.0;
 		currentSpeed = 0;
+		odometer = 0.0;
 		currentFuel = FUELCAPACITY;
-		percentFuel = currentFuel / FUELCAPACITY * 100;
 		driverManager = new DriverManager();
 		radio = new Radio();
 		phone = new Phone();
@@ -54,6 +51,11 @@ public class Car {
 	// Retrieve saved driver settings for radio and phone.
 	public void setUserFavorites() {
 		radio.setUserFavorites(driverManager.currentDriver);
+		// phone.setUserSpeedDial(driverManager.currentDriver);
+	}
+
+	public boolean getIsOn() {
+		return isOn;
 	}
 
 	/* Turn the car on and off.
@@ -67,12 +69,23 @@ public class Car {
 		}
 	}
 
+	public double getOdometer() {
+		return odometer;
+	}
+
+	public void incrementOdometer(double increment) {
+		odometer += increment;
+	}
+
+	public int getCurrentSpeed() {
+		return currentSpeed;
+	}
+
 	/* Accelerates the car. Called when driver presses gas.
 	 * Only works if the car is on.
 	 * Car can go up to a max speed of 120 MPH.
 	 */
 	public int accelerate() {
-
 		if (isOn) {
 			currentSpeed += 5;
 			if (currentSpeed > 120) {
@@ -99,12 +112,18 @@ public class Car {
 	 * Car loses 1 MPH per second, can not go below 0 MPH.
 	 */
 	public int coast() {
-		if (currentSpeed <= 1) {
-			currentSpeed = 0;
-		} else {
-			currentSpeed--;
-		}
+		currentSpeed = currentSpeed <= 1 ? 0 : currentSpeed - 1;
 		return currentSpeed;
+	}
+
+	public void  updateFuel() {
+		currentFuel -= FUELRATE;
+		driverManager.currentDriver.incrementFuelUsed();
+		currentSession.incrementFuelUsed();
+	}
+
+	public double getFuelPercent() {
+		return currentFuel / FUELCAPACITY * 100;
 	}
 
 	/* Sets the car's fuel to 100%. Called when driver presses refuel button
@@ -113,53 +132,10 @@ public class Car {
 	public void refuel() {
 		if (currentSpeed == 0 && !isOn) {
 			currentFuel = FUELCAPACITY;
-			percentFuel = currentFuel / FUELCAPACITY * 100;
 			System.out.println("Refueled successfully.");
 		}
 		else {
 			System.out.println("Unable to refuel, car must be off.");
 		}
 	}
-
-	/* Calculates the percent fuel remaining, used for the GUI display 
-	 * Also updates the associated driver statistic.
-	 */
-
-	public boolean getIsOn() {
-		return isOn;
-	}
-
-	public void  updateFuel() {
-		percentFuel = currentFuel / FUELCAPACITY * 100;
-		currentFuel -= FUELRATE;
-		driverManager.currentDriver.incrementFuelUsed();
-		currentSession.incrementFuelUsed();
-	}
-
-
-	public double getFuelPercent() {
-		return percentFuel;
-	}
-
-	public Driver getCurrentDriver() {
-		return driverManager.currentDriver;
-	}
-
-	public int getCurrentSpeed() {
-		return currentSpeed;
-	}
-
-	public double getOdometer() {
-		return odometer;
-	}
-
-	public void incrementOdometer(double increment) {
-		odometer += increment;
-	}
-
-	public Session getCurrentSession() {
-		return currentSession;
-	}
-
-
 }

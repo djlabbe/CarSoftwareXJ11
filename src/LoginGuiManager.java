@@ -13,14 +13,10 @@ import javax.swing.border.*;
 @SuppressWarnings("serial")
 public class LoginGuiManager extends JDialog{
 
-	int userEnteredPin;
-
 	private JTextField usernameEntry;
 	private JPasswordField passwordEntry;
-	private JLabel usernameLabel;
-	private JLabel passwordLabel;
-	private JButton btnLogin;
-	private JButton btnRegister;
+	private JLabel usernameLabel, passwordLabel;
+	private JButton btnLogin, btnRegister;
 
 	// Create the pop-up login frame
 	public LoginGuiManager(Frame parent, DriverManager driverManager) {

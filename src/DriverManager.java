@@ -4,8 +4,7 @@ public class DriverManager {
 
 	private ArrayList<Driver> knownDrivers;
 	protected Driver currentDriver;
-
-
+	
 	public DriverManager() {
 		knownDrivers = new ArrayList<Driver>();
 		currentDriver = null;
@@ -29,7 +28,7 @@ public class DriverManager {
 	public Driver authenticate(String usernameInput, String passwordInput) {
 		Driver loggedInDriver = null;
 		for (int i = 0; i < knownDrivers.size(); i++) {
-			if (knownDrivers.get(i).getUsername().equals(usernameInput.toLowerCase()) &&
+			if (knownDrivers.get(i).getUsername().equals(usernameInput.toUpperCase()) &&
 					knownDrivers.get(i).getPassword().equals(passwordInput) ) {
 				loggedInDriver = knownDrivers.get(i);
 			} 
@@ -37,11 +36,11 @@ public class DriverManager {
 		return loggedInDriver;
 	}
 
-	// Register a new driver by instantiating a new driver and storing it in knownDrivers
+	// Register a new driver by making a new driver and storing it in knownDrivers.
 	public Driver register(String inputUsername, String inputPassword) {
-		Driver registeredDriver = new Driver(inputUsername.toLowerCase(), inputPassword);
+		Driver registeredDriver = new Driver(inputUsername.toUpperCase(), inputPassword);
 		knownDrivers.add(registeredDriver);
-		System.out.println("Registered new driver - " + inputUsername);
+		System.out.println("Registered new driver - " + inputUsername.toUpperCase());
 		return registeredDriver;
 	}
 	

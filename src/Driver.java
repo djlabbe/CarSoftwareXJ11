@@ -16,10 +16,10 @@ public class Driver {
 	private int totalPhoneTime;
 	private ArrayList<Session> sessionHistory;
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
-	
+
 	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3;
 	protected Contact speedDial1, speedDial2;
-	
+
 
 	public Driver(String newDriverUsername, String newDriverPassword) {
 		username = newDriverUsername;
@@ -39,7 +39,7 @@ public class Driver {
 		fmFav3 = null;
 		speedDial1 = null;
 		speedDial2 = null;
-		
+
 	}
 
 	public String getUsername()
@@ -163,9 +163,12 @@ public class Driver {
 	public void saveSession(Session currentSession) {
 		sessionHistory.add(currentSession);
 	}
-	
+
 	public String displaySessionHistory() {
 		String sessionHistoryDisplay = "";
+		if (sessionHistory.size() == 0) {
+			sessionHistoryDisplay = "No completed sessions to display.";
+		}
 		for (int i = 0; i < sessionHistory.size(); i++){
 			Session session = sessionHistory.get(i);
 			sessionHistoryDisplay += ( session.toString() + "\n");
@@ -176,13 +179,13 @@ public class Driver {
 	public String toString() {
 		return username;
 	}
-	
+
 	public String toListString() {
 		String result = "";
 		result += (username + " | ");
 		result += ("Distance driven: "  + dfShort.format(distanceDriven) + "mi | ");
 		result += ("Time driven: "  + timeDriven + "sec");
 		return result;
-		
+
 	}
 }

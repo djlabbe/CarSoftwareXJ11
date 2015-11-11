@@ -27,9 +27,7 @@ public class Route {
 
 	public double incrementDistanceIntoRoute(double increment) {
 		distanceIntoRoute += increment;
-		if (distanceIntoRoute > routeDistance) {
-			distanceIntoRoute = routeDistance;
-		}
+		if (distanceIntoRoute > routeDistance) distanceIntoRoute = routeDistance;
 		return distanceIntoRoute;
 	}
 

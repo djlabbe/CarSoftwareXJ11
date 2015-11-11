@@ -4,6 +4,7 @@ public class Map {
 
 	private ArrayList<Route> availableRoutes;
 	private Route currentRoute;
+	Double[] routeLengths = new Double[] {100.0, 200.0, 500.0, 1000.0, 20000.0, 100000.0};
 
 	public Map() {
 		availableRoutes = new ArrayList<Route>();
@@ -11,12 +12,9 @@ public class Map {
 	}
 
 	public void setupRoutes() {
-		availableRoutes.add(new Route("Test Route 1", 100.0));
-		availableRoutes.add(new Route("Test Route 2", 200.0));
-		availableRoutes.add(new Route("Test Route 3", 500.0));
-		availableRoutes.add(new Route("Test Route 4", 10000.0));
-		availableRoutes.add(new Route("Test Route 5", 20000.0));
-		availableRoutes.add(new Route("Test Route 6", 100000.0));
+		for (int i = 0; i < routeLengths.length; i++) {
+			availableRoutes.add(new Route("Test Route " + Integer.toString(i + 1), routeLengths[i]));
+		}
 		currentRoute = availableRoutes.get(0);
 	}
 
@@ -31,9 +29,7 @@ public class Map {
 	public int getRouteIndex(Route route) {
 		int routeIndex = -1;
 		for (int i = 0; i < availableRoutes.size(); i++) {
-			if (route.equals(availableRoutes.get(i))) {
-				routeIndex = i;
-			}
+			if (route.equals(availableRoutes.get(i))) routeIndex = i;
 		}
 		return routeIndex;
 	}

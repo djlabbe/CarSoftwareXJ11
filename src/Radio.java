@@ -11,26 +11,13 @@ import java.util.*;
 
 public class Radio {
 
-	private boolean isOn;
-	private boolean isAm;
-	private boolean isSetActive;
-	private int volume;
-
-	private int amStationIndex;
-	private int fmStationIndex;
-
-	// Lists of known RadioStations
-	private ArrayList<RadioStation> availableAmStations;
-	private ArrayList<RadioStation> availableFmStations;
-
-	protected RadioStation amFav1;
-	protected RadioStation amFav2;
-	protected RadioStation amFav3;
-	protected RadioStation fmFav1;
-	protected RadioStation fmFav2;
-	protected RadioStation fmFav3;
-
-	protected RadioStation currentStation;
+	private boolean isOn, isAm, isSetActive;
+	private int volume, amStationIndex, fmStationIndex;
+	private ArrayList<RadioStation> availableAmStations, availableFmStations;
+	private Double[] amStations = new Double[] {520.0, 620.0, 740.0, 910.0, 1060.0, 1510.0};
+	private Double[] fmStations = new Double[] {90.3, 93.3, 93.9, 94.5, 99.9, 100.7, 102.5, 103.9};
+	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3, currentStation;
+	
 
 	public Radio () {
 		isOn = false;
@@ -40,22 +27,14 @@ public class Radio {
 		availableAmStations = new ArrayList<RadioStation>();
 		availableFmStations = new ArrayList<RadioStation>();
 
-		availableAmStations.add(new RadioStation(550.0));
-		availableAmStations.add(new RadioStation(620.0));
-		availableAmStations.add(new RadioStation(740.0));
-		availableAmStations.add(new RadioStation(910.0));
-		availableAmStations.add(new RadioStation(1060.0));
-		availableAmStations.add(new RadioStation(1510.0));
-
-		availableFmStations.add(new RadioStation(90.3));
-		availableFmStations.add(new RadioStation(93.3));
-		availableFmStations.add(new RadioStation(93.9));
-		availableFmStations.add(new RadioStation(94.5));
-		availableFmStations.add(new RadioStation(99.9));
-		availableFmStations.add(new RadioStation(100.7));
-		availableFmStations.add(new RadioStation(102.5));
-		availableFmStations.add(new RadioStation(103.9));
-
+		for (int i = 0; i < amStations.length; i++) {
+			availableAmStations.add(new RadioStation(amStations[i]));
+		}
+		
+		for (int i = 0; i < fmStations.length; i++) {
+			availableFmStations.add(new RadioStation(fmStations[i]));
+		}
+		
 		currentStation = availableAmStations.get(0);
 		amStationIndex = 0;
 		fmStationIndex = 0;
@@ -92,18 +71,14 @@ public class Radio {
 	// Increments the volume, to a max of 10
 	public void volUp() {
 		volume++;
-		if (volume > 10) {
-			volume = 10;
-		}
+		if (volume > 10) volume = 10;
 		System.out.println("Radio volume up.");
 	}
 
 	// Decrements the volume, to a min of 0.
 	public void volDown() {
 		volume--;
-		if (volume < 0) {
-			volume = 0;
-		}
+		if (volume < 0) volume = 0;
 		System.out.println("Radio volume down.");
 	}
 
@@ -113,15 +88,11 @@ public class Radio {
 	public void seekUp() {
 		if (isAm) {
 			amStationIndex++;
-			if (amStationIndex >= availableAmStations.size()) {
-				amStationIndex = 0;
-			}
+			if (amStationIndex >= availableAmStations.size()) amStationIndex = 0;
 			currentStation = availableAmStations.get(amStationIndex);
 		} else if (!isAm) {
 			fmStationIndex++;
-			if (fmStationIndex >= availableFmStations.size()) {
-				fmStationIndex = 0;
-			}
+			if (fmStationIndex >= availableFmStations.size()) fmStationIndex = 0;
 			currentStation = availableFmStations.get(fmStationIndex);
 		}
 		System.out.println("Radio seek forward.");
@@ -133,16 +104,12 @@ public class Radio {
 	public void seekDown() {
 		if (isAm) {
 			amStationIndex--;
-			if (amStationIndex < 0) {
-				amStationIndex = availableAmStations.size() - 1;
-			}
+			if (amStationIndex < 0) amStationIndex = availableAmStations.size() - 1;
 			currentStation = availableAmStations.get(amStationIndex);
 		} else if (!isAm) {
 			fmStationIndex--;
-			if (fmStationIndex < 0) {
-				fmStationIndex = availableFmStations.size() - 1;
-			}
-			currentStation = availableFmStations.get(fmStationIndex);
+			if (fmStationIndex < 0) fmStationIndex = availableFmStations.size() - 1;
+currentStation = availableFmStations.get(fmStationIndex);
 		}
 		System.out.println("Radio seek back.");
 	}
@@ -173,9 +140,7 @@ public class Radio {
 			}
 
 			for (int i = 0; i < availableAmStations.size(); i++) {
-				if (currentStation.getStation() == availableAmStations.get(i).getStation()) {
-					amStationIndex = i;
-				}
+				if (currentStation.getStation() == availableAmStations.get(i).getStation()) amStationIndex = i;
 			}	
 		} else {
 			switch (numSelect) {
@@ -196,9 +161,7 @@ public class Radio {
 			}
 
 			for (int i = 0; i < availableFmStations.size(); i++) {
-				if (currentStation.getStation() == availableFmStations.get(i).getStation()) {
-					fmStationIndex = i;
-				}
+				if (currentStation.getStation() == availableFmStations.get(i).getStation()) fmStationIndex = i;
 			}
 		}
 	}
