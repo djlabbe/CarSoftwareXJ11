@@ -63,7 +63,11 @@ public class Driver {
 	}
 
 	public double getAverageSpeed() {
-		return distanceDriven / timeDriven * 60 * 60;
+		if (timeDriven != 0) {
+			return distanceDriven / timeDriven * 60 * 60;
+		} else {
+			return 0;
+		}
 	}
 
 	public int getMaxSpeed() {

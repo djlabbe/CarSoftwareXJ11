@@ -1,18 +1,23 @@
 // A new session is created every time a driver logs in.
 // Each driver contains a history of sessions belonging to that driver.
 
+import java.util.Date;
+
 public class Session {
 
 	private Driver driver;
+	private Date timeStamp;
 	private double distanceDriven;
 	private int timeDriven;
 	private int maxSpeed;
 	private double fuelUsed;
 	private int phoneTime;
 	private int radioTime;
+	
 
 	public Session(Driver driver) {	
 		this.driver = driver;
+		timeStamp = new Date();
 		distanceDriven = 0;
 		maxSpeed = 0;
 		maxSpeed = 0;
@@ -23,6 +28,10 @@ public class Session {
 
 	public Driver getDriver() {
 		return driver;
+	}
+	
+	public Date getTimeStamp() {
+		return timeStamp;
 	}
 
 	public int getTimeDriven() {
@@ -54,8 +63,12 @@ public class Session {
 	}
 
 	public double getAverageSpeed() {
-		return distanceDriven / timeDriven * 60 * 60;
-	}
+		if (timeDriven != 0) {
+			return distanceDriven / timeDriven * 60 * 60;
+		} else {
+			return 0;
+		}
+	}	
 
 	public double getFuelUsed() {
 		return fuelUsed;
@@ -79,6 +92,10 @@ public class Session {
 
 	public void incrementPhoneTime() {
 		phoneTime++;
+	}
+	
+	public String toString() {
+		return timeStamp.toString();
 	}
 
 

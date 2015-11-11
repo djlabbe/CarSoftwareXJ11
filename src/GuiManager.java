@@ -208,11 +208,17 @@ public class GuiManager {
 		loginButton = new JButton("Login");
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// save the current session
-				car.currentDriver.saveSession(car.currentSession);
-				// login new driver resets current session
-				car.login();
-				System.out.println("Loggin in new user...");
+				if (!car.getIsOn()) {
+					// save the current session
+					car.currentDriver.saveSession(car.currentSession);
+					// login new driver resets current session
+					car.login();
+					System.out.println("Loggin in new user...");
+				}
+				else {
+					System.out.println("Car must be turned off to login new driver");
+				}
+				
 			}          
 		});
 
@@ -335,9 +341,11 @@ public class GuiManager {
 		leftRadioPanel.setBackground(Color.LIGHT_GRAY);
 
 		JLabel radioVolumeTitleLabel = new JLabel("Vol");
+		radioVolumeTitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		radioVolumeTitleLabel.setFont (radioVolumeTitleLabel.getFont().deriveFont (28.0f));
 
 		JButton volumeUpButton = new JButton(" + ");
+		volumeUpButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		volumeUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -348,9 +356,11 @@ public class GuiManager {
 		});
 
 		radioVolumeLabel = new JLabel(Integer.toString(car.radio.getVolume()));
+		radioVolumeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		radioVolumeLabel.setFont (radioVolumeLabel.getFont().deriveFont (40.0f));
 
 		JButton volumeDownButton = new JButton(" - ");
+		volumeDownButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		volumeDownButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -618,120 +628,189 @@ public class GuiManager {
 
 	private void setupAnalyticsPanel() {
 		JPanel leftAnalytics = new JPanel();
-		leftAnalytics.setLayout(new BoxLayout(leftAnalytics, 1));
+		leftAnalytics.setLayout(new BoxLayout(leftAnalytics, BoxLayout.Y_AXIS));
 		leftAnalytics.setBackground(Color.white);
 
 		JPanel centerAnalytics = new JPanel();
 		centerAnalytics.setLayout(new BoxLayout(centerAnalytics, 1));
-		centerAnalytics.setBackground(Color.LIGHT_GRAY);
+		centerAnalytics.setBackground(Color.white);
 
 		JPanel rightAnalytics= new JPanel();
 		rightAnalytics.setLayout(new BoxLayout(rightAnalytics, 1));
 		rightAnalytics.setBackground(Color.white);
-
-		// Left Analytics (Labels)
-
-		JLabel categoryTitle = new JLabel("   STATISTICS   ");
-		categoryTitle.setFont (categoryTitle.getFont().deriveFont (18.0f));
-		leftAnalytics.add(categoryTitle);
-
-		JLabel milesLabel = new JLabel("Miles: ");
-		leftAnalytics.add(milesLabel);
-
-		JLabel timeLabel = new JLabel("Time: ");
-		leftAnalytics.add(timeLabel);
-
-		JLabel avgSpeedLabel = new JLabel("Avg Speed: ");
-		leftAnalytics.add(avgSpeedLabel);
-
-		JLabel maxSpeedLabel = new JLabel("Max Speed: ");
-		leftAnalytics.add(maxSpeedLabel);
-
-		JLabel mpgLabel = new JLabel("Fuel used: ");
-		leftAnalytics.add(mpgLabel);
-
-		JLabel radioTimeLabel = new JLabel("RadioTime: ");
-		leftAnalytics.add(radioTimeLabel);
-
-		JLabel phoneTimeLabel = new JLabel("PhoneTime: ");
-		leftAnalytics.add(phoneTimeLabel);
-
-		// Center Analytics (Driver)
-
+		
+		JPanel bottomAnalytics = new JPanel();
+		bottomAnalytics.setLayout(new FlowLayout());
+		bottomAnalytics.setBackground(Color.darkGray);
+		
+		// Left Analytics (Driver)
 		JLabel driverTitle = new JLabel("   " + car.currentDriver.toString().toUpperCase() + "   ");
 		driverTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
-		centerAnalytics.add(driverTitle);
+		driverTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+		leftAnalytics.add(driverTitle);
 
 		driverMiles = new JLabel("");
-		centerAnalytics.add(driverMiles);
+		driverMiles.setAlignmentX(Component.CENTER_ALIGNMENT);
+		leftAnalytics.add(driverMiles);
 
 		driverTime = new JLabel("");
-		centerAnalytics.add(driverTime);
+		driverTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		leftAnalytics.add(driverTime);
 
 		driverAvgSpeed = new JLabel("");
-		centerAnalytics.add(driverAvgSpeed);
+		driverAvgSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
+		leftAnalytics.add(driverAvgSpeed);
 
 		driverMaxSpeed = new JLabel("");
-		centerAnalytics.add(driverMaxSpeed);
+		driverMaxSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
+		leftAnalytics.add(driverMaxSpeed);
 
 		driverFuelUsed = new JLabel("");
-		centerAnalytics.add(driverFuelUsed);
+		driverFuelUsed.setAlignmentX(Component.CENTER_ALIGNMENT);
+		leftAnalytics.add(driverFuelUsed);
 
 		driverRadioTime = new JLabel("");
-		centerAnalytics.add(driverRadioTime);
+		driverRadioTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		leftAnalytics.add(driverRadioTime);
 
 		driverPhoneTime = new JLabel("");
-		centerAnalytics.add(driverPhoneTime);
+		driverPhoneTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		leftAnalytics.add(driverPhoneTime);
+		
+		JButton driverCallLogBtn = new JButton("Call Log");
+		driverCallLogBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		driverCallLogBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Pop-up a window with list of calls made by this driver
+			}          
+		});
+		leftAnalytics.add(driverCallLogBtn);
+		
+		JButton sessionHistoryBtn = new JButton("Session History");
+		sessionHistoryBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sessionHistoryBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Display List of old sessions
+				// Maybe change this button to a drop-down menu
+				// Update Session panel on selection
+			}          
+		});
+		leftAnalytics.add(sessionHistoryBtn);
 
+
+		// Center Analytics (Labels)
+
+		JLabel categoryTitle = new JLabel("STATS");
+		categoryTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+		categoryTitle.setFont (categoryTitle.getFont().deriveFont (18.0f));
+		centerAnalytics.add(categoryTitle);
+
+		JLabel milesLabel = new JLabel("Distance Travelled (Miles)");
+		milesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		centerAnalytics.add(milesLabel);
+
+		JLabel timeLabel = new JLabel("Time Active (Seconds)");
+		timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		centerAnalytics.add(timeLabel);
+
+		JLabel avgSpeedLabel = new JLabel("Average Speed (Miles / Hour)");
+		avgSpeedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		centerAnalytics.add(avgSpeedLabel);
+
+		JLabel maxSpeedLabel = new JLabel("Maximum Speed (Miles / Hour)");
+		maxSpeedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		centerAnalytics.add(maxSpeedLabel);
+
+		JLabel mpgLabel = new JLabel("Fuel Used (Gallons)");
+		mpgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		centerAnalytics.add(mpgLabel);
+
+		JLabel radioTimeLabel = new JLabel("Radio Time (Seconds)");
+		radioTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		centerAnalytics.add(radioTimeLabel);
+
+		JLabel phoneTimeLabel = new JLabel("Phone Time (Seconds)");
+		phoneTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		centerAnalytics.add(phoneTimeLabel);
+
+		
 		// Right Analytics (Session)
 
-		JLabel sessionTitle = new JLabel("   SESSION   ");
+		JLabel sessionTitle = new JLabel("SESSION");
 		sessionTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
+		sessionTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rightAnalytics.add(sessionTitle);
 
 		sessionMiles = new JLabel("");
+		sessionMiles.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rightAnalytics.add(sessionMiles);
 
 		sessionTime = new JLabel("");
+		sessionTime.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rightAnalytics.add(sessionTime);
 
 		sessionAvgSpeed = new JLabel("");
+		sessionAvgSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rightAnalytics.add(sessionAvgSpeed);
 
 		sessionMaxSpeed = new JLabel("");
+		sessionMaxSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rightAnalytics.add(sessionMaxSpeed);
 
 		sessionFuelUsed = new JLabel("");
+		sessionFuelUsed.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rightAnalytics.add(sessionFuelUsed);
 
 		sessionRadioTime = new JLabel("");
+		sessionRadioTime.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rightAnalytics.add(sessionRadioTime);
 
 		sessionPhoneTime = new JLabel("");
+		sessionPhoneTime.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rightAnalytics.add(sessionPhoneTime);
+		
+		JButton sessionCallLogBtn = new JButton("Call Log");
+		sessionCallLogBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sessionCallLogBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Pop-up a window with list of calls made during this session.
+			}          
+		});
+		rightAnalytics.add(sessionCallLogBtn);
 
+		// Bottom Analytics Panel
+		JButton viewDriversBtn = new JButton("Driver List");
+		sessionCallLogBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Pop-up a window with list of all known drivers.
+			}          
+		});
+		bottomAnalytics.add(viewDriversBtn);
+		
+		
 		analyticsPanel.add("West", leftAnalytics);
 		analyticsPanel.add("Center", centerAnalytics);
 		analyticsPanel.add("East", rightAnalytics);
+		analyticsPanel.add("South", bottomAnalytics);
 
 	}
 
 	public void updateAnalyticsText() {
-		driverMiles.setText(" " + dfShort.format(car.currentDriver.getDistanceDriven())  + " Mi");
-		driverTime.setText(" " + Integer.toString( car.currentDriver.getTimeDriven() ) + " Sec");
-		driverAvgSpeed.setText(" " + dfShort.format( car.currentDriver.getAverageSpeed() ) + " Mph");
-		driverMaxSpeed.setText(" " + Integer.toString( car.currentDriver.getMaxSpeed() ) + " Mph");
-		driverFuelUsed.setText(" " + dfShort.format( car.currentDriver.getFuelUsed() ) + " Gal");
-		driverRadioTime.setText(" " + Integer.toString( car.currentDriver.getTotalRadioTime() ) + " Sec");
-		driverPhoneTime.setText(" " + Integer.toString( car.currentDriver.getTotalPhoneTime() ) + " Sec");
+		driverMiles.setText(dfShort.format(car.currentDriver.getDistanceDriven()));
+		driverTime.setText(Integer.toString( car.currentDriver.getTimeDriven()));
+		driverAvgSpeed.setText(dfShort.format( car.currentDriver.getAverageSpeed()));
+		driverMaxSpeed.setText(Integer.toString( car.currentDriver.getMaxSpeed()));
+		driverFuelUsed.setText(dfShort.format( car.currentDriver.getFuelUsed()));
+		driverRadioTime.setText(Integer.toString( car.currentDriver.getTotalRadioTime()));
+		driverPhoneTime.setText(Integer.toString( car.currentDriver.getTotalPhoneTime()));
 
-		sessionMiles.setText(" " + dfShort.format(car.currentSession.getDistanceDriven())  + " Mi");
-		sessionTime.setText(" " + Integer.toString( car.currentSession.getTimeDriven() ) + " Sec");
-		sessionAvgSpeed.setText(" " + dfShort.format( car.currentSession.getAverageSpeed() ) + " Mph");
-		sessionMaxSpeed.setText(" " + Integer.toString( car.currentSession.getMaxSpeed() ) + " Mph");
-		sessionFuelUsed.setText(" " + dfShort.format( car.currentSession.getFuelUsed() ) + " Gal");
-		sessionRadioTime.setText(" " + Integer.toString( car.currentSession.getRadioTime() ) + " Sec");
-		sessionPhoneTime.setText(" " + Integer.toString( car.currentSession.getPhoneTime() ) + " Sec");	
+		sessionMiles.setText(dfShort.format(car.currentSession.getDistanceDriven()));
+		sessionTime.setText(Integer.toString( car.currentSession.getTimeDriven()));
+		sessionAvgSpeed.setText(dfShort.format( car.currentSession.getAverageSpeed()));
+		sessionMaxSpeed.setText(Integer.toString( car.currentSession.getMaxSpeed()));
+		sessionFuelUsed.setText(dfShort.format( car.currentSession.getFuelUsed()));
+		sessionRadioTime.setText(Integer.toString( car.currentSession.getRadioTime()));
+		sessionPhoneTime.setText(Integer.toString( car.currentSession.getPhoneTime()));	
 	}
 
 	/******************************************/

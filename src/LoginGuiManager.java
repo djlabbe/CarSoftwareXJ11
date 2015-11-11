@@ -57,13 +57,12 @@ public class LoginGuiManager extends JDialog{
 		panel.add(passwordEntry, cs);
 		panel.setBorder(new LineBorder(Color.GRAY));
 
+		/* When Login is pressed attempt to authenticate entered credentials.
+		 * If success set the current driver to the matching driver stored in knownDrivers.
+		 * If authentication fails, user can try to login again.
+		 */
 		btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
-
-			/* When Login is pressed attempt to authenticate entered credentials.
-			 * If success set the current driver to the matching driver stored in knownDrivers.
-			 * If authentication fails, user can try to login again.
-			 */
 			public void actionPerformed(ActionEvent e) {
 				Driver authResult = driverManager.authenticate(getUsername(), getPassword());
 				if (authResult != null) {
