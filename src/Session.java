@@ -1,6 +1,7 @@
 // A new session is created every time a driver logs in.
 // Each driver contains a history of sessions belonging to that driver.
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Session {
@@ -13,6 +14,7 @@ public class Session {
 	private double fuelUsed;
 	private int phoneTime;
 	private int radioTime;
+	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 	
 	public Session(Driver driver) {	
 		this.driver = driver;
@@ -92,7 +94,16 @@ public class Session {
 	}
 	
 	public String toString() {
-		return timeStamp.toString();
+		String result = "";
+		result += ( timeStamp.toString() + " | ");
+		result += ( "Time: " + timeDriven + "sec | ");
+		result += ( "Distance: " + dfShort.format(distanceDriven) + "mi | ");
+		result += ( "MaxSpeed: " + maxSpeed + "mph | ");
+		result += ( "AvgSpeed: " + dfShort.format(getAverageSpeed()) + "mph | ");
+		result += ( "FuelUsed: " + dfShort.format(getFuelUsed()) + "gal | ");
+		result += ( "RadioTime: " + radioTime + "sec | ");
+		result += ( "PhoneTime: " + phoneTime + "sec");
+		return result;
 	}
 
 

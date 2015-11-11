@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class DriverManager {
 
 	private ArrayList<Driver> knownDrivers;
-	Driver currentDriver;
+	protected Driver currentDriver;
 
 
 	public DriverManager() {
@@ -44,4 +44,14 @@ public class DriverManager {
 		System.out.println("Registered new driver - " + inputUsername);
 		return registeredDriver;
 	}
+	
+	public String displayKnownDrivers() {
+		String knownDriversDisplay = "";
+		for (int i = 0; i < knownDrivers.size(); i++){
+			Driver driver = knownDrivers.get(i);
+			knownDriversDisplay += ( driver.toListString() + "\n");
+		}
+		return knownDriversDisplay;		
+	}
+
 }

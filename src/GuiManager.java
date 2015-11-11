@@ -688,13 +688,13 @@ public class GuiManager {
 		});
 		leftAnalytics.add(driverCallLogBtn);
 		
+		// Display full session history for current driver.
 		JButton sessionHistoryBtn = new JButton("Session History");
 		sessionHistoryBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		sessionHistoryBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Display List of old sessions
-				// Maybe change this button to a drop-down menu
-				// Update Session panel on selection
+				JOptionPane.showMessageDialog(mainFrame,
+					    car.driverManager.currentDriver.displaySessionHistory());
 			}          
 		});
 		leftAnalytics.add(sessionHistoryBtn);
@@ -782,9 +782,10 @@ public class GuiManager {
 
 		// Bottom Analytics Panel
 		JButton viewDriversBtn = new JButton("Driver List");
-		sessionCallLogBtn.addActionListener(new ActionListener() {
+		viewDriversBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Pop-up a window with list of all known drivers.
+				JOptionPane.showMessageDialog(mainFrame,
+					    car.driverManager.displayKnownDrivers());
 			}          
 		});
 		bottomAnalytics.add(viewDriversBtn);
