@@ -16,7 +16,7 @@ public class Driver {
 	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3;
 	protected Contact speedDial1, speedDial2;
 	private ArrayList<Session> sessionHistory;
-	
+
 	public Driver(String newDriverUsername, String newDriverPassword) {
 		username = newDriverUsername;
 		password = newDriverPassword;
@@ -36,16 +36,16 @@ public class Driver {
 		speedDial2 = null;
 		sessionHistory = new ArrayList<Session>();
 	}
-	
+
 	public String getUsername()
 	{
 		return username;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public int getTimeDriven() {
 		return timeDriven;
 	}
@@ -53,19 +53,19 @@ public class Driver {
 	public void incrementTimeDriven() {
 		timeDriven++;
 	}
-	
+
 	public double getDistanceDriven() {
 		return distanceDriven;
 	}
-	
+
 	public void incrementDistanceDriven(double increment) {
 		distanceDriven += increment;
 	}
-	
+
 	public double getAverageSpeed() {
 		return distanceDriven / timeDriven * 60 * 60;
 	}
-	
+
 	public int getMaxSpeed() {
 		return maxSpeed;
 	}
@@ -83,40 +83,40 @@ public class Driver {
 	public void incrementFuelUsed() {
 		fuelUsed += Car.FUELRATE;
 	}
-	
-	
+
+
 	public int getTotalRadioTime() {
 		return totalRadioTime;
 	}
-	
+
 	public void incrementRadioTime() {
 		totalRadioTime++;
 	}
-	
+
 	public int getTotalPhoneTime() {
 		return totalPhoneTime;
 	}
-	
+
 	public void incrementTotalPhoneTime() {
 		totalPhoneTime++;
 	}
-	
+
 	public Contact getSpeedDial1() {
 		return speedDial1;
 	}
-	
+
 	public void setSpeedDial1(Contact contact) {
 		speedDial1 = contact;
 	}
-	
+
 	public Contact getSpeedDial2() {
 		return speedDial2;
 	}
-	
+
 	public void setSpeedDial2(Contact contact) {
 		speedDial2 = contact;
 	}
-	
+
 	public void setFav(boolean isAm, int favIndex, RadioStation station) {
 		if (isAm) {
 			switch (favIndex) {
@@ -150,11 +150,11 @@ public class Driver {
 			}
 		}
 	}
-	
+
 	public void saveSession(Session currentSession) {
 		sessionHistory.add(currentSession);
 	}
-	
+
 	public String toString() {
 		return username;
 	}

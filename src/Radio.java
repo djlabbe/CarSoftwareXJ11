@@ -10,7 +10,7 @@ import java.util.*;
  */
 
 public class Radio {
-	
+
 	private boolean isOn;
 	private boolean isAm;
 	private boolean isSetActive;
@@ -18,7 +18,7 @@ public class Radio {
 
 	private int amStationIndex;
 	private int fmStationIndex;
-	
+
 	// Lists of known RadioStations
 	private ArrayList<RadioStation> availableAmStations;
 	private ArrayList<RadioStation> availableFmStations;
@@ -29,24 +29,24 @@ public class Radio {
 	protected RadioStation fmFav1;
 	protected RadioStation fmFav2;
 	protected RadioStation fmFav3;
-	
+
 	protected RadioStation currentStation;
-	
+
 	public Radio () {
 		isOn = false;
 		isAm = true;
 		volume = 5;
-		
+
 		availableAmStations = new ArrayList<RadioStation>();
 		availableFmStations = new ArrayList<RadioStation>();
-		
+
 		availableAmStations.add(new RadioStation(550.0));
 		availableAmStations.add(new RadioStation(620.0));
 		availableAmStations.add(new RadioStation(740.0));
 		availableAmStations.add(new RadioStation(910.0));
 		availableAmStations.add(new RadioStation(1060.0));
 		availableAmStations.add(new RadioStation(1510.0));
-		
+
 		availableFmStations.add(new RadioStation(90.3));
 		availableFmStations.add(new RadioStation(93.3));
 		availableFmStations.add(new RadioStation(93.9));
@@ -55,20 +55,20 @@ public class Radio {
 		availableFmStations.add(new RadioStation(100.7));
 		availableFmStations.add(new RadioStation(102.5));
 		availableFmStations.add(new RadioStation(103.9));
-		
+
 		currentStation = availableAmStations.get(0);
 		amStationIndex = 0;
 		fmStationIndex = 0;
 	}
-	
+
 	public boolean getIsOn() {
 		return isOn;
 	}
-	
+
 	public void togglePower() {
 		isOn = !isOn;
 	}
-	
+
 	// Switches between AM and FM while maintaining the current radio station for each
 	public void toggleMod() {
 		isAm = !isAm;
@@ -80,15 +80,15 @@ public class Radio {
 			System.out.println("Radio switched to FM.");
 		}
 	}
-	
+
 	public int getVolume() {
 		return volume;
 	}
-	
+
 	public boolean getIsAm() {
 		return isAm;
 	}
-	
+
 	// Increments the volume, to a max of 10
 	public void volUp() {
 		volume++;
@@ -97,7 +97,7 @@ public class Radio {
 		}
 		System.out.println("Radio volume up.");
 	}
-	
+
 	// Decrements the volume, to a min of 0.
 	public void volDown() {
 		volume--;
@@ -106,7 +106,7 @@ public class Radio {
 		}
 		System.out.println("Radio volume down.");
 	}
-	
+
 	/* Finds the next higher available station in the list of available stations.
 	 * Updates the current stationIndex
 	 */
@@ -126,7 +126,7 @@ public class Radio {
 		}
 		System.out.println("Radio seek forward.");
 	}
-	
+
 	/* Finds the next lower available station in the list of available stations.
 	 * Updates the current stationIndex
 	 */
@@ -146,14 +146,14 @@ public class Radio {
 		}
 		System.out.println("Radio seek back.");
 	}
-	
+
 	/* Jump to the selected favorite based on the button pressed.
 	 * -Check whether radio is set to AM or FM
 	 * -Match the button pressed to the corresponding stored favorite
 	 * -Search through the appropriate known station list to find the matching station and update the stationIndex.
 	 */
 	public void goToFav(int numSelect) {
-		
+
 		if (isAm) {
 			switch (numSelect) {
 			case 1: 
@@ -171,7 +171,7 @@ public class Radio {
 					currentStation = amFav3;
 				}
 			}
-			
+
 			for (int i = 0; i < availableAmStations.size(); i++) {
 				if (currentStation.getStation() == availableAmStations.get(i).getStation()) {
 					amStationIndex = i;
@@ -194,7 +194,7 @@ public class Radio {
 					currentStation = fmFav3;
 				}
 			}
-			
+
 			for (int i = 0; i < availableFmStations.size(); i++) {
 				if (currentStation.getStation() == availableFmStations.get(i).getStation()) {
 					fmStationIndex = i;
@@ -202,7 +202,7 @@ public class Radio {
 			}
 		}
 	}
-	
+
 	/* Refresh the radio favorite stations by retrieving the favorites of the current driver */
 	public void setUserFavorites(Driver currentDriver) {
 		amFav1 = currentDriver.amFav1;
@@ -212,24 +212,24 @@ public class Radio {
 		fmFav2 = currentDriver.fmFav2;
 		fmFav3 = currentDriver.fmFav3;
 	}
-	
+
 	public RadioStation getCurrentStation() {
 		return currentStation;
 	}
-	
+
 	public String getModLabel() {
 		String mod = isAm ? "AM" : "FM";
 		return mod;
 	}
-	
+
 	public void turnOn() {
 		isOn = true;
 	}
-	
+
 	public void turnOff() {
 		isOn = false;
 	}
-	
+
 
 	public boolean getSetIsActive() {
 		return isSetActive;
@@ -238,5 +238,5 @@ public class Radio {
 	public void toggleSetIsActive() {
 		isSetActive = !isSetActive;
 	}
-	
+
 }
