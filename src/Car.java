@@ -19,6 +19,7 @@ public class Car {
 	private int currentSpeed;
 	private double currentFuel;
 	private double percentFuel;
+	protected DriverManager driverManager;
 	protected Radio radio;
 	protected Phone phone;
 	protected Map map;
@@ -37,6 +38,7 @@ public class Car {
 		map = new Map();
 		analytics = new Analytics();
 		radio = new Radio();
+		driverManager = new DriverManager();
 	}
 	
 	// Call the login pop-up window and activate the new driver. 
@@ -44,13 +46,17 @@ public class Car {
 		final JFrame frame = new JFrame("Login");
         frame.setSize(300, 100);
         frame.setLayout(new FlowLayout());
-		DriverManager driverManager = new DriverManager(frame);
-        driverManager.setVisible(true);
-        currentDriver = driverManager.currentDriver;
+		LoginGuiManager loginGuiManager = new LoginGuiManager(frame, driverManager);
+        loginGuiManager.setVisible(true);
+        currentDriver = driverManager.getCurrentDriver();
         System.out.println(currentDriver + " logged in.");
         if (currentDriver != null) {
         	setUserFavorites();
         }
+	}
+	
+	public void changeUser() {
+	
 	}
 	
 	// Retrieve saved driver settings for radio and phone.

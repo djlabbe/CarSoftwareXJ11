@@ -1,127 +1,27 @@
-/* Maintain a list of registered drivers and their associated data and
- * handle the login and registration of drivers.
- */
+import java.util.ArrayList;
 
-/* Basic Login functionality code adapted from "3 Steps to Create Login Dialog in Java Swing"
- * http://www.zentut.com/java-swing/simple-login-dialog/ */
-
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.util.*;
-
-@SuppressWarnings("serial")
-public class DriverManager extends JDialog{
+public class DriverManager {
 	
-	int userEnteredPin;
-	Driver currentDriver;
 	private ArrayList<Driver> knownDrivers;
+	Driver currentDriver;
 	
-	private JTextField usernameEntry;
-    private JPasswordField passwordEntry;
-    private JLabel usernameLabel;
-    private JLabel passwordLabel;
-    private JButton btnLogin;
-    private JButton btnRegister;
 	
-    // Create the pop-up login frame
-	public DriverManager(Frame parent) {
-		
-		super(parent, "XJ-11 Login", true);
-
-		currentDriver = null;
+	public DriverManager() {
 		knownDrivers = new ArrayList<Driver>();
-		
-		JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints cs = new GridBagConstraints();
-        
-        cs.fill = GridBagConstraints.HORIZONTAL;
-        
-        usernameLabel = new JLabel("Username: ");
-        cs.gridx = 0;
-        cs.gridy = 0;
-        cs.gridwidth = 1;
-        panel.add(usernameLabel, cs);
-        
-        usernameEntry = new JTextField(20);
-        cs.gridx = 1;
-        cs.gridy = 0;
-        cs.gridwidth = 2;
-        panel.add(usernameEntry, cs);
-        
-        passwordLabel = new JLabel("Password: ");
-        cs.gridx = 0;
-        cs.gridy = 1;
-        cs.gridwidth = 1;
-        panel.add(passwordLabel, cs);
- 
-        passwordEntry = new JPasswordField(20);
-        cs.gridx = 1;
-        cs.gridy = 1;
-        cs.gridwidth = 2;
-        panel.add(passwordEntry, cs);
-        panel.setBorder(new LineBorder(Color.GRAY));
-	
-        btnLogin = new JButton("Login");
-        btnLogin.addActionListener(new ActionListener() {
-		 
-        	/* When Login is pressed attempt to authenticate entered credentials.
-        	 * If success set the current driver to the matching driver stored in knownDrivers.
-        	 * If authentication fails, user can try to login again.
-        	 */
-	        public void actionPerformed(ActionEvent e) {
-	        	Driver authResult = authenticate(getUsername(), getPassword());
-	            if (authResult != null) {
-	                currentDriver = authResult;
-	                dispose();
-	            } else {
-	                JOptionPane.showMessageDialog(DriverManager.this,
-	                        "Invalid username or password",
-	                        "Login",
-	                        JOptionPane.ERROR_MESSAGE);
-	                usernameEntry.setText("");
-	                passwordEntry.setText("");
-	
-	            }
-	        }
-	    });
-	
-        // User can register as a new driver by entering name and password and pressing register.     
-	    btnRegister = new JButton("Register");
-	    btnRegister.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	        	Driver registerResult = register(getUsername(), getPassword());
-                currentDriver = registerResult;
-                dispose();
-	        	
-	    	}
-	    });
-        
-		JPanel bp = new JPanel();
-	    bp.add(btnLogin);
-	    bp.add(btnRegister);
-	    getContentPane().add(panel, BorderLayout.CENTER);
-	    getContentPane().add(bp, BorderLayout.PAGE_END);
-	    pack();
-	    setResizable(false);
-	    setLocationRelativeTo(null);
-		
-	    // Some test users
-		register("doug", "1111");
-		register("sparsh", "abcd");
-		register("ryan", "2222");
-		register("alex", "wxyz");
-		register("josh", "password");
+		currentDriver = null;
 	}
 	
-	 public String getUsername() {
-	     return usernameEntry.getText().trim();
-	   }
-	 
-	 public String getPassword() {
-	      return new String(passwordEntry.getPassword());
-	  }
+	public Driver getCurrentDriver() {
+		return currentDriver;
+	}
+	
+	public void setCurrentDriver(Driver newDriver) {
+		currentDriver = newDriver;
+	}
+	
+	public ArrayList<Driver> getKnownDrivers() {
+		return knownDrivers;
+	}
 	
 	/* Authenticate user by searching knownDrivers for matching login credentials, return the matching
 	 * driver on success, or null if fail.
@@ -138,9 +38,10 @@ public class DriverManager extends JDialog{
 	}
 	
 	// Register a new driver by instantiating a new driver and storing it in knownDrivers
-	public Driver register(String inputUsername, String inputPassword) {
-		Driver registeredDriver = new Driver(inputUsername.toLowerCase(), inputPassword);
-		knownDrivers.add(registeredDriver);
-		return registeredDriver;
-	}
+		public Driver register(String inputUsername, String inputPassword) {
+			Driver registeredDriver = new Driver(inputUsername.toLowerCase(), inputPassword);
+			knownDrivers.add(registeredDriver);
+			System.out.println("Registered new driver - " + inputUsername);
+			return registeredDriver;
+		}
 }

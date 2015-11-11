@@ -525,7 +525,6 @@ public class GuiManager {
 		mapPanel.add("Center", mapSlider);
 		
 		
-	
 		JComboBox<String> routeSelector = new JComboBox<String>(car.map.getRouteList());
 		mapPanel.add("North", routeSelector);
 		routeSelector.addActionListener(new ActionListener(){
@@ -549,7 +548,7 @@ public class GuiManager {
 	
 	private void setSliderSpacing(int routeDistance) {
 			mapSlider.setMajorTickSpacing((int)car.map.getCurrentRoute().getRouteDistance() / 4);
-			mapSlider.setLabelTable(mapSlider.createStandardLabels((int)routeDistance / 4));
+			mapSlider.setLabelTable(mapSlider.createStandardLabels(routeDistance / 4));
 			
 			/* Convert integer labels to decimal -- Snippet adapted from from 
 			 * http://stackoverflow.com/questions/1125619/change-displayable-labels-for-a-jslider
@@ -602,7 +601,7 @@ public class GuiManager {
 
 			 car.map.getCurrentRoute().incrementDistanceIntoRoute(deltaDistance * 100);
 			 
-			 // Asynchronously update the map position
+			 // Asynchronously update the map position slider
 			 SwingUtilities.invokeLater(updateSliderPosition);
 			 
 			 car.currentDriver.incrementTotalDriveTime();

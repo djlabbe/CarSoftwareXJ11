@@ -22,10 +22,6 @@ public class Route {
 		routeDistance = distance;
 	}
 	
-	public int getPercentComplete() {
-		return (int)(distanceIntoRoute / routeDistance * 100);
-	}
-	
 	public double getDistanceIntoRoute() {
 		return distanceIntoRoute;
 	}
