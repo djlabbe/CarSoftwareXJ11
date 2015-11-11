@@ -41,8 +41,9 @@ public class GuiManager {
 	private double deltaDistance;
 
 	// GUI operates for a specific car object which is passed in on GUI initialization.
-	public GuiManager(Car car) {
-		this.car = car;
+	public GuiManager() {
+		car = new Car();
+		car.login();
 		prepareGUI();
 	}
 

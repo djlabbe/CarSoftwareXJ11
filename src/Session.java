@@ -12,8 +12,9 @@ public class Session {
 	private int timeDriven;
 	private int maxSpeed;
 	private double fuelUsed;
-	private int phoneTime;
 	private int radioTime;
+	private int phoneTime;
+	
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 	
 	public Session(Driver driver) {	

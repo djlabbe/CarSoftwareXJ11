@@ -59,13 +59,21 @@ public class Radio {
 			System.out.println("Radio switched to FM.");
 		}
 	}
-
+	
 	public int getVolume() {
 		return volume;
 	}
 
 	public boolean getIsAm() {
 		return isAm;
+	}
+	
+	public boolean getSetIsActive() {
+		return isSetActive;
+	}
+
+	public void toggleSetIsActive() {
+		isSetActive = !isSetActive;
 	}
 
 	// Increments the volume, to a max of 10
@@ -109,7 +117,7 @@ public class Radio {
 		} else if (!isAm) {
 			fmStationIndex--;
 			if (fmStationIndex < 0) fmStationIndex = availableFmStations.size() - 1;
-currentStation = availableFmStations.get(fmStationIndex);
+			currentStation = availableFmStations.get(fmStationIndex);
 		}
 		System.out.println("Radio seek back.");
 	}
@@ -183,23 +191,6 @@ currentStation = availableFmStations.get(fmStationIndex);
 	public String getModLabel() {
 		String mod = isAm ? "AM" : "FM";
 		return mod;
-	}
-
-	public void turnOn() {
-		isOn = true;
-	}
-
-	public void turnOff() {
-		isOn = false;
-	}
-
-
-	public boolean getSetIsActive() {
-		return isSetActive;
-	}
-
-	public void toggleSetIsActive() {
-		isSetActive = !isSetActive;
 	}
 
 }
