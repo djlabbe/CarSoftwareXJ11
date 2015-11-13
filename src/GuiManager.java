@@ -18,11 +18,10 @@ import java.util.TimerTask;
 
 public class GuiManager {
 
-	private Car car;
 	private JFrame 	mainFrame;
 
 	private JPanel 	labelPanel, navPanel, corePanel, appPanel, emptyPanel,
-	welcomePanel, radioPanel, phonePanel, mapPanel, analyticsPanel, centerRadioPanel;
+	welcomePanel, radioPanel, phonePanel, mapPanel, analyticsPanel, centerRadioPanel, dialpadPanel;
 
 	private JLabel 	sessionMileage, totalMileage, currentSpeed, currentFuel, stationLabel, modulusLabel, 
 	radioVolumeLabel, driverMiles, driverTime, driverAvgSpeed, driverMaxSpeed, driverFuelUsed, 
@@ -32,27 +31,25 @@ public class GuiManager {
 	private JButton radioButton, phoneButton, mapButton, statsButton, powerButton, gasButton, brakeButton, 
 	refuelButton, loginButton, endButton, callButton;
 	
+	private CardLayout appLayout = new CardLayout();
 	private JTextField dialNumField;
-
 	private JList<Contact> contactText;
 	private JTextField nameText, numText;
 	private JDialog contactDialog;
+	private JSlider mapSlider;
 	private DefaultListModel<Contact> contactList;
 	private ArrayList<Contact> contactArray;
-
-	private JSlider mapSlider;
-
+	private Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
 	private DecimalFormat dfOne = new DecimalFormat("#00");
 	private DecimalFormat dfTwo = new DecimalFormat("000");
 	private DecimalFormat dfMap = new DecimalFormat("###.00");
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
-
-	private Timer timer;
-	private double deltaDistance;
+	
 	private final float coreFontSize = 16.0f;
 	
-	private CardLayout appLayout = new CardLayout();
-	Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
+	private Car car;
+	private Timer timer;
+	private double deltaDistance;
 
 	// GUI operates for a specific car object which is passed in on GUI initialization.
 	public GuiManager() {
@@ -375,6 +372,29 @@ public class GuiManager {
 	/************  RADIO PANEL  ***************/
 	/******************************************/
 
+	private JButton makeFavButton(int favNum) {
+		JButton newButton = new JButton(" " + favNum + " ");
+		newButton.setBackground(Color.WHITE);
+		newButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (car.radio.getIsOn()) {
+					if (car.radio.getSetIsActive()) {
+						car.driverManager.currentDriver.setFav(car.radio.getIsAm(), favNum, car.radio.getCurrentStation());
+						car.radio.setUserFavorites(car.driverManager.currentDriver);
+						car.radio.toggleSetIsActive();
+						System.out.println("New favorite " + favNum + " saved.");
+					} else {
+						car.radio.goToFav(favNum);
+						updateStationLabel();
+						System.out.println("Select favorite " + favNum +".");
+					}  
+				}
+			}          
+		});
+		return newButton;
+	}
+	
+	
 	private void setupRadioPanel() {
 
 		// TOP RADIO PANEL
@@ -383,6 +403,7 @@ public class GuiManager {
 		topRadioPanel.setBackground(Color.LIGHT_GRAY);
 
 		JButton radioPowerButton = new JButton("ON");
+		radioPowerButton.setBackground(Color.WHITE);
 		radioPowerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				car.radio.togglePower();
@@ -404,6 +425,7 @@ public class GuiManager {
 		});
 
 		JButton seekDownButton = new JButton(" << ");
+		seekDownButton.setBackground(Color.WHITE);
 		seekDownButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -414,6 +436,7 @@ public class GuiManager {
 		});
 
 		JButton seekUpButton = new JButton(" >> ");
+		seekUpButton.setBackground(Color.WHITE);
 		seekUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -424,6 +447,7 @@ public class GuiManager {
 		});
 
 		JButton amFmButton = new JButton("AM | FM");
+		amFmButton.setBackground(Color.WHITE);
 		amFmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -450,6 +474,7 @@ public class GuiManager {
 		radioVolumeTitleLabel.setFont (radioVolumeTitleLabel.getFont().deriveFont (28.0f));
 
 		JButton volumeUpButton = new JButton(" + ");
+		volumeUpButton.setBackground(Color.WHITE);
 		volumeUpButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		volumeUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -465,6 +490,7 @@ public class GuiManager {
 		radioVolumeLabel.setFont (radioVolumeLabel.getFont().deriveFont (40.0f));
 
 		JButton volumeDownButton = new JButton(" - ");
+		volumeDownButton.setBackground(Color.WHITE);
 		volumeDownButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		volumeDownButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -502,6 +528,7 @@ public class GuiManager {
 		bottomRadioPanel.setBackground(Color.LIGHT_GRAY);
 
 		JButton setButton = new JButton("Set Favorite");
+		setButton.setBackground(Color.WHITE);
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -515,64 +542,10 @@ public class GuiManager {
 			}          
 		});
 
-		JButton fav1Button = new JButton(" 1 ");
-		fav1Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (car.radio.getIsOn()) {
-					if (car.radio.getSetIsActive()) {
-						car.driverManager.currentDriver.setFav(car.radio.getIsAm(), 1, car.radio.getCurrentStation());
-						car.radio.setUserFavorites(car.driverManager.currentDriver);
-						car.radio.toggleSetIsActive();
-						System.out.println("New favorite 1 saved.");
-					} else {
-						car.radio.goToFav(1);
-						updateStationLabel();
-						System.out.println("Select favorite 1.");
-					} 
-				}	  
-			}          
-		});
-
-		JButton fav2Button = new JButton(" 2 ");
-		fav2Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (car.radio.getIsOn()) {
-					if (car.radio.getSetIsActive()) {
-						car.driverManager.currentDriver.setFav(car.radio.getIsAm(), 2, car.radio.getCurrentStation());
-						car.radio.setUserFavorites(car.driverManager.currentDriver);
-						car.radio.toggleSetIsActive();
-						System.out.println("New favorite 2 saved.");
-					} else {
-						car.radio.goToFav(2);
-						updateStationLabel();
-						System.out.println("Select favorite 2.");
-					}  
-				}
-			}          
-		});
-
-		JButton fav3Button = new JButton(" 3 ");
-		fav3Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (car.radio.getIsOn()) {
-					if (car.radio.getSetIsActive()) {
-						car.driverManager.currentDriver.setFav(car.radio.getIsAm(), 3, car.radio.getCurrentStation());
-						car.radio.setUserFavorites(car.driverManager.currentDriver);
-						car.radio.toggleSetIsActive();
-						System.out.println("New favorite 3 saved.");
-					} else {
-						car.radio.goToFav(3);
-						updateStationLabel();
-						System.out.println("Select favorite 3.");
-					} 
-				}
-			}          
-		});
-
 		bottomRadioPanel.add(setButton);
-		bottomRadioPanel.add(fav1Button);
-		bottomRadioPanel.add(fav2Button);
-		bottomRadioPanel.add(fav3Button);
+		bottomRadioPanel.add(makeFavButton(1));
+		bottomRadioPanel.add(makeFavButton(2));
+		bottomRadioPanel.add(makeFavButton(3));
 
 		//  RIGHT RADIO PANEL
 		JPanel rightRadioPanel = new JPanel();
@@ -598,6 +571,20 @@ public class GuiManager {
 	/******************************************/
 	/************  PHONE PANEL  ***************/
 	/******************************************/
+	
+	private JButton makePhoneButton(String btnLabel) {
+		JButton newButton = new JButton(btnLabel);
+		newButton.setBackground(Color.WHITE);
+		newButton.setFont(new Font("Courier", Font.PLAIN, 15));
+		newButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				car.phone.dialNumber(btnLabel);
+				dialNumField.setText(car.phone.getNumberDialed());
+			}
+		});
+		dialpadPanel.add(newButton);
+		return newButton;
+	}
 
 	private void setupPhonePanel()
 	{
@@ -605,7 +592,7 @@ public class GuiManager {
 		JPanel leftPhonePanel = new JPanel(new BorderLayout());
 		JPanel centerPhonePanel = new JPanel(new GridBagLayout());
 		JPanel rightPhonePanel = new JPanel(new GridBagLayout());
-		JPanel dialpadPanel = new JPanel(new GridLayout(4,3));
+		dialpadPanel = new JPanel(new GridLayout(4,3));
 		GridBagConstraints gb = new GridBagConstraints();
 
 		leftPhonePanel.setBackground(Color.LIGHT_GRAY);
@@ -701,7 +688,6 @@ public class GuiManager {
 		});
 		rightPhonePanel.add(endButton, gb);
 
-		
 		// Add Contact Button
 		JButton addContactButton = new JButton("Add Contact");
 		addContactButton.setBackground(Color.white);
@@ -762,12 +748,24 @@ public class GuiManager {
 					public void actionPerformed(ActionEvent e){
 						String numToSave = "";
 						String enteredNum = numText.getText().trim();
-						for (int i = 0; i < enteredNum.length(); i++) {
-							if ((i == 3 || i == 6) && enteredNum.charAt(3) != '-' && enteredNum.charAt(7) != '-') {
-								numToSave += "-";
+						if (enteredNum.length() > 7) {
+							for (int i = 0; i < enteredNum.length(); i++) {
+								if ((i == 3 || i ==6 ) && enteredNum.charAt(3) != '-' && enteredNum.charAt(7) != '-') {
+									numToSave += "-";
+								}
+								numToSave += enteredNum.charAt(i);
 							}
-							numToSave += enteredNum.charAt(i);
+						} else if (enteredNum.length() > 2) {
+							for (int i = 0; i < enteredNum.length(); i++) {
+								if ((i == 3) && enteredNum.charAt(3) != '-') {
+									numToSave += "-";
+								}
+								numToSave += enteredNum.charAt(i);
+							}
+						} else {
+							numToSave = enteredNum;
 						}
+						
 						contactArray.add(car.driverManager.currentDriver.createContact(nameText.getText().trim(), numToSave));
 						contactList.addElement(contactArray.get(contactArray.size()-1));
 						contactDialog.dispose();
@@ -781,7 +779,6 @@ public class GuiManager {
 			}
 		});
 		rightPhonePanel.add(addContactButton, gb);
-
 
 		// Panels for the volume controls
 		JPanel speakerPanel = new JPanel(new GridBagLayout());
@@ -864,69 +861,17 @@ public class GuiManager {
 
 
 		// Time Label
-		phoneTimeLabel = new JLabel("Time: 0:00");
+		phoneTimeLabel = new JLabel("");
 		gb.gridy = 4;
 		rightPhonePanel.add(phoneTimeLabel, gb);
-
-		// The for loop makes buttons 1-9, #, 0, *
-		int j;
-		for(j = 1; j < 13; j++)
-		{
-			final String input = Integer.toString(j);
-			JButton button;
-
-			// creates the * button
-			if(j == 10)
-			{
-				button = new JButton("*");
-				button.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e){
-						car.phone.dialNumber("*");
-						dialNumField.setText(car.phone.getNumberDialed());
-					}
-				});
-			}
-
-			// creates the 0 button
-			else if(j == 11)
-			{
-				button = new JButton("0");
-				button.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e){
-						car.phone.dialNumber("0");
-						dialNumField.setText(car.phone.getNumberDialed());
-					}
-				});
-			}
-
-			// creates the # button
-			else if(j == 12)
-			{
-				button = new JButton("#");
-				button.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e){
-						car.phone.dialNumber("#");
-						dialNumField.setText(car.phone.getNumberDialed());
-					}
-				});
-			}
-
-			// creates buttons 1-9
-			else
-			{
-				button = new JButton(Integer.toString(j));
-				button.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e){
-						car.phone.dialNumber(input);
-						dialNumField.setText(car.phone.getNumberDialed());
-					}
-				});
-			}
-			button.setBackground(Color.WHITE);
-			button.setFont(new Font("Courier", Font.PLAIN, 15));
-			dialpadPanel.add(button);
+		
+		for (int i = 1; i <= 9; i++) {
+			makePhoneButton(Integer.toString(i));
 		}
-
+		makePhoneButton("*");
+		makePhoneButton("0");
+		makePhoneButton("#");
+		
 		// empty panels to insert into the leftPhonePanel
 		JPanel emptyPanel1 = new JPanel();
 		emptyPanel1.setBackground(Color.LIGHT_GRAY);
@@ -944,7 +889,6 @@ public class GuiManager {
 		});
 		
 		bottomPadPanel.add(clearButton);
-		
 		
 		JPanel emptyPanel2= new JPanel();
 		emptyPanel2.setBackground(Color.LIGHT_GRAY);

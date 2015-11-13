@@ -38,6 +38,8 @@ public class LoginGuiManager extends JDialog{
 		panel.add(usernameLabel, cs);
 
 		usernameEntry = new JTextField(20);
+		usernameEntry.setBackground(Color.DARK_GRAY);
+		usernameEntry.setForeground(Color.WHITE);
 		cs.gridx = 1;
 		cs.gridy = 0;
 		cs.gridwidth = 2;
@@ -52,6 +54,8 @@ public class LoginGuiManager extends JDialog{
 		panel.add(passwordLabel, cs);
 
 		passwordEntry = new JPasswordField(20);
+		passwordEntry.setBackground(Color.DARK_GRAY);
+		passwordEntry.setForeground(Color.WHITE);
 		cs.gridx = 1;
 		cs.gridy = 1;
 		cs.gridwidth = 2;
@@ -93,10 +97,9 @@ public class LoginGuiManager extends JDialog{
 		btnRegister.setBorder(bevelledBorder);
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Driver registerResult = driverManager.register(getUsername(), getPassword());
-				driverManager.setCurrentDriver(registerResult);
-				dispose();
-
+					Driver registerResult = driverManager.register(getUsername(), getPassword());
+					driverManager.setCurrentDriver(registerResult);
+					dispose();
 			}
 		});
 
