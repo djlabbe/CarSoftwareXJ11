@@ -15,6 +15,7 @@ public class Phone
 		numberBeingDialed = "";
 		speakerVol = 3;
 		micVol = 3;
+		currentCall = null;
 		contacts = new ArrayList<Contact>();
 	}
 
@@ -51,7 +52,9 @@ public class Phone
 
 	public void deactivateCall()
 	{
-		currentCall.setDuration(currentPhoneTime);
+		if (currentCall != null) {
+			currentCall.setDuration(currentPhoneTime);
+		}
 		this.currentPhoneTime = 0;
 		this.isActiveCall = false;
 		System.out.println("Call ended.");
