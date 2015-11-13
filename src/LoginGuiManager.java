@@ -15,18 +15,23 @@ public class LoginGuiManager extends JDialog{
 	private JPasswordField passwordEntry;
 	private JLabel usernameLabel, passwordLabel;
 	private JButton btnLogin, btnRegister;
+	
+	Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
 
 	// Create the pop-up login frame
 	public LoginGuiManager(Frame parent, DriverManager driverManager) {
 
 		super(parent, "XJ-11 Login", true);
-
+		
 		JPanel panel = new JPanel(new GridBagLayout());
+		panel.setBackground(Color.DARK_GRAY);
 		GridBagConstraints cs = new GridBagConstraints();
 
 		cs.fill = GridBagConstraints.HORIZONTAL;
 
 		usernameLabel = new JLabel("Username: ");
+		usernameLabel.setFont (usernameLabel.getFont().deriveFont (14.0f));
+		usernameLabel.setForeground(Color.WHITE);
 		cs.gridx = 0;
 		cs.gridy = 0;
 		cs.gridwidth = 1;
@@ -39,6 +44,8 @@ public class LoginGuiManager extends JDialog{
 		panel.add(usernameEntry, cs);
 
 		passwordLabel = new JLabel("Password: ");
+		passwordLabel.setFont (passwordLabel.getFont().deriveFont (14.0f));
+		passwordLabel.setForeground(Color.WHITE);
 		cs.gridx = 0;
 		cs.gridy = 1;
 		cs.gridwidth = 1;
@@ -56,6 +63,10 @@ public class LoginGuiManager extends JDialog{
 		 * If authentication fails, user can try to login again.
 		 */
 		btnLogin = new JButton("Login");
+		btnLogin.setBackground(Color.DARK_GRAY);
+		btnLogin.setForeground(Color.WHITE);
+		btnLogin.setFont (btnLogin.getFont().deriveFont (18.0f));
+		btnLogin.setBorder(bevelledBorder);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Driver authResult = driverManager.authenticate(getUsername(), getPassword());
@@ -76,6 +87,10 @@ public class LoginGuiManager extends JDialog{
 
 		// User can register as a new driver by entering name and password and pressing register.     
 		btnRegister = new JButton("Register");
+		btnRegister.setFont (btnRegister.getFont().deriveFont (18.0f));
+		btnRegister.setBackground(Color.DARK_GRAY);
+		btnRegister.setForeground(Color.WHITE);
+		btnRegister.setBorder(bevelledBorder);
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Driver registerResult = driverManager.register(getUsername(), getPassword());
@@ -85,7 +100,7 @@ public class LoginGuiManager extends JDialog{
 			}
 		});
 
-		JPanel bp = new JPanel();
+		JPanel bp = new JPanel(new GridLayout(1,2));
 		bp.add(btnLogin);
 		bp.add(btnRegister);
 		getContentPane().add(panel, BorderLayout.CENTER);
