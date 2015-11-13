@@ -8,7 +8,9 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,20 +18,25 @@ import java.util.TimerTask;
 public class GuiManager {
 
 	private Car car;
-
 	private JFrame 	mainFrame;
-	
+
 	private JPanel 	labelPanel, navPanel, corePanel, appPanel, emptyPanel,
 	radioPanel, phonePanel, mapPanel, analyticsPanel, centerRadioPanel;
-	
+
 	private JLabel 	sessionMileage, totalMileage, currentSpeed, currentFuel, stationLabel, modulusLabel, 
 	radioVolumeLabel, driverMiles, driverTime, driverAvgSpeed, driverMaxSpeed, driverFuelUsed, 
 	driverRadioTime, driverPhoneTime, sessionMiles, sessionTime, sessionAvgSpeed, sessionMaxSpeed, 
-	sessionFuelUsed, sessionRadioTime, sessionPhoneTime;
-	
+	sessionFuelUsed, sessionRadioTime, sessionPhoneTime, phoneTimeLabel;
+
 	private JButton radioButton, phoneButton, mapButton, statsButton, powerButton, gasButton, brakeButton, 
 	refuelButton, loginButton;
-	
+
+	private JList<Contact> contactText;
+	private JTextField nameText, numText;
+	private JDialog contactDialog;
+	private DefaultListModel<Contact> contactList;
+	private ArrayList<Contact> contactArray;
+
 	private JSlider mapSlider;
 
 	private DecimalFormat dfOne = new DecimalFormat("#00");
@@ -72,7 +79,7 @@ public class GuiManager {
 		labelPanel.setBackground(Color.GRAY);
 
 		navPanel = new JPanel();
-		navPanel.setLayout(new BoxLayout(navPanel, 1));
+		navPanel.setLayout(new GridLayout(4, 1));
 		navPanel.setBackground(Color.GRAY);
 
 		/* The appPanel uses a "CardLayout" which works like a stack of playing cards,
@@ -102,7 +109,7 @@ public class GuiManager {
 		appPanel.add(mapPanel, "MAPPANEL");
 		appPanel.add(analyticsPanel, "ANALYTICSPANEL");
 
-		corePanel = new JPanel();
+		corePanel = new JPanel(new GridLayout(1,6));
 		corePanel.setBackground(Color.GRAY);
 
 		emptyPanel = new JPanel();
@@ -485,7 +492,7 @@ public class GuiManager {
 		radioPanel.add("East", rightRadioPanel);
 
 	} // end setupRadioPanel
-	
+
 	public void updateStationLabel() {
 		if (car.radio.getIsAm()) {
 			stationLabel.setText(dfOne.format(car.radio.currentStation.getStation()));
@@ -493,53 +500,298 @@ public class GuiManager {
 			stationLabel.setText(Double.toString(car.radio.currentStation.getStation()));
 		}
 	}
-	
+
 	/******************************************/
 	/************  PHONE PANEL  ***************/
 	/******************************************/
 
 	private void setupPhonePanel()
 	{
-		// leftPhonePanel is the dial pad
-		JPanel dialpadPanel = new JPanel();
-		dialpadPanel.setLayout(new GridLayout(4,3));
+		// Phone panels
+		JPanel leftPhonePanel = new JPanel(new BorderLayout());
+		JPanel centerPhonePanel = new JPanel(new GridBagLayout());
+		JPanel rightPhonePanel = new JPanel(new GridBagLayout());
+		JPanel dialpadPanel = new JPanel(new GridLayout(4,3));
+		GridBagConstraints gb = new GridBagConstraints();
+
+		final JLabel speakVolLabel;
+		final JLabel micVolLabel;
+
+		// TextField for the dialed number in the center panel
+		final JTextField dialNumField = new JTextField("", 8);
+		dialNumField.setBackground(Color.white);
+		dialNumField.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+		dialNumField.setEditable(false);
+		gb.weightx = 1;
+		gb.weighty = 1;
+		gb.gridx = 0;
+		gb.gridy = 0;
+		gb.insets = new Insets(10,10,10,10);
+		gb.fill = GridBagConstraints.BOTH;
+		centerPhonePanel.add(dialNumField, gb);
+
+
+		// TextArea for all the contacts
+
+		// Putting contacts into a list for the Jlist
+		contactList = new DefaultListModel<Contact>();
+		contactArray = car.driverManager.currentDriver.getContacts();
+		int i;
+		if(contactArray != null){
+			for(i = 0; i < contactArray.size(); i++)
+				contactList.addElement(contactArray.get(i));
+		}
+		contactList.addElement(new Contact());
+		contactText = new JList<Contact>(contactList);
+		contactText.setCellRenderer(new ListCellRenderer<Contact>(){
+			public Component getListCellRendererComponent(JList<? extends Contact> list, Contact contact, int index, boolean isSelected, boolean cellHasFocus){
+				String name = contact.getName();
+				JLabel renderer = (JLabel) new DefaultListCellRenderer().getListCellRendererComponent(list, contact, index, isSelected, cellHasFocus);
+				renderer.setText(name);
+				return renderer;			
+			}
+
+		});
+		contactText.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		contactText.setLayoutOrientation(JList.VERTICAL);
+		gb.insets = new Insets(0,10,10,10);
+		gb.gridy = 1;	
+		gb.fill = GridBagConstraints.BOTH;
+		contactText.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				car.phone.resetNumberBeingDialed();
+				dialNumField.setText(contactText.getSelectedValue().getPhoneNumber());
+			}
+		});
+		JScrollPane scrollContact = new JScrollPane(contactText);
+		centerPhonePanel.add(scrollContact, gb);
+
+		// Call Button
+		JButton callButton = new JButton("Call");
+		callButton.setBackground(Color.green);
+		gb.insets = new Insets(0,0,0,0);
+		gb.gridheight = 1;
+		gb.gridx = 0;
+		gb.gridy = 0;
+		callButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(car.phone.checkActiveCall() != true){
+					car.phone.activateCall();
+				}
+			}
+		});
+		rightPhonePanel.add(callButton, gb);
+
+		// End Button
+		JButton endButton = new JButton("End");
+		endButton.setBackground(Color.red);
+		gb.gridx = 1;
+		gb.gridy = 0;
+		endButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				car.phone.deactivateCall();
+				car.driverManager.currentDriver.saveCall(car.phone.currentCall);
+				car.currentSession.saveCall(car.phone.currentCall);
+			}
+		});
+		rightPhonePanel.add(endButton, gb);
+
+		// Add Contact Button
+		JButton addContactButton = new JButton("Add Contact");
+		addContactButton.setBackground(Color.white);
+		gb.fill = 0;
+		gb.gridwidth = 2;
+		gb.gridx = 0;
+		gb.gridy = 1;
+		addContactButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+
+				System.out.println("Creating a contact.");
+
+				// opens a window to create a new contact
+				contactDialog = new JDialog();
+				contactDialog.setResizable(false);
+				contactDialog.setLocationRelativeTo(null);
+				contactDialog.setTitle("Create a new Contact");
+				contactDialog.setSize(300, 100);
+
+				// Panel to fit inside dialog box
+				JPanel contactPanel = new JPanel(new GridBagLayout());
+
+				GridBagConstraints gb = new GridBagConstraints();
+
+				JLabel nameLabel = new JLabel("Name:");
+				nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				gb.fill = GridBagConstraints.HORIZONTAL;
+				gb.weightx = 1;
+				gb.weighty = 1;
+				gb.gridx = 0;
+				gb.gridy = 0;
+				contactPanel.add(nameLabel, gb);
+
+				nameText = new JTextField("", 8);
+				gb.gridx = 1;
+				gb.ipadx = 150;
+				contactPanel.add(nameText, gb);
+
+				JLabel numLabel = new JLabel("Number: ");
+				numLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				gb.ipadx = 0;
+				gb.gridx = 0;
+				gb.gridy = 1;
+				gb.gridwidth = 1;
+				contactPanel.add(numLabel, gb);
+
+				numText = new JTextField("", 8);
+				gb.ipadx = 150;
+				gb.gridx = 1;
+				contactPanel.add(numText, gb);
+
+				JButton enterButton = new JButton("Done");
+				gb.ipadx = 0;
+				gb.gridx = 0;
+				gb.gridy = 2;
+				gb.gridwidth = 3;
+				enterButton.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						contactArray.add(car.driverManager.currentDriver.createContact(nameText.getText(), numText.getText()));
+						contactList.addElement(contactArray.get(contactArray.size()-1));
+						contactDialog.dispose();
+						System.out.println("Contact created.");
+					}
+				});
+				contactPanel.add(enterButton, gb);
+
+				contactDialog.add(contactPanel);
+				contactDialog.setVisible(true);
+
+			}
+		});
+		rightPhonePanel.add(addContactButton, gb);
+
+
+		// Panels for the volume controls
+		JPanel speakerPanel = new JPanel(new GridBagLayout());
+		JPanel micPanel = new JPanel(new GridBagLayout());
+
+		// Speaker volume buttons	
+		speakVolLabel = new JLabel("Spk: 3");
+		gb.gridx = 0;
+		gb.gridy = 1;
+		gb.gridwidth = 2;
+		speakerPanel.add(speakVolLabel, gb);
+
+		JButton speakUpBut = new JButton("+");
+		speakUpBut.setBackground(Color.white);
+		gb.gridwidth = 1;
+		gb.gridy = 0;
+		gb.gridx = 1;
+		speakUpBut.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				car.phone.speakVolUp();
+				speakVolLabel.setText("Spk: " + car.phone.getSpeakVol());
+			}
+		});
+		speakerPanel.add(speakUpBut, gb);
+
+		JButton speakDownBut = new JButton("-");
+		speakDownBut.setBackground(Color.white);
+		gb.gridx = 0;
+		speakDownBut.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				car.phone.speakVolDown();
+				speakVolLabel.setText("Spk: " + car.phone.getSpeakVol());
+			}
+		});
+		speakerPanel.add(speakDownBut, gb);
+
+		// Microphone volume buttons
+		micVolLabel = new JLabel("Mic: 3");
+		gb.gridx = 0;
+		gb.gridy = 1;
+		gb.gridwidth = 2;
+		micPanel.add(micVolLabel, gb);
+
+		JButton micVolUpBut = new JButton("+");
+		micVolUpBut.setBackground(Color.white);
+		gb.gridwidth = 1;
+		gb.gridx = 1;
+		gb.gridy = 0;
+		micVolUpBut.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				car.phone.micVolUp();
+				micVolLabel.setText("Mic: " + car.phone.getMicVol());
+			}
+		});
+		micPanel.add(micVolUpBut, gb);
+
+		JButton micVolDownBut = new JButton("-");
+		micVolDownBut.setBackground(Color.white);
+		gb.gridx = 0;
+		micVolDownBut.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				car.phone.micVolDown();
+				micVolLabel.setText("Mic: " + car.phone.getMicVol());
+			}
+		});
+		micPanel.add(micVolDownBut, gb);
+
+		gb.gridwidth = 1;
+		gb.gridy = 2;
+		gb.gridx = 0;
+		gb.gridwidth = 2;
+		rightPhonePanel.add(micPanel, gb);
+
+
+		gb.gridx = 0;
+		gb.gridy = 3;
+		rightPhonePanel.add(speakerPanel, gb);
+
+
+		// Time Label
+		phoneTimeLabel = new JLabel("Time: 0:00");
+		gb.gridy = 4;
+		rightPhonePanel.add(phoneTimeLabel, gb);
 
 		// The for loop makes buttons 1-9, #, 0, *
-		int i;
-		for(i = 1; i < 13; i++)
+		int j;
+		for(j = 1; j < 13; j++)
 		{
-			final String input = Integer.toString(i);
+			final String input = Integer.toString(j);
 			JButton button;
 
 			// creates the * button
-			if(i == 10)
+			if(j == 10)
 			{
 				button = new JButton("*");
 				button.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						car.phone.dialNumber("*");
+						dialNumField.setText(car.phone.getNumberDialed());
 					}
 				});
 			}
 
 			// creates the 0 button
-			else if(i == 11)
+			else if(j == 11)
 			{
 				button = new JButton("0");
 				button.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						car.phone.dialNumber("0");
+						dialNumField.setText(car.phone.getNumberDialed());
 					}
 				});
 			}
 
 			// creates the # button
-			else if(i == 12)
+			else if(j == 12)
 			{
 				button = new JButton("#");
 				button.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						car.phone.dialNumber("#");
+						dialNumField.setText(car.phone.getNumberDialed());
 					}
 				});
 			}
@@ -547,34 +799,41 @@ public class GuiManager {
 			// creates buttons 1-9
 			else
 			{
-				button = new JButton(Integer.toString(i));
+				button = new JButton(Integer.toString(j));
 				button.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						car.phone.dialNumber(input);
+						dialNumField.setText(car.phone.getNumberDialed());
 					}
 				});
 			}
 			button.setBackground(Color.white);
+			button.setFont(new Font("Courier", Font.PLAIN, 15));
 			dialpadPanel.add(button);
 		}
 
-		JPanel leftPhonePanel = new JPanel(new BorderLayout());
+		// empty panels to insert into the leftPhonePanel
 		JPanel emptyPanel1 = new JPanel();
-		emptyPanel1.setBackground(Color.white);
+		emptyPanel1.setBackground(Color.lightGray);
 		JPanel emptyPanel2 = new JPanel();
-		emptyPanel2.setBackground(Color.white);
+		emptyPanel2.setBackground(Color.lightGray);
 		JPanel emptyPanel3= new JPanel();
-		emptyPanel3.setBackground(Color.white);
+		emptyPanel3.setBackground(Color.lightGray);
 		JPanel emptyPanel4 = new JPanel();
-		emptyPanel4.setBackground(Color.white);
+		emptyPanel4.setBackground(Color.lightGray);
 
+		// adding the empty panels to leftphonepanel
 		leftPhonePanel.add("Center", dialpadPanel);
 		leftPhonePanel.add("North", emptyPanel1);
 		leftPhonePanel.add("South", emptyPanel2);
 		leftPhonePanel.add("West", emptyPanel3);
-		leftPhonePanel.add("East", emptyPanel4);
+		leftPhonePanel.add("East", emptyPanel4);			
 
-		phonePanel.add("West", leftPhonePanel);	
+		// adding all the different phone panels to main phone panel
+		phonePanel.add(leftPhonePanel, BorderLayout.WEST);
+		phonePanel.add(centerPhonePanel, BorderLayout.CENTER);
+		phonePanel.add(rightPhonePanel, BorderLayout.EAST);
+
 	}
 
 	/******************************************/
@@ -695,7 +954,8 @@ public class GuiManager {
 		driverCallLogBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		driverCallLogBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Pop-up a window with list of calls made by this driver
+				JOptionPane.showMessageDialog(mainFrame,
+						car.driverManager.currentDriver.displayCallHistory());
 			}          
 		});
 		leftAnalytics.add(driverCallLogBtn);
@@ -787,7 +1047,8 @@ public class GuiManager {
 		sessionCallLogBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		sessionCallLogBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Pop-up a window with list of calls made during this session.
+				JOptionPane.showMessageDialog(mainFrame,
+						car.currentSession.displayCallHistory());
 			}          
 		});
 		rightAnalytics.add(sessionCallLogBtn);
@@ -808,6 +1069,16 @@ public class GuiManager {
 		analyticsPanel.add("South", bottomAnalytics);
 
 	}
+
+	public void updatePhoneTime() {
+		if (car.phone.checkActiveCall()) {
+			car.driverManager.currentDriver.incrementTotalPhoneTime();
+			car.currentSession.incrementPhoneTime();
+			car.phone.incrementCurrentCallTime();
+		}
+		phoneTimeLabel.setText("Time: " + Integer.toString(car.phone.getCurrentCallTime()));
+	}
+
 
 	public void updateAnalyticsPanel() {
 		driverMiles.setText(dfShort.format(car.driverManager.currentDriver.getDistanceDriven()));
@@ -862,6 +1133,8 @@ public class GuiManager {
 
 				car.driverManager.currentDriver.updateMaxSpeed(car.getCurrentSpeed());
 				car.currentSession.updateMaxSpeed(car.getCurrentSpeed());
+
+				updatePhoneTime();
 
 				if (car.radio.getIsOn()) {
 					car.driverManager.currentDriver.incrementRadioTime();

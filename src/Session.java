@@ -2,6 +2,7 @@
 // Each driver contains a history of sessions belonging to that driver.
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Session {
@@ -14,9 +15,11 @@ public class Session {
 	private double fuelUsed;
 	private int radioTime;
 	private int phoneTime;
-	
+	protected ArrayList<Call> callHistory;
+
+
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
-	
+
 	public Session(Driver driver) {	
 		this.driver = driver;
 		timeStamp = new Date();
@@ -26,12 +29,13 @@ public class Session {
 		fuelUsed = 0;
 		phoneTime = 0;
 		radioTime = 0;
+		callHistory = new ArrayList<Call>();
 	}
 
 	public Driver getDriver() {
 		return driver;
 	}
-	
+
 	public Date getTimeStamp() {
 		return timeStamp;
 	}
@@ -93,7 +97,23 @@ public class Session {
 	public void incrementPhoneTime() {
 		phoneTime++;
 	}
-	
+
+	public void saveCall(Call currentCall) {
+		callHistory.add(currentCall);
+	}
+
+	public String displayCallHistory() {
+		String callHistoryDisplay = "";
+		if (callHistory.size() == 0) {
+			callHistoryDisplay = "No completed calls to display.";
+		}
+		for (int i = 0; i < callHistory.size(); i++){
+			Call call = callHistory.get(i);
+			callHistoryDisplay += ( call.toString() + "\n");
+		}
+		return callHistoryDisplay;		
+	}
+
 	public String toString() {
 		String result = "";
 		result += ( timeStamp.toString() + " | ");

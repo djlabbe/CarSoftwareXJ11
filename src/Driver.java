@@ -14,12 +14,12 @@ public class Driver {
 	private double fuelUsed;
 	private int totalRadioTime;
 	private int totalPhoneTime;
-	private ArrayList<Session> sessionHistory;
-	private DecimalFormat dfShort = new DecimalFormat("###0.00");
-
 	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3;
-	protected Contact speedDial1, speedDial2;
+	private ArrayList<Session> sessionHistory;
+	protected ArrayList<Contact> contacts;
+	protected ArrayList<Call> callHistory;
 
+	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 
 	public Driver(String newDriverUsername, String newDriverPassword) {
 		username = newDriverUsername;
@@ -31,14 +31,14 @@ public class Driver {
 		totalRadioTime = 0;
 		totalPhoneTime = 0;
 		sessionHistory = new ArrayList<Session>();
+		callHistory = new ArrayList<Call>();
 		amFav1 = null;
 		amFav2 = null;
 		amFav3 = null;
 		fmFav1 = null;
 		fmFav2 = null;
 		fmFav3 = null;
-		speedDial1 = null;
-		speedDial2 = null;
+		contacts = new ArrayList<Contact>();
 
 	}
 
@@ -110,20 +110,8 @@ public class Driver {
 		totalPhoneTime++;
 	}
 
-	public Contact getSpeedDial1() {
-		return speedDial1;
-	}
-
-	public void setSpeedDial1(Contact contact) {
-		speedDial1 = contact;
-	}
-
-	public Contact getSpeedDial2() {
-		return speedDial2;
-	}
-
-	public void setSpeedDial2(Contact contact) {
-		speedDial2 = contact;
+	public Contact getSpeedDial(int i) {
+		return contacts.get(i);
 	}
 
 	public void setFav(boolean isAm, int favIndex, RadioStation station) {
@@ -160,8 +148,36 @@ public class Driver {
 		}
 	}
 
+	public Contact createContact(String name, String number)
+	{
+		Contact temp = new Contact(name, number);
+		contacts.add(temp);
+		return temp;
+	}
+
+	public ArrayList<Contact> getContacts()
+	{
+		return contacts;
+	}
+
 	public void saveSession(Session currentSession) {
 		sessionHistory.add(currentSession);
+	}
+
+	public void saveCall(Call currentCall) {
+		callHistory.add(currentCall);
+	}
+
+	public String displayCallHistory() {
+		String callHistoryDisplay = "";
+		if (callHistory.size() == 0) {
+			callHistoryDisplay = "No completed calls to display.";
+		}
+		for (int i = 0; i < callHistory.size(); i++){
+			Call call = callHistory.get(i);
+			callHistoryDisplay += ( call.toString() + "\n");
+		}
+		return callHistoryDisplay;		
 	}
 
 	public String displaySessionHistory() {
