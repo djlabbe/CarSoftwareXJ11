@@ -640,9 +640,8 @@ public class GuiManager {
 		// Putting contacts into a list for the Jlist
 		contactList = new DefaultListModel<Contact>();
 		contactArray = car.driverManager.currentDriver.getContacts();
-		int i;
 		if(contactArray != null){
-			for(i = 0; i < contactArray.size(); i++)
+			for(int i = 0; i < contactArray.size(); i++)
 				contactList.addElement(contactArray.get(i));
 		}
 		contactList.addElement(new Contact());
@@ -664,7 +663,9 @@ public class GuiManager {
 		contactText.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				car.phone.resetNumberBeingDialed();
-				dialNumField.setText(contactText.getSelectedValue().getPhoneNumber());
+				String contactNumber = contactText.getSelectedValue().getPhoneNumber();
+				dialNumField.setText(contactNumber);
+				car.phone.setContactActive(contactNumber);
 			}
 		});
 		JScrollPane scrollContact = new JScrollPane(contactText);
@@ -768,7 +769,6 @@ public class GuiManager {
 					}
 				});
 				contactPanel.add(enterButton, gb);
-
 				contactDialog.add(contactPanel);
 				contactDialog.setVisible(true);
 

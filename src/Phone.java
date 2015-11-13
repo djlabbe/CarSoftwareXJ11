@@ -121,5 +121,9 @@ public class Phone
 	public ArrayList<Contact> getContacts() {
 		return contacts;
 	}
+	
+	public void setContactActive(String contactNum) {
+		numberBeingDialed = contactNum;
+	}
 
 }
