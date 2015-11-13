@@ -202,9 +202,11 @@ public class GuiManager {
 		radioButton.setBorder(bevelledBorder);
 		radioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
-				cardLayout.show(appPanel, "RADIOPANEL");
-				System.out.println("Show Radio");
+				if (car.getIsOn()) {
+					CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
+					cardLayout.show(appPanel, "RADIOPANEL");
+					System.out.println("Show Radio");
+				}			
 			}          
 		});
 
@@ -215,9 +217,11 @@ public class GuiManager {
 		phoneButton.setBorder(bevelledBorder);
 		phoneButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
-				cardLayout.show(appPanel, "PHONEPANEL");
-				System.out.println("Show Phone");
+				if (car.getIsOn()) {
+					CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
+					cardLayout.show(appPanel, "PHONEPANEL");
+					System.out.println("Show Phone");
+				}
 			}          
 		});
 
@@ -228,9 +232,12 @@ public class GuiManager {
 		mapButton.setBorder(bevelledBorder);
 		mapButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
-				cardLayout.show(appPanel, "MAPPANEL");
-				System.out.println("Show Map");
+				if (car.getIsOn()) {
+					CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
+					cardLayout.show(appPanel, "MAPPANEL");
+					System.out.println("Show Map");
+				}
+				
 			}          
 		});
 
@@ -241,9 +248,12 @@ public class GuiManager {
 		statsButton.setBorder(bevelledBorder);
 		statsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
-				cardLayout.show(appPanel, "ANALYTICSPANEL");
-				System.out.println("Show Analytics");
+				if (car.getIsOn()) {
+					CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
+					cardLayout.show(appPanel, "ANALYTICSPANEL");
+					System.out.println("Show Analytics");
+				}
+				
 			}          
 		});
 
@@ -322,7 +332,7 @@ public class GuiManager {
 		brakeButton.setFont(brakeButton.getFont().deriveFont (coreFontSize));
 		brakeButton.setBorder(bevelledBorder);
 		brakeButton.setBackground(Color.DARK_GRAY);
-		brakeButton.setForeground(Color.WHITE);
+		brakeButton.setForeground(Color.RED);
 		brakeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentSpeed.setText(dfTwo.format(car.decelerate()) + " MPH | ");
@@ -333,7 +343,7 @@ public class GuiManager {
 		gasButton.setFont(gasButton.getFont().deriveFont (coreFontSize));
 		gasButton.setBorder(bevelledBorder);
 		gasButton.setBackground(Color.DARK_GRAY);
-		gasButton.setForeground(Color.WHITE);
+		gasButton.setForeground(Color.GREEN);
 		gasButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentSpeed.setText(dfTwo.format(car.accelerate()) + " MPH | ");
@@ -691,6 +701,7 @@ public class GuiManager {
 		// End Button
 		endButton = new JButton("End");
 		endButton.setBackground(Color.red);
+		endButton.setVisible(false);
 		gb.gridx = 1;
 		gb.gridy = 0;
 		endButton.addActionListener(new ActionListener(){
@@ -705,6 +716,7 @@ public class GuiManager {
 		});
 		rightPhonePanel.add(endButton, gb);
 
+		
 		// Add Contact Button
 		JButton addContactButton = new JButton("Add Contact");
 		addContactButton.setBackground(Color.white);
@@ -933,19 +945,33 @@ public class GuiManager {
 		// empty panels to insert into the leftPhonePanel
 		JPanel emptyPanel1 = new JPanel();
 		emptyPanel1.setBackground(Color.LIGHT_GRAY);
-		JPanel emptyPanel2 = new JPanel();
+		
+		JPanel bottomPadPanel = new JPanel();
+		bottomPadPanel.setBackground(Color.LIGHT_GRAY);
+		
+		JButton clearButton = new JButton("Clear");
+		clearButton.setBackground(Color.white);
+		clearButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				car.phone.resetNumberBeingDialed();
+				dialNumField.setText("");
+			}
+		});
+		
+		bottomPadPanel.add(clearButton);
+		
+		
+		JPanel emptyPanel2= new JPanel();
 		emptyPanel2.setBackground(Color.LIGHT_GRAY);
-		JPanel emptyPanel3= new JPanel();
+		JPanel emptyPanel3 = new JPanel();
 		emptyPanel3.setBackground(Color.LIGHT_GRAY);
-		JPanel emptyPanel4 = new JPanel();
-		emptyPanel4.setBackground(Color.LIGHT_GRAY);
 
-		// adding the empty panels to leftphonepanel
+		// adding the border panels to leftphonepanel
 		leftPhonePanel.add("Center", dialpadPanel);
 		leftPhonePanel.add("North", emptyPanel1);
-		leftPhonePanel.add("South", emptyPanel2);
+		leftPhonePanel.add("South", bottomPadPanel);
 		leftPhonePanel.add("West", emptyPanel3);
-		leftPhonePanel.add("East", emptyPanel4);			
+		leftPhonePanel.add("East", emptyPanel3);			
 
 		// adding all the different phone panels to main phone panel
 		phonePanel.add(leftPhonePanel, BorderLayout.WEST);
