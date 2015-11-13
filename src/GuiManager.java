@@ -625,6 +625,7 @@ public class GuiManager {
 		dialNumField = new JTextField("", 8);
 		dialNumField.setBackground(Color.WHITE);
 		dialNumField.setFont(new Font("Arial", Font.PLAIN, 30));
+		dialNumField.setHorizontalAlignment(SwingConstants.CENTER);
 		dialNumField.setEditable(false);
 		gb.weightx = 1;
 		gb.weighty = 1;
@@ -762,7 +763,15 @@ public class GuiManager {
 				gb.gridwidth = 3;
 				enterButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						contactArray.add(car.driverManager.currentDriver.createContact(nameText.getText(), numText.getText()));
+						String numToSave = "";
+						String enteredNum = numText.getText().trim();
+						for (int i = 0; i < enteredNum.length(); i++) {
+							if ((i == 3 || i == 6) && enteredNum.charAt(3) != '-' && enteredNum.charAt(7) != '-') {
+								numToSave += "-";
+							}
+							numToSave += enteredNum.charAt(i);
+						}
+						contactArray.add(car.driverManager.currentDriver.createContact(nameText.getText().trim(), numToSave));
 						contactList.addElement(contactArray.get(contactArray.size()-1));
 						contactDialog.dispose();
 						System.out.println("Contact created.");
