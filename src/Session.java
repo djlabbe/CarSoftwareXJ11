@@ -1,5 +1,7 @@
-// A new session is created every time a driver logs in.
-// Each driver contains a history of sessions belonging to that driver.
+/* Session represents the currentDrivers current activity in the Car since the last time a user logged in.
+ * A new session is created every time a driver logs in. 
+ * Each driver contains a history of sessions belonging to that driver.*/
+
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

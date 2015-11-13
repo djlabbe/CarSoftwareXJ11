@@ -1,6 +1,4 @@
-/* Maintain a list of registered drivers and their associated data and
- * handle the login and registration of drivers.
- */
+/* GUI for driver authentication. */
 
 /* Basic Login functionality code adapted from "3 Steps to Create Login Dialog in Java Swing"
  * http://www.zentut.com/java-swing/simple-login-dialog/ */

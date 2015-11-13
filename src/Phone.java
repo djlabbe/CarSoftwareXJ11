@@ -1,3 +1,8 @@
+/* Phone contains all the functionality of a regular telephone.
+ * Phone has a dial to dial a number.
+ * Phone retrieves a list of user contacts to use as SpeedDial entries.
+ * Phone has both speaker and microphone volume and associated controls. */
+
 import java.util.ArrayList;
 
 public class Phone 

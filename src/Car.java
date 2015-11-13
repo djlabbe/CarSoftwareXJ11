@@ -1,9 +1,7 @@
 /* Car models functions related to the engine and movement of the vehicle.
- * A Car has Radio, Phone, Map, and Analytics
- * A Car has a currentDriver which is set by the DriverManger through the driver login functionality.
+ * A Car has DriverManager, a Session, a Radio, a Phone, and a Map.
+ * Each component is responsible for managing its' own data and operations.
  */
-
-// #TODO : Figure out how to disable the red x to close the login window without logging in.
 
 import java.awt.FlowLayout;
 import javax.swing.JFrame;
@@ -31,10 +29,9 @@ public class Car {
 		radio = new Radio();
 		phone = new Phone();
 		map = new Map();
-
 	}
 
-	// Call the login pop-up window and activate the new driver. 
+	// Call the login pop-up window and activate the newly logged in or registered driver. 
 	public void login() {
 		final JFrame frame = new JFrame("Login");
 		frame.setSize(300, 100);
@@ -48,10 +45,9 @@ public class Car {
 		}
 	}
 
-	// Retrieve saved driver settings for radio and phone.
+	// Retrieve saved driver settings for radio (and phone?)
 	public void setUserFavorites() {
 		radio.setUserFavorites(driverManager.currentDriver);
-		// phone.setUserSpeedDial(driverManager.currentDriver);
 	}
 
 	public boolean getIsOn() {

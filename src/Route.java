@@ -1,3 +1,6 @@
+/* Represents a straight-line linear distance route.
+ * Each route object has a distance, a name, and records the car's progress into the route. */
+
 public class Route {
 
 	private double routeDistance;

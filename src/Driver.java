@@ -1,8 +1,8 @@
+/* Represent a user of the Car. Has a user-name, password, and multiple data tracking fields. 
+ * Stores favorites for each user that are loaded by the Radio and Phone when the driver logs into the Car.*/
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
-/* Represent a user of the Car. Has a username, password, and multiple data tracking fields. 
- * Stores favorites for each user that are loaded by the Radio and Phone when the driver logs into the Car.*/
 
 public class Driver {
 
@@ -148,8 +148,7 @@ public class Driver {
 		}
 	}
 
-	public Contact createContact(String name, String number)
-	{
+	public Contact createContact(String name, String number) {
 		Contact temp = new Contact(name, number);
 		contacts.add(temp);
 		return temp;

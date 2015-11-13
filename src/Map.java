@@ -1,3 +1,6 @@
+/* Map maintains a list of all known routes available to the Car,
+ * and makes them available to the GUI for display. */
+
 import java.util.*;
 
 public class Map {

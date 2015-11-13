@@ -1,3 +1,10 @@
+/* The DriverManager maintains a list of all known Drivers of the Car as well as the currentDriver.
+ * The currentDriver is the set by at login.
+ * DriverManager also contains the methods used by the LoginGuiManager for user authentication.*/
+
+/* Basic Login functionality code adapted from "3 Steps to Create Login Dialog in Java Swing"
+ * http://www.zentut.com/java-swing/simple-login-dialog/ */
+
 import java.util.ArrayList;
 
 public class DriverManager {
@@ -44,8 +51,7 @@ public class DriverManager {
 		return registeredDriver;
 	}
 	
-	
-	
+	// Return a human-readable list of all known drivers.
 	public String displayKnownDrivers() {
 		String knownDriversDisplay = "";
 		for (int i = 0; i < knownDrivers.size(); i++){

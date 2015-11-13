@@ -20,6 +20,8 @@ The XJ-11 is a modern car software system designed for use an high-end automobil
 * [userguide.pdf]
 
 ### Todos
-
+ - Make contact refresh to current user's list on new login.
+ - Improve "add-contact" formatting. Save all Call.numbers with or without "-" regardless of whether dialed or a contact.
+ - Either enforce exact 10 digit phone numbers, or fix format checking for shorter numbers.
  - Design test cases and test everything!
  - Work on other deliverables - analysis documents in particular.

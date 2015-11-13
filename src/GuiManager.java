@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -194,12 +193,18 @@ public class GuiManager {
 	/*************  NAV PANEL  ****************/
 	/******************************************/
 
+	private JButton makeNavButton(String label) {
+		JButton button = new JButton(label);
+		button.setFont(button.getFont().deriveFont(18.0f));
+		button.setBackground(Color.DARK_GRAY);
+		button.setForeground(Color.WHITE);
+		button.setBorder(bevelledBorder);
+		return button;
+	}
+	
 	private void setupNavPanel() {
-		radioButton = new JButton("Radio");
-		radioButton.setFont(radioButton.getFont().deriveFont (18.0f));
-		radioButton.setBackground(Color.DARK_GRAY);
-		radioButton.setForeground(Color.WHITE);
-		radioButton.setBorder(bevelledBorder);
+		
+		radioButton = makeNavButton("Radio");
 		radioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.getIsOn()) {
@@ -209,12 +214,8 @@ public class GuiManager {
 				}			
 			}          
 		});
-
-		phoneButton = new JButton("Phone");
-		phoneButton.setFont(phoneButton.getFont().deriveFont (18.0f));
-		phoneButton.setBackground(Color.DARK_GRAY);
-		phoneButton.setForeground(Color.WHITE);
-		phoneButton.setBorder(bevelledBorder);
+		
+		phoneButton = makeNavButton("Phone");
 		phoneButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.getIsOn()) {
@@ -225,11 +226,7 @@ public class GuiManager {
 			}          
 		});
 
-		mapButton = new JButton("Map");
-		mapButton.setFont(mapButton.getFont().deriveFont (18.0f));
-		mapButton.setBackground(Color.DARK_GRAY);
-		mapButton.setForeground(Color.WHITE);
-		mapButton.setBorder(bevelledBorder);
+		mapButton = makeNavButton("Map");
 		mapButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.getIsOn()) {
@@ -241,11 +238,7 @@ public class GuiManager {
 			}          
 		});
 
-		statsButton = new JButton("Stats");
-		statsButton.setFont(statsButton.getFont().deriveFont (18.0f));
-		statsButton.setBackground(Color.DARK_GRAY);
-		statsButton.setForeground(Color.WHITE);
-		statsButton.setBorder(bevelledBorder);
+		statsButton = makeNavButton("Stats");
 		statsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.getIsOn()) {
@@ -266,15 +259,23 @@ public class GuiManager {
 	/******************************************/
 	/************  CORE PANEL  ***************/
 	/******************************************/
+	
+	private JButton makeCoreButton(String label) {
+		JButton button = new JButton(label);
+		button.setFont(button.getFont().deriveFont(coreFontSize));
+		button.setBackground(Color.DARK_GRAY);
+		button.setForeground(Color.WHITE);
+		button.setBorder(bevelledBorder);
+		return button;
+	}
+	
+	
+	
 
 	// CorePanel displays core car functionality such as Power, Gas, and Brake.
 	private void setupCorePanel() {
 
-		loginButton = new JButton("Login");
-		loginButton.setFont(loginButton.getFont().deriveFont (coreFontSize));
-		loginButton.setBorder(bevelledBorder);
-		loginButton.setBackground(Color.DARK_GRAY);
-		loginButton.setForeground(Color.WHITE);
+		loginButton = makeCoreButton("Login");
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!car.getIsOn()) {
@@ -291,11 +292,7 @@ public class GuiManager {
 			}          
 		});
 
-		powerButton = new JButton("ON");
-		powerButton.setFont(powerButton.getFont().deriveFont (coreFontSize));
-		powerButton.setBorder(bevelledBorder);
-		powerButton.setBackground(Color.DARK_GRAY);
-		powerButton.setForeground(Color.WHITE);
+		powerButton = makeCoreButton("ON");
 		powerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				car.togglePower();
@@ -316,11 +313,7 @@ public class GuiManager {
 			}          
 		});
 
-		refuelButton = new JButton("Refuel");
-		refuelButton.setFont(refuelButton.getFont().deriveFont (coreFontSize));
-		refuelButton.setBorder(bevelledBorder);
-		refuelButton.setBackground(Color.DARK_GRAY);
-		refuelButton.setForeground(Color.WHITE);
+		refuelButton = makeCoreButton("Refuel");
 		refuelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				car.refuel();
@@ -328,10 +321,7 @@ public class GuiManager {
 			}          
 		});
 
-		brakeButton = new JButton("BRAKE");
-		brakeButton.setFont(brakeButton.getFont().deriveFont (coreFontSize));
-		brakeButton.setBorder(bevelledBorder);
-		brakeButton.setBackground(Color.DARK_GRAY);
+		brakeButton = makeCoreButton("BRAKE");
 		brakeButton.setForeground(Color.RED);
 		brakeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -339,10 +329,7 @@ public class GuiManager {
 			}          
 		});
 
-		gasButton = new JButton("GAS");
-		gasButton.setFont(gasButton.getFont().deriveFont (coreFontSize));
-		gasButton.setBorder(bevelledBorder);
-		gasButton.setBackground(Color.DARK_GRAY);
+		gasButton = makeCoreButton("GAS");
 		gasButton.setForeground(Color.GREEN);
 		gasButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -381,9 +368,7 @@ public class GuiManager {
 		xj11Label.setHorizontalAlignment(SwingConstants.CENTER);
 		xj11Label.setFont (xj11Label.getFont().deriveFont (35.0f));
 		welcomeMessageHolder.add(xj11Label);
-		
-		
-		
+			
 	};	
 
 	/******************************************/
@@ -993,7 +978,6 @@ public class GuiManager {
 		mapSlider.setEnabled(false);
 		mapPanel.add("Center", mapSlider);
 
-
 		JComboBox<String> routeSelector = new JComboBox<String>(car.map.getRouteList());
 		mapPanel.add("North", routeSelector);
 		routeSelector.addActionListener(new ActionListener(){
@@ -1014,7 +998,6 @@ public class GuiManager {
 		});
 	}
 
-
 	private void setSliderSpacing(int routeDistance) {
 		mapSlider.setMajorTickSpacing((int)car.map.getCurrentRoute().getRouteDistance() / 4);
 		mapSlider.setLabelTable(mapSlider.createStandardLabels(routeDistance / 4));
@@ -1030,7 +1013,6 @@ public class GuiManager {
 			label.setText(String.valueOf(dfMap.format((double)i/100.0)));
 			label.setSize(50, 20);
 		}
-
 	}
 
 	// An executable to be run by the event dispatch thread to update a Swing GUI component.
@@ -1044,6 +1026,12 @@ public class GuiManager {
 	/***********  ANALYTICS PANEL  ************/
 	/******************************************/
 
+	private JLabel makeAnalyticsLabel(String label) {
+		JLabel newJLabel = new JLabel(label);
+		newJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		return newJLabel;
+	}
+	
 	private void setupAnalyticsPanel() {
 		JPanel leftAnalytics = new JPanel();
 		leftAnalytics.setLayout(new BoxLayout(leftAnalytics, BoxLayout.Y_AXIS));
@@ -1062,37 +1050,28 @@ public class GuiManager {
 		bottomAnalytics.setBackground(Color.LIGHT_GRAY);
 
 		// Left Analytics (Driver)
-		JLabel driverTitle = new JLabel("   " + car.driverManager.currentDriver.toString().toUpperCase() + "   ");
-		driverTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
-		driverTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel driverTitle = makeAnalyticsLabel("   " + car.driverManager.currentDriver.toString().toUpperCase() + "   ");
 		leftAnalytics.add(driverTitle);
 
-		driverMiles = new JLabel("");
-		driverMiles.setAlignmentX(Component.CENTER_ALIGNMENT);
+		driverMiles = makeAnalyticsLabel("");
 		leftAnalytics.add(driverMiles);
 
-		driverTime = new JLabel("");
-		driverTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		driverTime = makeAnalyticsLabel("");
 		leftAnalytics.add(driverTime);
 
-		driverAvgSpeed = new JLabel("");
-		driverAvgSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
+		driverAvgSpeed = makeAnalyticsLabel("");
 		leftAnalytics.add(driverAvgSpeed);
 
-		driverMaxSpeed = new JLabel("");
-		driverMaxSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
+		driverMaxSpeed = makeAnalyticsLabel("");
 		leftAnalytics.add(driverMaxSpeed);
 
-		driverFuelUsed = new JLabel("");
-		driverFuelUsed.setAlignmentX(Component.CENTER_ALIGNMENT);
+		driverFuelUsed = makeAnalyticsLabel("");
 		leftAnalytics.add(driverFuelUsed);
 
-		driverRadioTime = new JLabel("");
-		driverRadioTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		driverRadioTime =makeAnalyticsLabel("");
 		leftAnalytics.add(driverRadioTime);
 
-		driverPhoneTime = new JLabel("");
-		driverPhoneTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		driverPhoneTime = makeAnalyticsLabel("");
 		leftAnalytics.add(driverPhoneTime);
 
 		JButton driverCallLogBtn = new JButton("Call Log");
@@ -1119,73 +1098,57 @@ public class GuiManager {
 
 		// Center Analytics (Labels)
 
-		JLabel categoryTitle = new JLabel("STATS");
-		categoryTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel categoryTitle = makeAnalyticsLabel("STATS");
 		categoryTitle.setFont (categoryTitle.getFont().deriveFont (18.0f));
 		centerAnalytics.add(categoryTitle);
 
-		JLabel milesLabel = new JLabel("Distance Travelled (Miles)");
-		milesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel milesLabel = makeAnalyticsLabel("Distance Travelled (Miles)");
 		centerAnalytics.add(milesLabel);
 
-		JLabel timeLabel = new JLabel("Time Active (Seconds)");
-		timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel timeLabel = makeAnalyticsLabel("Time Active (Seconds)");
 		centerAnalytics.add(timeLabel);
 
-		JLabel avgSpeedLabel = new JLabel("Average Speed (Miles / Hour)");
-		avgSpeedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel avgSpeedLabel = makeAnalyticsLabel("Average Speed (Miles / Hour)");
 		centerAnalytics.add(avgSpeedLabel);
 
-		JLabel maxSpeedLabel = new JLabel("Maximum Speed (Miles / Hour)");
-		maxSpeedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel maxSpeedLabel = makeAnalyticsLabel("Maximum Speed (Miles / Hour)");
 		centerAnalytics.add(maxSpeedLabel);
 
-		JLabel mpgLabel = new JLabel("Fuel Used (Gallons)");
-		mpgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel mpgLabel = makeAnalyticsLabel("Fuel Used (Gallons)");
 		centerAnalytics.add(mpgLabel);
 
-		JLabel radioTimeLabel = new JLabel("Radio Time (Seconds)");
-		radioTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel radioTimeLabel = makeAnalyticsLabel("Radio Time (Seconds)");
 		centerAnalytics.add(radioTimeLabel);
 
-		JLabel phoneTimeLabel = new JLabel("Phone Time (Seconds)");
-		phoneTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel phoneTimeLabel = makeAnalyticsLabel("Phone Time (Seconds)");
 		centerAnalytics.add(phoneTimeLabel);
 
 
 		// Right Analytics (Session)
 
-		JLabel sessionTitle = new JLabel("SESSION");
+		JLabel sessionTitle = makeAnalyticsLabel("SESSION");
 		sessionTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
-		sessionTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rightAnalytics.add(sessionTitle);
 
-		sessionMiles = new JLabel("");
-		sessionMiles.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sessionMiles = makeAnalyticsLabel("");
 		rightAnalytics.add(sessionMiles);
 
-		sessionTime = new JLabel("");
-		sessionTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sessionTime = makeAnalyticsLabel("");
 		rightAnalytics.add(sessionTime);
 
-		sessionAvgSpeed = new JLabel("");
-		sessionAvgSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sessionAvgSpeed = makeAnalyticsLabel("");
 		rightAnalytics.add(sessionAvgSpeed);
 
-		sessionMaxSpeed = new JLabel("");
-		sessionMaxSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sessionMaxSpeed = makeAnalyticsLabel("");
 		rightAnalytics.add(sessionMaxSpeed);
 
-		sessionFuelUsed = new JLabel("");
-		sessionFuelUsed.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sessionFuelUsed = makeAnalyticsLabel("");;
 		rightAnalytics.add(sessionFuelUsed);
 
-		sessionRadioTime = new JLabel("");
-		sessionRadioTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sessionRadioTime = makeAnalyticsLabel("");
 		rightAnalytics.add(sessionRadioTime);
 
-		sessionPhoneTime = new JLabel("");
-		sessionPhoneTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+		sessionPhoneTime = makeAnalyticsLabel("");
 		rightAnalytics.add(sessionPhoneTime);
 
 		JButton sessionCallLogBtn = new JButton("Call Log");
@@ -1293,9 +1256,7 @@ public class GuiManager {
 
 				// Asynchronously update the map position slider
 				SwingUtilities.invokeLater(updateSliderPosition);
-
 			}
 		},begin, timeinterval);
 	}
-
 }
