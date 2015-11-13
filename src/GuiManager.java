@@ -955,7 +955,7 @@ public class GuiManager {
 		leftPhonePanel.add("Center", dialpadPanel);
 		leftPhonePanel.add("North", emptyPanel1);
 		leftPhonePanel.add("South", bottomPadPanel);
-		leftPhonePanel.add("West", emptyPanel3);
+		leftPhonePanel.add("West", emptyPanel2);
 		leftPhonePanel.add("East", emptyPanel3);			
 
 		// adding all the different phone panels to main phone panel
