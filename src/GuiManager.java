@@ -8,6 +8,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -29,7 +31,9 @@ public class GuiManager {
 	sessionFuelUsed, sessionRadioTime, sessionPhoneTime, phoneTimeLabel;
 
 	private JButton radioButton, phoneButton, mapButton, statsButton, powerButton, gasButton, brakeButton, 
-	refuelButton, loginButton;
+	refuelButton, loginButton, endButton, callButton;
+	
+	private JTextField dialNumField;
 
 	private JList<Contact> contactText;
 	private JTextField nameText, numText;
@@ -46,8 +50,10 @@ public class GuiManager {
 
 	private Timer timer;
 	private double deltaDistance;
+	private final float coreFontSize = 16.0f;
 	
 	private CardLayout appLayout = new CardLayout();
+	Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
 
 	// GUI operates for a specific car object which is passed in on GUI initialization.
 	public GuiManager() {
@@ -87,6 +93,7 @@ public class GuiManager {
 
 		labelPanel = new JPanel();
 		labelPanel.setBackground(Color.DARK_GRAY);
+		labelPanel.setBorder(bevelledBorder);
 
 		navPanel = new JPanel();
 		navPanel.setLayout(new GridLayout(4, 1));
@@ -101,6 +108,7 @@ public class GuiManager {
 
 		emptyPanel = new JPanel();
 		emptyPanel.setBackground(Color.DARK_GRAY);
+		emptyPanel.setBorder(bevelledBorder);
 
 		// Add all panels to the main frame
 		mainFrame.add("North", labelPanel);
@@ -126,7 +134,7 @@ public class GuiManager {
 		mapPanel = new JPanel(new BorderLayout());
 
 		analyticsPanel = new JPanel(new BorderLayout());
-		analyticsPanel.setBackground(Color.WHITE);
+		analyticsPanel.setBackground(Color.LIGHT_GRAY);
 		
 		appPanel.add(welcomePanel, "WELCOMEPANEL");
 		appPanel.add(radioPanel, "RADIOPANEL");
@@ -188,8 +196,10 @@ public class GuiManager {
 
 	private void setupNavPanel() {
 		radioButton = new JButton("Radio");
+		radioButton.setFont(radioButton.getFont().deriveFont (18.0f));
 		radioButton.setBackground(Color.DARK_GRAY);
 		radioButton.setForeground(Color.WHITE);
+		radioButton.setBorder(bevelledBorder);
 		radioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
@@ -199,8 +209,10 @@ public class GuiManager {
 		});
 
 		phoneButton = new JButton("Phone");
+		phoneButton.setFont(phoneButton.getFont().deriveFont (18.0f));
 		phoneButton.setBackground(Color.DARK_GRAY);
 		phoneButton.setForeground(Color.WHITE);
+		phoneButton.setBorder(bevelledBorder);
 		phoneButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
@@ -210,8 +222,10 @@ public class GuiManager {
 		});
 
 		mapButton = new JButton("Map");
+		mapButton.setFont(mapButton.getFont().deriveFont (18.0f));
 		mapButton.setBackground(Color.DARK_GRAY);
 		mapButton.setForeground(Color.WHITE);
+		mapButton.setBorder(bevelledBorder);
 		mapButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
@@ -221,8 +235,10 @@ public class GuiManager {
 		});
 
 		statsButton = new JButton("Stats");
+		statsButton.setFont(statsButton.getFont().deriveFont (18.0f));
 		statsButton.setBackground(Color.DARK_GRAY);
 		statsButton.setForeground(Color.WHITE);
+		statsButton.setBorder(bevelledBorder);
 		statsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout)(appPanel.getLayout());
@@ -245,6 +261,8 @@ public class GuiManager {
 	private void setupCorePanel() {
 
 		loginButton = new JButton("Login");
+		loginButton.setFont(loginButton.getFont().deriveFont (coreFontSize));
+		loginButton.setBorder(bevelledBorder);
 		loginButton.setBackground(Color.DARK_GRAY);
 		loginButton.setForeground(Color.WHITE);
 		loginButton.addActionListener(new ActionListener() {
@@ -263,7 +281,9 @@ public class GuiManager {
 			}          
 		});
 
-		powerButton = new JButton("On | Off");
+		powerButton = new JButton("ON");
+		powerButton.setFont(powerButton.getFont().deriveFont (coreFontSize));
+		powerButton.setBorder(bevelledBorder);
 		powerButton.setBackground(Color.DARK_GRAY);
 		powerButton.setForeground(Color.WHITE);
 		powerButton.addActionListener(new ActionListener() {
@@ -271,13 +291,15 @@ public class GuiManager {
 				car.togglePower();
 				if (car.getIsOn() && car.getCurrentSpeed() == 0) {
 					appLayout.show(appPanel, "RADIOPANEL");
+					powerButton.setText("OFF");
 					System.out.println("Engine turned on.");
 					runLoop();
 				} else if (car.getCurrentSpeed() == 0) {
-					appLayout.show(appPanel, "WELCOMEPANEL");
-					System.out.println("Engine turned off.");
 					timer.cancel();
 					timer.purge();
+					appLayout.show(appPanel, "WELCOMEPANEL");
+					powerButton.setText("ON");
+					System.out.println("Engine turned off.");
 				} else {
 					System.out.println("Can't turn off engine while car is moving.");
 				}
@@ -285,6 +307,8 @@ public class GuiManager {
 		});
 
 		refuelButton = new JButton("Refuel");
+		refuelButton.setFont(refuelButton.getFont().deriveFont (coreFontSize));
+		refuelButton.setBorder(bevelledBorder);
 		refuelButton.setBackground(Color.DARK_GRAY);
 		refuelButton.setForeground(Color.WHITE);
 		refuelButton.addActionListener(new ActionListener() {
@@ -295,6 +319,8 @@ public class GuiManager {
 		});
 
 		brakeButton = new JButton("BRAKE");
+		brakeButton.setFont(brakeButton.getFont().deriveFont (coreFontSize));
+		brakeButton.setBorder(bevelledBorder);
 		brakeButton.setBackground(Color.DARK_GRAY);
 		brakeButton.setForeground(Color.WHITE);
 		brakeButton.addActionListener(new ActionListener() {
@@ -304,6 +330,8 @@ public class GuiManager {
 		});
 
 		gasButton = new JButton("GAS");
+		gasButton.setFont(gasButton.getFont().deriveFont (coreFontSize));
+		gasButton.setBorder(bevelledBorder);
 		gasButton.setBackground(Color.DARK_GRAY);
 		gasButton.setForeground(Color.WHITE);
 		gasButton.addActionListener(new ActionListener() {
@@ -326,7 +354,7 @@ public class GuiManager {
 
 	private void setupWelcomePanel() {
 		
-		JPanel welcomeMessageHolder = new JPanel(new GridLayout(2,1));
+		JPanel welcomeMessageHolder = new JPanel(new GridLayout(3,1));
 		welcomeMessageHolder.setBackground(Color.WHITE);
 		welcomePanel.add(welcomeMessageHolder);
 		
@@ -334,10 +362,18 @@ public class GuiManager {
 		welcomeLabel.setFont (welcomeLabel.getFont().deriveFont (45.0f));
 		welcomeMessageHolder.add(welcomeLabel);
 		
-		JLabel xj11Label = new JLabel ("to the XJ-11");
+		JLabel filler = new JLabel ("TO THE");
+		filler.setHorizontalAlignment(SwingConstants.CENTER);
+		filler.setFont (filler.getFont().deriveFont (18.0f));
+		welcomeMessageHolder.add(filler);
+		
+		JLabel xj11Label = new JLabel ("XJ-11");
 		xj11Label.setHorizontalAlignment(SwingConstants.CENTER);
-		xj11Label.setFont (welcomeLabel.getFont().deriveFont (30.0f));
+		xj11Label.setFont (xj11Label.getFont().deriveFont (35.0f));
 		welcomeMessageHolder.add(xj11Label);
+		
+		
+		
 	};	
 
 	/******************************************/
@@ -351,7 +387,7 @@ public class GuiManager {
 		JPanel topRadioPanel = new JPanel();
 		topRadioPanel.setBackground(Color.LIGHT_GRAY);
 
-		JButton radioPowerButton = new JButton("On | Off");
+		JButton radioPowerButton = new JButton("ON");
 		radioPowerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				car.radio.togglePower();
@@ -359,11 +395,13 @@ public class GuiManager {
 					modulusLabel.setVisible(true);
 					updateStationLabel();
 					radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
+					radioPowerButton.setText("OFF");
 					System.out.println("Radio turned on.");
 				} else {
 					modulusLabel.setVisible(false);
 					stationLabel.setText("OsirusXM");
 					radioVolumeLabel.setText("-");
+					radioPowerButton.setText("ON");
 					System.out.println("Radio turned off.");
 				}
 
@@ -584,9 +622,9 @@ public class GuiManager {
 		final JLabel micVolLabel;
 
 		// TextField for the dialed number in the center panel
-		final JTextField dialNumField = new JTextField("", 8);
+		dialNumField = new JTextField("", 8);
 		dialNumField.setBackground(Color.WHITE);
-		dialNumField.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+		dialNumField.setFont(new Font("Arial", Font.PLAIN, 30));
 		dialNumField.setEditable(false);
 		gb.weightx = 1;
 		gb.weighty = 1;
@@ -633,7 +671,7 @@ public class GuiManager {
 		centerPhonePanel.add(scrollContact, gb);
 
 		// Call Button
-		JButton callButton = new JButton("Call");
+		callButton = new JButton("Call");
 		callButton.setBackground(Color.green);
 		gb.insets = new Insets(0,0,0,0);
 		gb.gridheight = 1;
@@ -649,7 +687,7 @@ public class GuiManager {
 		rightPhonePanel.add(callButton, gb);
 
 		// End Button
-		JButton endButton = new JButton("End");
+		endButton = new JButton("End");
 		endButton.setBackground(Color.red);
 		gb.gridx = 1;
 		gb.gridy = 0;
@@ -659,6 +697,8 @@ public class GuiManager {
 				car.driverManager.currentDriver.saveCall(car.phone.currentCall);
 				car.currentSession.saveCall(car.phone.currentCall);
 				car.phone.currentCall = null;
+				car.phone.resetNumberBeingDialed();
+				dialNumField.setText("");
 			}
 		});
 		rightPhonePanel.add(endButton, gb);
@@ -972,19 +1012,19 @@ public class GuiManager {
 	private void setupAnalyticsPanel() {
 		JPanel leftAnalytics = new JPanel();
 		leftAnalytics.setLayout(new BoxLayout(leftAnalytics, BoxLayout.Y_AXIS));
-		leftAnalytics.setBackground(Color.white);
+		leftAnalytics.setBackground(Color.LIGHT_GRAY);
 
 		JPanel centerAnalytics = new JPanel();
 		centerAnalytics.setLayout(new BoxLayout(centerAnalytics, 1));
-		centerAnalytics.setBackground(Color.white);
+		centerAnalytics.setBackground(Color.LIGHT_GRAY);
 
 		JPanel rightAnalytics= new JPanel();
 		rightAnalytics.setLayout(new BoxLayout(rightAnalytics, 1));
-		rightAnalytics.setBackground(Color.white);
+		rightAnalytics.setBackground(Color.LIGHT_GRAY);
 
 		JPanel bottomAnalytics = new JPanel();
 		bottomAnalytics.setLayout(new FlowLayout());
-		bottomAnalytics.setBackground(Color.WHITE);
+		bottomAnalytics.setBackground(Color.LIGHT_GRAY);
 
 		// Left Analytics (Driver)
 		JLabel driverTitle = new JLabel("   " + car.driverManager.currentDriver.toString().toUpperCase() + "   ");
@@ -1140,11 +1180,16 @@ public class GuiManager {
 
 	}
 
-	public void updatePhoneTime() {
+	public void updatePhone() {
 		if (car.phone.checkActiveCall()) {
+			endButton.setVisible(true);
+			callButton.setVisible(false);
 			car.driverManager.currentDriver.incrementTotalPhoneTime();
 			car.currentSession.incrementPhoneTime();
 			car.phone.incrementCurrentCallTime();
+		} else {
+			endButton.setVisible(false);
+			callButton.setVisible(true);
 		}
 		phoneTimeLabel.setText("Duration: " + Integer.toString(car.phone.getCurrentCallTime()) + " sec");
 	}
@@ -1204,7 +1249,7 @@ public class GuiManager {
 				car.driverManager.currentDriver.updateMaxSpeed(car.getCurrentSpeed());
 				car.currentSession.updateMaxSpeed(car.getCurrentSpeed());
 
-				updatePhoneTime();
+				updatePhone();
 
 				if (car.radio.getIsOn()) {
 					car.driverManager.currentDriver.incrementRadioTime();
