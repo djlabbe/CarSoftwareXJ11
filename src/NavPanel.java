@@ -12,8 +12,12 @@ public class NavPanel extends JPanel {
 
 	private Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
 	private JButton radioButton, phoneButton, mapButton, statsButton;
+	private AppPanel controlledPanel;
+	private Car car;
 
-	public NavPanel(Car car, AppPanel controlledPanel) {
+	public NavPanel(GuiManager guiManager) {
+		this.car = guiManager.getCar();
+		controlledPanel = guiManager.appPanel;
 		setLayout(new GridLayout(4, 1));
 		setBackground(Color.DARK_GRAY);
 		setBorder(bevelledBorder);

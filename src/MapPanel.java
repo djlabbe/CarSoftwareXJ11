@@ -19,8 +19,8 @@ public class MapPanel extends JPanel {
 	private JComboBox<String> routeSelector;
 	private Car car;
 
-	public MapPanel(Car car, GuiManager guiManager) {
-		this.car = car;
+	public MapPanel(GuiManager guiManager) {
+		this.car = guiManager.getCar();
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
 		

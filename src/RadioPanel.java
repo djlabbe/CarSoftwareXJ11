@@ -19,8 +19,10 @@ public class RadioPanel extends JPanel {
 	protected JButton radioPowerButton, seekDownButton, seekUpButton, amFmButton, volumeUpButton, volumeDownButton, setButton, favButton1,
 	favButton2, favButton3;
 	private DecimalFormat dfOne = new DecimalFormat("#00");
+	private Car car;
 
-	public RadioPanel(Car car) {
+	public RadioPanel(GuiManager guiManager) {
+		this.car = guiManager.getCar();
 		setLayout(new BorderLayout());
 		setBackground(Color.LIGHT_GRAY);
 	

@@ -23,8 +23,8 @@ public class PhonePanel extends JPanel {
 	private JTextField nameText, numText;
 	private Car car;
 
-	public PhonePanel(Car car, GuiManager guiManager) {
-		this.car = car;
+	public PhonePanel(GuiManager guiManager) {
+		this.car = guiManager.getCar();
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
 

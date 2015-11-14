@@ -19,8 +19,8 @@ public class CorePanel extends JPanel{
 	private Car car;
 	private GuiManager parentGuiManager;
 	
-	public CorePanel(Car car, GuiManager guiManager) {
-		this.car = car;
+	public CorePanel(GuiManager guiManager) {
+		this.car = guiManager.getCar();
 		parentGuiManager = guiManager;
 		setLayout(new GridLayout(1,6));
 		setBackground(Color.DARK_GRAY);

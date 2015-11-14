@@ -2,7 +2,6 @@
  * A Car has DriverManager, a Session, a Radio, a Phone, and a Map.
  * Each component is responsible for managing its' own data and operations.
  */
-
 import java.awt.FlowLayout;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,7 +15,6 @@ public class Car {
 	protected static final double FUELRATE = 0.02;
 	protected static final int MAXSPEED = 220;
 
-
 	private boolean isOn;
 	private int currentSpeed;
 	private double odometer, currentFuel, deltaDistance;
@@ -27,7 +25,6 @@ public class Car {
 	protected Map map;
 	protected Timer timer;
 	
-
 	public Car() {
 		isOn = false;
 		currentSpeed = 0;
@@ -156,6 +153,8 @@ public class Car {
 	/* The main loop and timing mechanism for driving,
 	 * A TimerTask is scheduled to run every 1 second which then updates the 
 	 * speed and position of the car while logging associated data.
+	 * 
+	 * Basic timer structure based on threads on Stackoverflow.
 	 */
 	public void runLoop(GuiManager guiManager) {
 		int begin = 0; // start immediately 
@@ -188,8 +187,4 @@ public class Car {
 			}
 		},begin, timeinterval);
 	}
-
-
-
-
 }

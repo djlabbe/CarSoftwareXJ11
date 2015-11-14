@@ -1,4 +1,3 @@
-/*Timer code structure found on Stack-overflow*/
 
 /*Main screen consists of the full window JFrame which contains a 5 JPanels arranged in Border Layout.
  *The center (main) panel is called the appPanel which itself has a CardLayout meaning it behaves like a stack
@@ -48,10 +47,10 @@ public class GuiManager {
 
 	protected void showScreen() {
 
-		infoPanel = new InfoPanel(car);
-		corePanel = new CorePanel(car, this);
-		appPanel = new AppPanel(car, this);
-		navPanel = new NavPanel(car, appPanel);
+		infoPanel = new InfoPanel(this);
+		corePanel = new CorePanel(this);
+		appPanel = new AppPanel(this);
+		navPanel = new NavPanel(this);
 		emptyPanel = new DecorativePanel();
 		
 		mainFrame.add("North", infoPanel);
@@ -61,5 +60,9 @@ public class GuiManager {
 		mainFrame.add("East", emptyPanel);
 
 		mainFrame.setVisible(true);
+	}
+	
+	public Car getCar() {
+		return car;
 	}
 }

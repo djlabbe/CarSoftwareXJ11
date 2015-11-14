@@ -19,8 +19,8 @@ public class AnalyticsPanel extends JPanel {
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 	private Car car;
 	
-	public AnalyticsPanel(Car car, GuiManager guiManager) {
-		this.car = car;
+	public AnalyticsPanel(GuiManager guiManager) {
+		this.car = guiManager.getCar();
 		setLayout(new BorderLayout());
 		setBackground(Color.LIGHT_GRAY);
 		

@@ -17,8 +17,8 @@ public class InfoPanel extends JPanel {
 	
 	private Car car;
 	
-	public InfoPanel(Car car) {
-		this.car = car;
+	public InfoPanel(GuiManager guiManager) {
+		this.car = guiManager.getCar();
 		setBackground(Color.DARK_GRAY);
 		setBorder(bevelledBorder);
 		

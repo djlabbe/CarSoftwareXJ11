@@ -15,15 +15,15 @@ public class AppPanel extends JPanel {
 	protected MapPanel mapPanel;
 	protected AnalyticsPanel analyticsPanel;
 	
-	public AppPanel(Car car, GuiManager guiManager) {
+	public AppPanel(GuiManager guiManager) {
 		appLayout = new CardLayout();
 		setLayout(appLayout);
 		
 		welcomePanel = new WelcomePanel();
-		radioPanel = new RadioPanel(car);
-		phonePanel = new PhonePanel(car, guiManager);
-		mapPanel = new MapPanel(car, guiManager);
-		analyticsPanel = new AnalyticsPanel(car, guiManager);
+		radioPanel = new RadioPanel(guiManager);
+		phonePanel = new PhonePanel(guiManager);
+		mapPanel = new MapPanel(guiManager);
+		analyticsPanel = new AnalyticsPanel(guiManager);
 
 		add(welcomePanel, "WELCOMEPANEL");
 		add(radioPanel, "RADIOPANEL");
