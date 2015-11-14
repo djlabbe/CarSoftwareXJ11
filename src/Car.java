@@ -7,10 +7,10 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 
 public class Car {
-
+	
 	protected static final double FUELCAPACITY = 13.0;
 	protected static final double FUELRATE = 0.02;
-
+	
 	private boolean isOn;
 	private int currentSpeed;
 	private double odometer, currentFuel;

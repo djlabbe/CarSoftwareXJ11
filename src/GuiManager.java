@@ -122,7 +122,6 @@ public class GuiManager {
 		
 		radioPanel = new JPanel(new BorderLayout());
 		radioPanel.setBackground(Color.LIGHT_GRAY);
-		
 
 		phonePanel = new JPanel(new BorderLayout());
 		phonePanel.setBackground(Color.WHITE);
@@ -372,7 +371,7 @@ public class GuiManager {
 	/************  RADIO PANEL  ***************/
 	/******************************************/
 
-	private JButton makeFavButton(int favNum) {
+	private JButton makeFavButton(final int favNum) {
 		JButton newButton = new JButton(" " + favNum + " ");
 		newButton.setBackground(Color.WHITE);
 		newButton.addActionListener(new ActionListener() {
@@ -402,7 +401,7 @@ public class GuiManager {
 		JPanel topRadioPanel = new JPanel();
 		topRadioPanel.setBackground(Color.LIGHT_GRAY);
 
-		JButton radioPowerButton = new JButton("ON");
+		final JButton radioPowerButton = new JButton("ON");
 		radioPowerButton.setBackground(Color.WHITE);
 		radioPowerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -572,7 +571,7 @@ public class GuiManager {
 	/************  PHONE PANEL  ***************/
 	/******************************************/
 	
-	private JButton makePhoneButton(String btnLabel) {
+	private JButton makePhoneButton(final String btnLabel) {
 		JButton newButton = new JButton(btnLabel);
 		newButton.setBackground(Color.WHITE);
 		newButton.setFont(new Font("Courier", Font.PLAIN, 15));
@@ -657,7 +656,7 @@ public class GuiManager {
 		// Call Button
 		callButton = new JButton("Call");
 		callButton.setBackground(Color.green);
-		gb.insets = new Insets(0,0,0,0);
+		gb.insets = new Insets(10,0,0,10);
 		gb.gridheight = 1;
 		gb.gridx = 0;
 		gb.gridy = 0;
@@ -691,6 +690,7 @@ public class GuiManager {
 		// Add Contact Button
 		JButton addContactButton = new JButton("Add Contact");
 		addContactButton.setBackground(Color.white);
+		gb.insets = new Insets(0,0,0,10);
 		gb.fill = 0;
 		gb.gridwidth = 2;
 		gb.gridx = 0;
@@ -715,6 +715,7 @@ public class GuiManager {
 				JLabel nameLabel = new JLabel("Name:");
 				nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				gb.fill = GridBagConstraints.HORIZONTAL;
+				gb.insets = new Insets(0,0,0,0);
 				gb.weightx = 1;
 				gb.weighty = 1;
 				gb.gridx = 0;
@@ -733,13 +734,15 @@ public class GuiManager {
 				gb.gridy = 1;
 				gb.gridwidth = 1;
 				contactPanel.add(numLabel, gb);
-
+				
 				numText = new JTextField("", 8);
 				gb.ipadx = 150;
 				gb.gridx = 1;
 				contactPanel.add(numText, gb);
-
+				
 				JButton enterButton = new JButton("Done");
+				enterButton.setForeground(Color.white);
+				enterButton.setBackground(Color.darkGray);
 				gb.ipadx = 0;
 				gb.gridx = 0;
 				gb.gridy = 2;
@@ -765,17 +768,22 @@ public class GuiManager {
 						} else {
 							numToSave = enteredNum;
 						}
-						
-						contactArray.add(car.driverManager.currentDriver.createContact(nameText.getText().trim(), numToSave));
-						contactList.addElement(contactArray.get(contactArray.size()-1));
-						contactDialog.dispose();
-						System.out.println("Contact created.");
+						if(numToSave.isEmpty() || nameText.getText().isEmpty()){
+							System.out.println("No new contact saved.");
+							contactDialog.dispose();
+						} else {
+							contactArray.add(car.driverManager.currentDriver.createContact(nameText.getText().trim(), numToSave));
+							contactList.addElement(contactArray.get(contactArray.size()-1));
+							contactDialog.dispose();
+							System.out.println("Contact created.");
+						}
 					}
 				});
 				contactPanel.add(enterButton, gb);
+				
 				contactDialog.add(contactPanel);
 				contactDialog.setVisible(true);
-
+				
 			}
 		});
 		rightPhonePanel.add(addContactButton, gb);
@@ -788,13 +796,16 @@ public class GuiManager {
 
 		// Speaker volume buttons	
 		speakVolLabel = new JLabel("Speaker Vol: " + car.phone.getSpeakVol());
+		speakVolLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		gb.gridx = 0;
 		gb.gridy = 1;
 		gb.gridwidth = 2;
 		speakerPanel.add(speakVolLabel, gb);
-
+		
 		JButton speakUpBut = new JButton("+");
 		speakUpBut.setBackground(Color.white);
+		gb.fill = GridBagConstraints.HORIZONTAL;
+		gb.insets = new Insets(0,0,0,10);
 		gb.gridwidth = 1;
 		gb.gridy = 0;
 		gb.gridx = 1;
@@ -805,9 +816,10 @@ public class GuiManager {
 			}
 		});
 		speakerPanel.add(speakUpBut, gb);
-
+		
 		JButton speakDownBut = new JButton("-");
 		speakDownBut.setBackground(Color.white);
+		gb.insets = new Insets(0,0,0,0);
 		gb.gridx = 0;
 		speakDownBut.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -816,16 +828,19 @@ public class GuiManager {
 			}
 		});
 		speakerPanel.add(speakDownBut, gb);
-
+				
 		// Microphone volume buttons
 		micVolLabel = new JLabel("Mic Vol: " + car.phone.getMicVol());
+		micVolLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		gb.insets = new Insets(0,0,0,0);
 		gb.gridx = 0;
 		gb.gridy = 1;
 		gb.gridwidth = 2;
 		micPanel.add(micVolLabel, gb);
-
+		
 		JButton micVolUpBut = new JButton("+");
 		micVolUpBut.setBackground(Color.white);
+		gb.insets = new Insets(0,0,0,10);
 		gb.gridwidth = 1;
 		gb.gridx = 1;
 		gb.gridy = 0;
@@ -836,9 +851,10 @@ public class GuiManager {
 			}
 		});
 		micPanel.add(micVolUpBut, gb);
-
+		
 		JButton micVolDownBut = new JButton("-");
 		micVolDownBut.setBackground(Color.white);
+		gb.insets = new Insets(0,0,0,0);
 		gb.gridx = 0;
 		micVolDownBut.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -847,19 +863,18 @@ public class GuiManager {
 			}
 		});
 		micPanel.add(micVolDownBut, gb);
-
+		
+		gb.insets = new Insets(0,0,0,0);
 		gb.gridwidth = 1;
 		gb.gridy = 2;
 		gb.gridx = 0;
 		gb.gridwidth = 2;
-		rightPhonePanel.add(micPanel, gb);
-
-
+		rightPhonePanel.add(micPanel, gb);		
+		
 		gb.gridx = 0;
 		gb.gridy = 3;
-		rightPhonePanel.add(speakerPanel, gb);
-
-
+		rightPhonePanel.add(speakerPanel, gb);		
+		
 		// Time Label
 		phoneTimeLabel = new JLabel("");
 		gb.gridy = 4;
@@ -876,7 +891,7 @@ public class GuiManager {
 		JPanel emptyPanel1 = new JPanel();
 		emptyPanel1.setBackground(Color.LIGHT_GRAY);
 		
-		JPanel bottomPadPanel = new JPanel();
+		JPanel bottomPadPanel = new JPanel(new GridBagLayout());
 		bottomPadPanel.setBackground(Color.LIGHT_GRAY);
 		
 		JButton clearButton = new JButton("Clear");
@@ -887,7 +902,6 @@ public class GuiManager {
 				dialNumField.setText("");
 			}
 		});
-		
 		bottomPadPanel.add(clearButton);
 		
 		JPanel emptyPanel2= new JPanel();
@@ -922,7 +936,7 @@ public class GuiManager {
 		mapSlider.setEnabled(false);
 		mapPanel.add("Center", mapSlider);
 
-		JComboBox<String> routeSelector = new JComboBox<String>(car.map.getRouteList());
+		final JComboBox<String> routeSelector = new JComboBox<String>(car.map.getRouteList());
 		mapPanel.add("North", routeSelector);
 		routeSelector.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -957,6 +971,7 @@ public class GuiManager {
 			label.setText(String.valueOf(dfMap.format((double)i/100.0)));
 			label.setSize(50, 20);
 		}
+
 	}
 
 	// An executable to be run by the event dispatch thread to update a Swing GUI component.
@@ -1200,7 +1215,9 @@ public class GuiManager {
 
 				// Asynchronously update the map position slider
 				SwingUtilities.invokeLater(updateSliderPosition);
+
 			}
 		},begin, timeinterval);
 	}
+
 }
