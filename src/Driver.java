@@ -16,7 +16,7 @@ public class Driver {
 	private int totalPhoneTime;
 	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3;
 	private ArrayList<Session> sessionHistory;
-	protected ArrayList<Contact> contacts;
+	private ArrayList<Contact> contacts;
 	protected ArrayList<Call> callHistory;
 
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
@@ -148,10 +148,8 @@ public class Driver {
 		}
 	}
 
-	public Contact createContact(String name, String number) {
-		Contact temp = new Contact(name, number);
-		contacts.add(temp);
-		return temp;
+	public void addContact(Contact newContact) {
+		contacts.add(newContact);
 	}
 
 	public ArrayList<Contact> getContacts()

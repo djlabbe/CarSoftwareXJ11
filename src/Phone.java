@@ -117,17 +117,21 @@ public class Phone
 	{
 		numberBeingDialed = "";
 	}
+	public void setContactActive(String contactNum) {
+		numberBeingDialed = contactNum;
+	}
+	
 	
 	public void setContacts(Driver driver)
 	{
-		contacts = driver.contacts;
+		contacts = driver.getContacts();
 	}
+	
 	public ArrayList<Contact> getContacts() {
 		return contacts;
 	}
 	
-	public void setContactActive(String contactNum) {
-		numberBeingDialed = contactNum;
-	}
+	
+	
 
 }

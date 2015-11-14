@@ -10,12 +10,9 @@ public class Car {
 	
 	protected static final double FUELCAPACITY = 13.0;
 	protected static final double FUELRATE = 0.02;
-<<<<<<< HEAD
 	protected static final int MAXSPEED = 220;
 
-=======
-	
->>>>>>> 24944a34e73dee555daf9ec6f5bd651fec6a3618
+
 	private boolean isOn;
 	private int currentSpeed;
 	private double odometer, currentFuel;
@@ -46,13 +43,18 @@ public class Car {
 		System.out.println(driverManager.currentDriver + " logged in.");
 		if (driverManager.currentDriver != null) {
 			currentSession = new Session(driverManager.currentDriver);
-			setUserFavorites();	
+			setUserFavorites();
+			refreshContacts();
 		}
 	}
 
 	// Retrieve saved driver settings for radio (and phone?)
 	public void setUserFavorites() {
 		radio.setUserFavorites(driverManager.currentDriver);
+	}
+	
+	public void refreshContacts() {
+		phone.setContacts(driverManager.currentDriver);
 	}
 
 	public boolean getIsOn() {

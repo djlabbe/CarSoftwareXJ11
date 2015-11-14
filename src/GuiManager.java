@@ -37,6 +37,7 @@ public class GuiManager {
 	private JTextField nameText, numText;
 	private JDialog contactDialog;
 	private JSlider mapSlider;
+	private JScrollPane scrollContact;
 	private DefaultListModel<Contact> contactList;
 	private ArrayList<Contact> contactArray;
 	private Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
@@ -275,10 +276,10 @@ public class GuiManager {
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!car.getIsOn()) {
-					// save the current session
 					car.driverManager.currentDriver.saveSession(car.currentSession);
-					// login new driver resets current session
 					car.login();
+					resetApps();
+					refreshContactList();
 				}
 				else {
 					System.out.println("Car must be turned off to login new driver");
@@ -299,6 +300,7 @@ public class GuiManager {
 				} else if (car.getCurrentSpeed() == 0) {
 					timer.cancel();
 					timer.purge();
+					resetApps();
 					appLayout.show(appPanel, "WELCOMEPANEL");
 					powerButton.setText("ON");
 					System.out.println("Engine turned off.");
@@ -615,20 +617,27 @@ public class GuiManager {
 		gb.fill = GridBagConstraints.BOTH;
 		centerPhonePanel.add(dialNumField, gb);
 
-
-		// TextArea for all the contacts
-
+		
+		
+		
+		
+		
 		// Putting contacts into a list for the Jlist
 		contactList = new DefaultListModel<Contact>();
-		contactList.addElement(new Contact());
 		
-		contactArray = car.driverManager.currentDriver.getContacts();
-		if(contactArray != null){
+		contactArray = car.phone.getContacts();
+		
+		System.out.println(contactArray);
+		
+		if(contactArray.size() != 0){
 			for(int i = 0; i < contactArray.size(); i++)
 				contactList.addElement(contactArray.get(i));
+		} else {
+			contactList.addElement(new Contact());
 		}
 		
 		contactText = new JList<Contact>(contactList);
+		
 		contactText.setCellRenderer(new ListCellRenderer<Contact>(){
 			public Component getListCellRendererComponent(JList<? extends Contact> list, Contact contact, int index, boolean isSelected, boolean cellHasFocus){
 				String name = contact.getName();
@@ -651,8 +660,22 @@ public class GuiManager {
 				car.phone.setContactActive(contactNumber);
 			}
 		});
-		JScrollPane scrollContact = new JScrollPane(contactText);
+		
+		scrollContact = new JScrollPane(contactText);
 		centerPhonePanel.add(scrollContact, gb);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 		// Call Button
 		callButton = new JButton("Call");
@@ -754,14 +777,14 @@ public class GuiManager {
 						String enteredNum = numText.getText().trim();
 						if (enteredNum.length() > 7) {
 							for (int i = 0; i < enteredNum.length(); i++) {
-								if ((i == 3 && enteredNum.charAt(3) != '-') || ( i ==6 && enteredNum.charAt(7) != '-')) {
+								if ((i == 3 || i ==6 ) && enteredNum.charAt(3) != '-' && enteredNum.charAt(7) != '-') {
 									numToSave += "-";
 								}
 								numToSave += enteredNum.charAt(i);
 							}
 						} else if (enteredNum.length() > 2) {
 							for (int i = 0; i < enteredNum.length(); i++) {
-								if (i == 3 && enteredNum.charAt(3) != '-') {
+								if ((i == 3) && enteredNum.charAt(3) != '-') {
 									numToSave += "-";
 								}
 								numToSave += enteredNum.charAt(i);
@@ -773,10 +796,13 @@ public class GuiManager {
 							System.out.println("No new contact saved.");
 							contactDialog.dispose();
 						} else {
-							contactArray.add(car.driverManager.currentDriver.createContact(nameText.getText().trim(), numToSave));
-							contactList.addElement(contactArray.get(contactArray.size()-1));
+							Contact newContact = new Contact (nameText.getText().trim(), numToSave);
+							car.driverManager.currentDriver.addContact(newContact);
+							car.refreshContacts();
+							// contactList.addElement(contactArray.get(contactArray.size()-1));
 							contactDialog.dispose();
 							System.out.println("Contact created.");
+							refreshContactList();
 						}
 					}
 				});
@@ -870,21 +896,12 @@ public class GuiManager {
 		gb.gridy = 2;
 		gb.gridx = 0;
 		gb.gridwidth = 2;
-<<<<<<< HEAD
-		rightPhonePanel.add(micPanel, gb);
-
-		gb.gridx = 0;
-		gb.gridy = 3;
-		rightPhonePanel.add(speakerPanel, gb);
-
-=======
 		rightPhonePanel.add(micPanel, gb);		
 		
 		gb.gridx = 0;
 		gb.gridy = 3;
 		rightPhonePanel.add(speakerPanel, gb);		
 		
->>>>>>> 24944a34e73dee555daf9ec6f5bd651fec6a3618
 		// Time Label
 		phoneTimeLabel = new JLabel("");
 		gb.gridy = 4;
@@ -930,8 +947,72 @@ public class GuiManager {
 		phonePanel.add(leftPhonePanel, BorderLayout.WEST);
 		phonePanel.add(centerPhonePanel, BorderLayout.CENTER);
 		phonePanel.add(rightPhonePanel, BorderLayout.EAST);
-
 	}
+	
+	public void updatePhone() {
+		
+		if (car.phone.checkActiveCall()) {
+			endButton.setVisible(true);
+			callButton.setVisible(false);
+			car.driverManager.currentDriver.incrementTotalPhoneTime();
+			car.currentSession.incrementPhoneTime();
+			car.phone.incrementCurrentCallTime();
+		} else {
+			endButton.setVisible(false);
+			callButton.setVisible(true);
+		}
+		phoneTimeLabel.setText("Duration: " + Integer.toString(car.phone.getCurrentCallTime()) + " sec");
+	}
+	
+	
+	
+	
+	public void refreshContactList() {
+
+		contactList.clear();
+		contactArray = car.phone.getContacts();
+		
+		if(contactArray.size() > 0){
+			for(int i = 0; i < contactArray.size(); i++)
+				contactList.addElement(contactArray.get(i));
+		} else {
+			contactList.addElement(new Contact());
+		}
+		
+		contactText = new JList<Contact>(contactList);
+		
+		contactText.setCellRenderer(new ListCellRenderer<Contact>(){
+			public Component getListCellRendererComponent(JList<? extends Contact> list, Contact contact, int index, boolean isSelected, boolean cellHasFocus){
+				String name = contact.getName();
+				JLabel renderer = (JLabel) new DefaultListCellRenderer().getListCellRendererComponent(list, contact, index, isSelected, cellHasFocus);
+				renderer.setText(name);
+				return renderer;			
+			}
+
+		});
+		contactText.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		contactText.setLayoutOrientation(JList.VERTICAL);
+		GridBagConstraints gb = new GridBagConstraints();
+		gb.insets = new Insets(0,10,10,10);
+		gb.gridy = 1;	
+		gb.fill = GridBagConstraints.BOTH;
+		contactText.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				car.phone.resetNumberBeingDialed();
+				String contactNumber = contactText.getSelectedValue().getPhoneNumber();
+				dialNumField.setText(contactNumber);
+				car.phone.setContactActive(contactNumber);
+			}
+		});
+		
+		scrollContact.setViewportView(contactText);
+	}
+	
+	
+	
+	
+	
+	
 
 	/******************************************/
 	/*************  MAP PANEL  ****************/
@@ -1148,21 +1229,6 @@ public class GuiManager {
 
 	}
 
-	public void updatePhone() {
-		if (car.phone.checkActiveCall()) {
-			endButton.setVisible(true);
-			callButton.setVisible(false);
-			car.driverManager.currentDriver.incrementTotalPhoneTime();
-			car.currentSession.incrementPhoneTime();
-			car.phone.incrementCurrentCallTime();
-		} else {
-			endButton.setVisible(false);
-			callButton.setVisible(true);
-		}
-		phoneTimeLabel.setText("Duration: " + Integer.toString(car.phone.getCurrentCallTime()) + " sec");
-	}
-
-
 	public void updateAnalyticsPanel() {
 		driverTitle.setText(car.driverManager.currentDriver.toString().toUpperCase());
 		driverMiles.setText(dfShort.format(car.driverManager.currentDriver.getDistanceDriven()));
@@ -1181,6 +1247,7 @@ public class GuiManager {
 		sessionRadioTime.setText(Integer.toString( car.currentSession.getRadioTime()));
 		sessionPhoneTime.setText(Integer.toString( car.currentSession.getPhoneTime()));	
 	}
+	
 
 	/******************************************/
 	/*********  MAIN CAR CONTROLLER  **********/
@@ -1230,6 +1297,11 @@ public class GuiManager {
 
 			}
 		},begin, timeinterval);
+	}
+	
+	public void resetApps() {
+		car.phone.resetNumberBeingDialed();
+		dialNumField.setText("");
 	}
 
 }

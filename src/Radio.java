@@ -20,10 +20,9 @@ public class Radio {
 	
 
 	public Radio () {
-		isOn = false;
-		isAm = true;
-		volume = 5;
-
+		
+		
+		
 		availableAmStations = new ArrayList<RadioStation>();
 		availableFmStations = new ArrayList<RadioStation>();
 
@@ -35,9 +34,7 @@ public class Radio {
 			availableFmStations.add(new RadioStation(fmStations[i]));
 		}
 		
-		currentStation = availableAmStations.get(0);
-		amStationIndex = 0;
-		fmStationIndex = 0;
+		reset();
 	}
 
 	public boolean getIsOn() {
@@ -191,6 +188,15 @@ public class Radio {
 	public String getModLabel() {
 		String mod = isAm ? "AM" : "FM";
 		return mod;
+	}
+	
+	public void reset() {
+		isOn = false;
+		isAm = true;
+		volume = 5;
+		currentStation = availableAmStations.get(0);
+		amStationIndex = 0;
+		fmStationIndex = 0;
 	}
 
 }
