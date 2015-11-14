@@ -132,13 +132,17 @@ public class Car {
 	/* Sets the car's fuel to 100%. Called when driver presses refuel button
 	 * Only works when the car is stopped and turned off.
 	 */
-	public void refuel() {
+	public boolean refuel() {
+		boolean success = false;
 		if (currentSpeed == 0 && !isOn) {
 			currentFuel = FUELCAPACITY;
+			success = true;
 			System.out.println("Refueled successfully.");
 		}
 		else {
+			success = false;
 			System.out.println("Unable to refuel, car must be off.");
 		}
+		return success;
 	}
 }

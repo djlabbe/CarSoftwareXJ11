@@ -38,7 +38,7 @@ public class Phone
 		System.out.println("Number being dialed: " + numberBeingDialed);
 	}
 		
-	public String getNumberDialed()
+	public String getNumberBeingDialed()
 	{
 		return numberBeingDialed;
 	}

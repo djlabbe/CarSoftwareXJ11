@@ -73,18 +73,29 @@ public class LoginGuiManager extends JDialog{
 		btnLogin.setBorder(bevelledBorder);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Driver authResult = driverManager.authenticate(getUsername(), getPassword());
-				if (authResult != null) {
-					driverManager.setCurrentDriver(authResult);
-					dispose();
-				} else {
-					JOptionPane.showMessageDialog(LoginGuiManager.this,
-							"Invalid username or password",
-							"Login",
+				if (getUsername().equals("")) {
+					JOptionPane.showMessageDialog(parent,
+							"Please enter username.",
+							"Error",
 							JOptionPane.ERROR_MESSAGE);
-					usernameEntry.setText("");
-					passwordEntry.setText("");
-
+				} else if (getPassword().equals("")) {
+					JOptionPane.showMessageDialog(parent,
+							"Please enter your password.",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					Driver authResult = driverManager.authenticate(getUsername(), getPassword());
+					if (authResult != null) {
+						driverManager.setCurrentDriver(authResult);
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(LoginGuiManager.this,
+								"Invalid username or password",
+								"Login",
+								JOptionPane.ERROR_MESSAGE);
+						usernameEntry.setText("");
+						passwordEntry.setText("");
+					}
 				}
 			}
 		});
@@ -97,9 +108,22 @@ public class LoginGuiManager extends JDialog{
 		btnRegister.setBorder(bevelledBorder);
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (getUsername().equals("")) {
+					JOptionPane.showMessageDialog(parent,
+							"Please enter a username.",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (getPassword().equals("")) {
+					JOptionPane.showMessageDialog(parent,
+							"Please enter a password.",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
 					Driver registerResult = driverManager.register(getUsername(), getPassword());
 					driverManager.setCurrentDriver(registerResult);
 					dispose();
+				}
+				
 			}
 		});
 
