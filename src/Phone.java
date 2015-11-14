@@ -37,24 +37,24 @@ public class Phone
 
 		System.out.println("Number being dialed: " + numberBeingDialed);
 	}
-
+		
 	public String getNumberDialed()
 	{
 		return numberBeingDialed;
 	}
-
+	
 	public boolean checkActiveCall()
 	{
 		return isActiveCall;
 	}
-
+	
 	public void activateCall()
 	{
 		isActiveCall = true;
 		currentCall = new Call(numberBeingDialed);
 		System.out.println("Call being made.");
 	}
-
+	
 	public void deactivateCall()
 	{
 		if (currentCall != null) {
@@ -64,65 +64,64 @@ public class Phone
 		isActiveCall = false;
 		System.out.println("Call ended.");
 	}
-
+	
 	public void micVolUp()
 	{
 		if(micVol < 10)
 			micVol++;
 		System.out.println("Microphone volume up.");
 	}
-
+	
 	public void micVolDown()
 	{
 		if(micVol > 0)
 			micVol--;
 		System.out.println("Microphone volume down.");
 	}
-
+	
 	public String getMicVol()
 	{
 		return Integer.toString(micVol);
 	}
-
+	
 	public void speakVolUp()
 	{
 		if(speakerVol < 10)
 			speakerVol++;
 		System.out.println("Speaker volume up.");
 	}
-
+	
 	public void speakVolDown()
 	{
 		if(speakerVol > 0)
 			speakerVol--;
 		System.out.println("Speaker volume down");
 	}
-
+	
 	public String getSpeakVol()
 	{
 		return Integer.toString(speakerVol);
 	}
-
+	
 	public int getCurrentCallTime()
 	{
 		return currentPhoneTime;
 	}
-
+	
 	public void incrementCurrentCallTime()
 	{
 		currentPhoneTime++;
 	}
-
+	
 	public void resetNumberBeingDialed()
 	{
 		numberBeingDialed = "";
 	}
-
+	
 	public void setContacts(Driver driver)
 	{
 		contacts = driver.contacts;
 	}
-
 	public ArrayList<Contact> getContacts() {
 		return contacts;
 	}
