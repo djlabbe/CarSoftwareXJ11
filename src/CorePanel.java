@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,12 +12,10 @@ import javax.swing.border.Border;
 @SuppressWarnings("serial")
 public class CorePanel extends JPanel{
 	
-	protected JButton powerButton, gasButton, brakeButton, 
+	private JButton powerButton, gasButton, brakeButton, 
 	refuelButton, loginButton;
 	private Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
 	private final float coreFontSize = 16.0f;
-	private DecimalFormat dfOne = new DecimalFormat("#00");
-	private DecimalFormat dfTwo = new DecimalFormat("000");
 	private Car car;
 	private GuiManager parentGuiManager;
 	
@@ -43,7 +40,6 @@ public class CorePanel extends JPanel{
 							"Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-
 			}          
 		});
 		
@@ -75,15 +71,12 @@ public class CorePanel extends JPanel{
 		refuelButton = makeCoreButton("Refuel");
 		refuelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (car.refuel()) {
-					guiManager.infoPanel.currentFuel.setText(dfOne.format(car.getFuelPercent()) + "% Fuel ");
-				} else {
+				if (!car.refuel()) {
 					JOptionPane.showMessageDialog(guiManager.mainFrame,
 							"Engine must be off to refuel.",
 							"Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-
 			}          
 		});
 		
@@ -91,7 +84,7 @@ public class CorePanel extends JPanel{
 		brakeButton.setForeground(Color.RED);
 		brakeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				guiManager.infoPanel.currentSpeed.setText(dfTwo.format(car.decelerate()) + " MPH | ");
+				car.decelerate();
 			}          
 		});
 		
@@ -99,8 +92,7 @@ public class CorePanel extends JPanel{
 		gasButton.setForeground(Color.GREEN);
 		gasButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				guiManager.infoPanel.currentSpeed.setText(dfTwo.format(car.accelerate()) + " MPH | ");
-				guiManager.infoPanel.currentFuel.setText(dfOne.format(car.getFuelPercent()) + "% Fuel ");
+				car.accelerate();	
 			}          
 		});
 		

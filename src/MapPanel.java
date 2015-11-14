@@ -14,9 +14,9 @@ import javax.swing.JSlider;
 @SuppressWarnings("serial")
 public class MapPanel extends JPanel {
 	
-	protected JSlider mapSlider;
+	private JSlider mapSlider;
 	private DecimalFormat dfMap = new DecimalFormat("###.00");
-	protected JComboBox<String> routeSelector;
+	private JComboBox<String> routeSelector;
 	private Car car;
 
 	public MapPanel(Car car, GuiManager guiManager) {

@@ -19,14 +19,14 @@ public class Car {
 
 	private boolean isOn;
 	private int currentSpeed;
-	private double odometer, currentFuel;
+	private double odometer, currentFuel, deltaDistance;
 	protected DriverManager driverManager;
 	protected Session currentSession;
 	protected Radio radio;
 	protected Phone phone;
 	protected Map map;
 	protected Timer timer;
-	private double deltaDistance;
+	
 
 	public Car() {
 		isOn = false;

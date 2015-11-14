@@ -9,7 +9,7 @@ public class InfoPanel extends JPanel {
 	
 	private Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
 	
-	protected JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
+	private JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
 	private DecimalFormat dfOne = new DecimalFormat("#00");
 	private DecimalFormat dfTwo = new DecimalFormat("000");
 
@@ -48,6 +48,7 @@ public class InfoPanel extends JPanel {
 		sessionMileage.setText("Session: " + dfShort.format(car.currentSession.getDistanceDriven()) + " miles ");
 		totalMileage.setText("| " + dfShort.format(car.getOdometer()) + " miles | ");
 		currentSpeed.setText(dfTwo.format(car.coast()) + " MPH | ");
+		currentFuel.setText(dfOne.format(car.getFuelPercent()) + "% Fuel ");
 	}
 	
 }
