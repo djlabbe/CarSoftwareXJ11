@@ -31,5 +31,4 @@ public class WelcomePanel extends JPanel{
 		xj11Label.setFont (xj11Label.getFont().deriveFont (35.0f));
 		welcomeMessageHolder.add(xj11Label);
 	}
-
 }

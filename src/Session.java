@@ -17,8 +17,7 @@ public class Session {
 	private double fuelUsed;
 	private int radioTime;
 	private int phoneTime;
-	protected ArrayList<Call> callHistory;
-
+	private ArrayList<Call> callHistory;
 
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 

@@ -10,11 +10,11 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class AnalyticsPanel extends JPanel {
 
-	protected JLabel driverMiles, driverTime, driverAvgSpeed, driverMaxSpeed, driverFuelUsed, 
+	private JLabel driverMiles, driverTime, driverAvgSpeed, driverMaxSpeed, driverFuelUsed, 
 	driverRadioTime, driverPhoneTime, sessionMiles, sessionTime, sessionAvgSpeed, sessionMaxSpeed, 
 	sessionFuelUsed, sessionRadioTime, sessionPhoneTime, driverTitle;
 	
-	protected JButton sessionCallLogBtn, driverCallLogBtn, sessionHistoryBtn, viewDriversBtn;
+	private JButton sessionCallLogBtn, driverCallLogBtn, sessionHistoryBtn, viewDriversBtn;
 	
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 	private Car car;

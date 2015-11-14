@@ -16,7 +16,8 @@ public class Radio {
 	private ArrayList<RadioStation> availableAmStations, availableFmStations;
 	private Double[] amStations = new Double[] {520.0, 620.0, 740.0, 910.0, 1060.0, 1510.0};
 	private Double[] fmStations = new Double[] {90.3, 93.3, 93.9, 94.5, 99.9, 100.7, 102.5, 103.9};
-	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3, currentStation;
+	private RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3; 
+	protected RadioStation currentStation;
 	
 	public Radio () {
 		

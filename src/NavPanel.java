@@ -11,7 +11,7 @@ import javax.swing.border.Border;
 public class NavPanel extends JPanel {
 
 	private Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
-	protected JButton radioButton, phoneButton, mapButton, statsButton;
+	private JButton radioButton, phoneButton, mapButton, statsButton;
 
 	public NavPanel(Car car, AppPanel controlledPanel) {
 		setLayout(new GridLayout(4, 1));

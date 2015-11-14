@@ -10,9 +10,10 @@ public class Phone
 	private boolean isActiveCall;
 	private String numberBeingDialed;
 	private int speakerVol, micVol, currentPhoneTime;
-	protected Call currentCall;
 	private ArrayList<Contact> contacts;
-
+	
+	protected Call currentCall;
+	
 	public Phone()
 	{
 		currentPhoneTime = 0;

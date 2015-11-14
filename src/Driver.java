@@ -17,7 +17,7 @@ public class Driver {
 	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3;
 	private ArrayList<Session> sessionHistory;
 	private ArrayList<Contact> contacts;
-	protected ArrayList<Call> callHistory;
+	private ArrayList<Call> callHistory;
 
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 

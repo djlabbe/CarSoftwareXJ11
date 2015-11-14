@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 public class AppPanel extends JPanel {
 	
 	protected CardLayout appLayout;
-	
 	protected WelcomePanel welcomePanel;
 	protected RadioPanel radioPanel;
 	protected PhonePanel phonePanel;
