@@ -26,7 +26,7 @@ public class GuiManager {
 	private JLabel 	sessionMileage, totalMileage, currentSpeed, currentFuel, stationLabel, modulusLabel, 
 	radioVolumeLabel, driverMiles, driverTime, driverAvgSpeed, driverMaxSpeed, driverFuelUsed, 
 	driverRadioTime, driverPhoneTime, sessionMiles, sessionTime, sessionAvgSpeed, sessionMaxSpeed, 
-	sessionFuelUsed, sessionRadioTime, sessionPhoneTime, phoneTimeLabel;
+	sessionFuelUsed, sessionRadioTime, sessionPhoneTime, phoneTimeLabel, driverTitle;
 
 	private JButton radioButton, phoneButton, mapButton, statsButton, powerButton, gasButton, brakeButton, 
 	refuelButton, loginButton, endButton, callButton;
@@ -280,7 +280,6 @@ public class GuiManager {
 					car.driverManager.currentDriver.saveSession(car.currentSession);
 					// login new driver resets current session
 					car.login();
-					System.out.println("Loggin in new user...");
 				}
 				else {
 					System.out.println("Car must be turned off to login new driver");
@@ -622,12 +621,14 @@ public class GuiManager {
 
 		// Putting contacts into a list for the Jlist
 		contactList = new DefaultListModel<Contact>();
+		contactList.addElement(new Contact());
+		
 		contactArray = car.driverManager.currentDriver.getContacts();
 		if(contactArray != null){
 			for(int i = 0; i < contactArray.size(); i++)
 				contactList.addElement(contactArray.get(i));
 		}
-		contactList.addElement(new Contact());
+		
 		contactText = new JList<Contact>(contactList);
 		contactText.setCellRenderer(new ListCellRenderer<Contact>(){
 			public Component getListCellRendererComponent(JList<? extends Contact> list, Contact contact, int index, boolean isSelected, boolean cellHasFocus){
@@ -750,14 +751,14 @@ public class GuiManager {
 						String enteredNum = numText.getText().trim();
 						if (enteredNum.length() > 7) {
 							for (int i = 0; i < enteredNum.length(); i++) {
-								if ((i == 3 || i ==6 ) && enteredNum.charAt(3) != '-' && enteredNum.charAt(7) != '-') {
+								if ((i == 3 && enteredNum.charAt(3) != '-') || ( i ==6 && enteredNum.charAt(7) != '-')) {
 									numToSave += "-";
 								}
 								numToSave += enteredNum.charAt(i);
 							}
 						} else if (enteredNum.length() > 2) {
 							for (int i = 0; i < enteredNum.length(); i++) {
-								if ((i == 3) && enteredNum.charAt(3) != '-') {
+								if (i == 3 && enteredNum.charAt(3) != '-') {
 									numToSave += "-";
 								}
 								numToSave += enteredNum.charAt(i);
@@ -854,11 +855,9 @@ public class GuiManager {
 		gb.gridwidth = 2;
 		rightPhonePanel.add(micPanel, gb);
 
-
 		gb.gridx = 0;
 		gb.gridy = 3;
 		rightPhonePanel.add(speakerPanel, gb);
-
 
 		// Time Label
 		phoneTimeLabel = new JLabel("");
@@ -994,7 +993,8 @@ public class GuiManager {
 		bottomAnalytics.setBackground(Color.LIGHT_GRAY);
 
 		// Left Analytics (Driver)
-		JLabel driverTitle = makeAnalyticsLabel("   " + car.driverManager.currentDriver.toString().toUpperCase() + "   ");
+		driverTitle = makeAnalyticsLabel(car.driverManager.currentDriver.toString().toUpperCase());
+		driverTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
 		leftAnalytics.add(driverTitle);
 
 		driverMiles = makeAnalyticsLabel("");
@@ -1138,6 +1138,7 @@ public class GuiManager {
 
 
 	public void updateAnalyticsPanel() {
+		driverTitle.setText(car.driverManager.currentDriver.toString().toUpperCase());
 		driverMiles.setText(dfShort.format(car.driverManager.currentDriver.getDistanceDriven()));
 		driverTime.setText(Integer.toString( car.driverManager.currentDriver.getTimeDriven()));
 		driverAvgSpeed.setText(dfShort.format( car.driverManager.currentDriver.getAverageSpeed()));

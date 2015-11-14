@@ -10,6 +10,7 @@ public class Car {
 
 	protected static final double FUELCAPACITY = 13.0;
 	protected static final double FUELRATE = 0.02;
+	protected static final int MAXSPEED = 220;
 
 	private boolean isOn;
 	private int currentSpeed;
@@ -79,13 +80,13 @@ public class Car {
 
 	/* Accelerates the car. Called when driver presses gas.
 	 * Only works if the car is on.
-	 * Car can go up to a max speed of 120 MPH.
+	 * Car is capped at MAXSPEED mph.
 	 */
 	public int accelerate() {
 		if (isOn) {
 			currentSpeed += 5;
-			if (currentSpeed > 120) {
-				currentSpeed = 120;
+			if (currentSpeed > MAXSPEED) {
+				currentSpeed = MAXSPEED;
 			}
 			updateFuel();
 			System.out.println("Speed increased by 5 MPH.");

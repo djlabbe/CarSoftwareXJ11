@@ -17,7 +17,7 @@ public class Call {
 		timeStamp = new Date();
 	}
 
-	/* When the call is completed the phone updates the call's duration using this method.*/
+	/* When the call is completed the phone updates the call's duration.*/
 	public void setDuration(int callDuration) {
 		duration = callDuration;
 	}
