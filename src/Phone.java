@@ -130,8 +130,4 @@ public class Phone
 	public ArrayList<Contact> getContacts() {
 		return contacts;
 	}
-	
-	
-	
-
 }

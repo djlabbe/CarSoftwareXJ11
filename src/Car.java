@@ -4,10 +4,14 @@
  */
 
 import java.awt.FlowLayout;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 public class Car {
-	
+
 	protected static final double FUELCAPACITY = 13.0;
 	protected static final double FUELRATE = 0.02;
 	protected static final int MAXSPEED = 220;
@@ -21,6 +25,8 @@ public class Car {
 	protected Radio radio;
 	protected Phone phone;
 	protected Map map;
+	protected Timer timer;
+	private double deltaDistance;
 
 	public Car() {
 		isOn = false;
@@ -31,6 +37,7 @@ public class Car {
 		radio = new Radio();
 		phone = new Phone();
 		map = new Map();
+		login();
 	}
 
 	// Call the login pop-up window and activate the newly logged in or registered driver. 
@@ -52,7 +59,7 @@ public class Car {
 	public void setUserFavorites() {
 		radio.setUserFavorites(driverManager.currentDriver);
 	}
-	
+
 	public void refreshContacts() {
 		phone.setContacts(driverManager.currentDriver);
 	}
@@ -145,4 +152,44 @@ public class Car {
 		}
 		return success;
 	}
+
+	/* The main loop and timing mechanism for driving,
+	 * A TimerTask is scheduled to run every 1 second which then updates the 
+	 * speed and position of the car while logging associated data.
+	 */
+	public void runLoop(GuiManager guiManager) {
+		int begin = 0; // start immediately 
+		int timeinterval = 1000; // tick every 1 second
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				guiManager.infoPanel.refresh();
+				guiManager.appPanel.analyticsPanel.refresh();
+				guiManager.appPanel.phonePanel.refresh();
+
+				deltaDistance = ((double)getCurrentSpeed() / 60 / 60);
+				incrementOdometer(deltaDistance);
+				map.getCurrentRoute().incrementDistanceIntoRoute(deltaDistance * 100);
+				driverManager.currentDriver.incrementTimeDriven();
+				currentSession.incrementTimeDriven();
+				driverManager.currentDriver.incrementDistanceDriven(deltaDistance);
+				currentSession.incrementDistanceDriven(deltaDistance);
+				driverManager.currentDriver.updateMaxSpeed(getCurrentSpeed());
+				currentSession.updateMaxSpeed(getCurrentSpeed());
+				if (radio.getIsOn()) {
+					driverManager.currentDriver.incrementRadioTime();
+					currentSession.incrementRadioTime();
+				}
+
+				// Asynchronously update the map position slider
+				SwingUtilities.invokeLater(guiManager.appPanel.mapPanel.updateSliderPosition);
+
+			}
+		},begin, timeinterval);
+	}
+
+
+
+
 }

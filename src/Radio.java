@@ -18,22 +18,16 @@ public class Radio {
 	private Double[] fmStations = new Double[] {90.3, 93.3, 93.9, 94.5, 99.9, 100.7, 102.5, 103.9};
 	protected RadioStation amFav1, amFav2, amFav3, fmFav1, fmFav2, fmFav3, currentStation;
 	
-
 	public Radio () {
-		
-		
 		
 		availableAmStations = new ArrayList<RadioStation>();
 		availableFmStations = new ArrayList<RadioStation>();
-
 		for (int i = 0; i < amStations.length; i++) {
 			availableAmStations.add(new RadioStation(amStations[i]));
 		}
-		
 		for (int i = 0; i < fmStations.length; i++) {
 			availableFmStations.add(new RadioStation(fmStations[i]));
 		}
-		
 		reset();
 	}
 
@@ -75,16 +69,12 @@ public class Radio {
 
 	// Increments the volume, to a max of 10
 	public void volUp() {
-		volume++;
-		if (volume > 10) volume = 10;
-		System.out.println("Radio volume up.");
+		if (volume < 10) volume++;
 	}
 
 	// Decrements the volume, to a min of 0.
 	public void volDown() {
-		volume--;
-		if (volume < 0) volume = 0;
-		System.out.println("Radio volume down.");
+		if (volume > 0) volume--;
 	}
 
 	/* Finds the next higher available station in the list of available stations.

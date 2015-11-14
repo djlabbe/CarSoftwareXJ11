@@ -188,17 +188,18 @@ public class Driver {
 		}
 		return sessionHistoryDisplay;		
 	}
-
-	public String toString() {
-		return username;
-	}
-
+	
 	public String toListString() {
 		String result = "";
 		result += (username + " | ");
 		result += ("Distance driven: "  + dfShort.format(distanceDriven) + "mi | ");
 		result += ("Time driven: "  + timeDriven + "sec");
 		return result;
-
 	}
+
+	public String toString() {
+		return username;
+	}
+
+	
 }
