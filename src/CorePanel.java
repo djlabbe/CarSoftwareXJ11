@@ -6,11 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
-public class CorePanel extends JPanel{
+public class CorePanel extends DecorativePanel {
 	
 	private JButton powerButton, gasButton, brakeButton, 
 	refuelButton, loginButton;
@@ -23,7 +22,6 @@ public class CorePanel extends JPanel{
 		this.car = guiManager.getCar();
 		parentGuiManager = guiManager;
 		setLayout(new GridLayout(1,6));
-		setBackground(Color.DARK_GRAY);
 		
 		loginButton = makeCoreButton("Login");
 		loginButton.addActionListener(new ActionListener() {

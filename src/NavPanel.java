@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
-public class NavPanel extends JPanel {
+public class NavPanel extends DecorativePanel {
 
 	private Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
 	private AppPanel controlledPanel;
@@ -19,8 +19,6 @@ public class NavPanel extends JPanel {
 		this.car = guiManager.getCar();
 		controlledPanel = guiManager.appPanel;
 		setLayout(new GridLayout(4, 1));
-		setBackground(Color.DARK_GRAY);
-		setBorder(bevelledBorder);
 		cardLayout = (CardLayout)(controlledPanel.getLayout());
 
 		add(makeNavButton("Radio"));

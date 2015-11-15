@@ -2,6 +2,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -23,17 +26,19 @@ public class AnalyticsPanel extends JPanel {
 		this.car = guiManager.getCar();
 		setLayout(new BorderLayout());
 		setBackground(Color.LIGHT_GRAY);
+		GridBagConstraints gb = new GridBagConstraints();
 		
 		JPanel leftAnalytics = new JPanel();
-		leftAnalytics.setLayout(new BoxLayout(leftAnalytics, BoxLayout.Y_AXIS));
+		leftAnalytics.setLayout(new GridBagLayout());
 		leftAnalytics.setBackground(Color.LIGHT_GRAY);
+		gb.insets = new Insets(2,5,2,5);
 
 		JPanel centerAnalytics = new JPanel();
-		centerAnalytics.setLayout(new BoxLayout(centerAnalytics, 1));
+		centerAnalytics.setLayout(new GridBagLayout());
 		centerAnalytics.setBackground(Color.LIGHT_GRAY);
 
 		JPanel rightAnalytics= new JPanel();
-		rightAnalytics.setLayout(new BoxLayout(rightAnalytics, 1));
+		rightAnalytics.setLayout(new GridBagLayout());
 		rightAnalytics.setBackground(Color.LIGHT_GRAY);
 
 		JPanel bottomAnalytics = new JPanel();
@@ -43,29 +48,40 @@ public class AnalyticsPanel extends JPanel {
 		// Left Analytics (Driver)
 		driverTitle = makeAnalyticsLabel("");
 		driverTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
-		leftAnalytics.add(driverTitle);
+		gb.gridx=0;
+		gb.gridy=0;
+		leftAnalytics.add(driverTitle, gb);
 
 		driverMiles = makeAnalyticsLabel("");
-		leftAnalytics.add(driverMiles);
+		gb.gridy=1;
+		leftAnalytics.add(driverMiles, gb);
 
 		driverTime = makeAnalyticsLabel("");
-		leftAnalytics.add(driverTime);
+		gb.gridy=2;
+		leftAnalytics.add(driverTime, gb);
 
 		driverAvgSpeed = makeAnalyticsLabel("");
-		leftAnalytics.add(driverAvgSpeed);
+		gb.gridy=3;
+		leftAnalytics.add(driverAvgSpeed, gb);
 
 		driverMaxSpeed = makeAnalyticsLabel("");
-		leftAnalytics.add(driverMaxSpeed);
+		gb.gridy=4;
+		leftAnalytics.add(driverMaxSpeed, gb);
 
 		driverFuelUsed = makeAnalyticsLabel("");
-		leftAnalytics.add(driverFuelUsed);
+		gb.gridy=5;
+		leftAnalytics.add(driverFuelUsed, gb);
 
 		driverRadioTime =makeAnalyticsLabel("");
-		leftAnalytics.add(driverRadioTime);
+		
+		gb.gridy=6;
+		leftAnalytics.add(driverRadioTime, gb);
 
 		driverPhoneTime = makeAnalyticsLabel("");
-		leftAnalytics.add(driverPhoneTime);
-
+		gb.gridy=7;
+		leftAnalytics.add(driverPhoneTime, gb);
+		
+		
 		driverCallLogBtn = new JButton("Call Log");
 		driverCallLogBtn.setBackground(Color.darkGray);
 		driverCallLogBtn.setForeground(Color.white);
@@ -76,78 +92,96 @@ public class AnalyticsPanel extends JPanel {
 						car.driverManager.currentDriver.displayCallHistory());
 			}          
 		});
-		
-		leftAnalytics.add(driverCallLogBtn);
+		gb.gridy=8;
+		leftAnalytics.add(driverCallLogBtn, gb);
 
-		// Display full session history for current driver.
-		sessionHistoryBtn = new JButton("Session History");
-		sessionHistoryBtn.setBackground(Color.darkGray);
-		sessionHistoryBtn.setForeground(Color.white);
-		sessionHistoryBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(guiManager.mainFrame,
-						car.driverManager.currentDriver.displaySessionHistory());
-			}          
-		});
-		sessionHistoryBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		leftAnalytics.add(sessionHistoryBtn);
-
 
 		// Center Analytics (Labels)
 
 		JLabel categoryTitle = makeAnalyticsLabel("STATS");
 		categoryTitle.setFont (categoryTitle.getFont().deriveFont (18.0f));
-		centerAnalytics.add(categoryTitle);
+		gb.gridy=0;
+		centerAnalytics.add(categoryTitle, gb);
 
 		JLabel milesLabel = makeAnalyticsLabel("Distance Travelled (Miles)");
-		centerAnalytics.add(milesLabel);
+		gb.gridy=1;
+		centerAnalytics.add(milesLabel, gb);
 
 		JLabel timeLabel = makeAnalyticsLabel("Time Active (Seconds)");
-		centerAnalytics.add(timeLabel);
+		gb.gridy=2;
+		centerAnalytics.add(timeLabel, gb);
 
 		JLabel avgSpeedLabel = makeAnalyticsLabel("Average Speed (Miles / Hour)");
-		centerAnalytics.add(avgSpeedLabel);
+		gb.gridy=3;
+		centerAnalytics.add(avgSpeedLabel, gb);
 
 		JLabel maxSpeedLabel = makeAnalyticsLabel("Maximum Speed (Miles / Hour)");
-		centerAnalytics.add(maxSpeedLabel);
+		gb.gridy=4;
+		centerAnalytics.add(maxSpeedLabel, gb);
 
 		JLabel mpgLabel = makeAnalyticsLabel("Fuel Used (Gallons)");
-		centerAnalytics.add(mpgLabel);
+		gb.gridy=5;
+		centerAnalytics.add(mpgLabel, gb);
 
 		JLabel radioTimeLabel = makeAnalyticsLabel("Radio Time (Seconds)");
-		centerAnalytics.add(radioTimeLabel);
+		gb.gridy=6;
+		centerAnalytics.add(radioTimeLabel, gb);
 
 		JLabel phoneTimeLabel = makeAnalyticsLabel("Phone Time (Seconds)");
-		centerAnalytics.add(phoneTimeLabel);
+		gb.gridy=7;
+		centerAnalytics.add(phoneTimeLabel, gb);
+		
+		viewDriversBtn = new JButton("Driver List");
+		viewDriversBtn.setBackground(Color.darkGray);
+		viewDriversBtn.setForeground(Color.white);
+		viewDriversBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(guiManager.mainFrame,
+						car.driverManager.displayKnownDrivers());
+			}          
+		});
+		gb.gridy=8;
+		centerAnalytics.add(viewDriversBtn, gb);
+		
+		
 
 		// Right Analytics (Session)
 
 		JLabel sessionTitle = makeAnalyticsLabel("SESSION");
 		sessionTitle.setFont (driverTitle.getFont().deriveFont (18.0f));
-		rightAnalytics.add(sessionTitle);
+		gb.gridy=0;
+		rightAnalytics.add(sessionTitle, gb);
 
 		sessionMiles = makeAnalyticsLabel("");
-		rightAnalytics.add(sessionMiles);
+		gb.gridy=1;
+		rightAnalytics.add(sessionMiles, gb);
 
 		sessionTime = makeAnalyticsLabel("");
-		rightAnalytics.add(sessionTime);
+		gb.gridy=2;
+		rightAnalytics.add(sessionTime, gb);
 
 		sessionAvgSpeed = makeAnalyticsLabel("");
-		rightAnalytics.add(sessionAvgSpeed);
+		gb.gridy=3;
+		rightAnalytics.add(sessionAvgSpeed, gb);
 
 		sessionMaxSpeed = makeAnalyticsLabel("");
-		rightAnalytics.add(sessionMaxSpeed);
+		gb.gridy=4;
+		rightAnalytics.add(sessionMaxSpeed, gb);
 
-		sessionFuelUsed = makeAnalyticsLabel("");;
-		rightAnalytics.add(sessionFuelUsed);
+		sessionFuelUsed = makeAnalyticsLabel("");
+		gb.gridy=5;
+		rightAnalytics.add(sessionFuelUsed, gb);
 
 		sessionRadioTime = makeAnalyticsLabel("");
-		rightAnalytics.add(sessionRadioTime);
+		gb.gridy=6;
+		rightAnalytics.add(sessionRadioTime, gb);
 
 		sessionPhoneTime = makeAnalyticsLabel("");
-		rightAnalytics.add(sessionPhoneTime);
+		gb.gridy=7;
+		rightAnalytics.add(sessionPhoneTime, gb);
 
+		
 		sessionCallLogBtn = new JButton("Call Log");
 		sessionCallLogBtn.setBackground(Color.darkGray);
 		sessionCallLogBtn.setForeground(Color.white);
@@ -158,21 +192,24 @@ public class AnalyticsPanel extends JPanel {
 						car.currentSession.displayCallHistory());
 			}          
 		});
-		
-		rightAnalytics.add(sessionCallLogBtn);
+		gb.gridy=8;
+		rightAnalytics.add(sessionCallLogBtn, gb);
 
 		// Bottom Analytics Panel
-		viewDriversBtn = new JButton("Driver List");
-		viewDriversBtn.setBackground(Color.darkGray);
-		viewDriversBtn.setForeground(Color.white);
-		viewDriversBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(guiManager.mainFrame,
-						car.driverManager.displayKnownDrivers());
-			}          
-		});
+		// Display full session history for current driver.
+				sessionHistoryBtn = new JButton(car.driverManager.currentDriver + "'s Sessions");
+				sessionHistoryBtn.setBackground(Color.darkGray);
+				sessionHistoryBtn.setForeground(Color.white);
+				sessionHistoryBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JOptionPane.showMessageDialog(guiManager.mainFrame,
+								car.driverManager.currentDriver.displaySessionHistory());
+					}          
+				});
+				sessionHistoryBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+				bottomAnalytics.add(sessionHistoryBtn);
 		
-		bottomAnalytics.add(viewDriversBtn);
+		
 		
 		add("West", leftAnalytics);
 		add("Center", centerAnalytics);

@@ -415,7 +415,6 @@ public class PhonePanel extends JPanel {
 		}
 
 		contactText = new JList<Contact>(contactList);
-
 		contactText.setCellRenderer(new ListCellRenderer<Contact>(){
 			public Component getListCellRendererComponent(JList<? extends Contact> list, Contact contact, int index, boolean isSelected, boolean cellHasFocus){
 				String name = contact.getName();

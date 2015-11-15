@@ -2,12 +2,9 @@ import java.awt.Color;
 import java.text.DecimalFormat;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
-public class InfoPanel extends JPanel {
-
-	private Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
+public class InfoPanel extends DecorativePanel {
 
 	private JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
 	private DecimalFormat dfOne = new DecimalFormat("#00");
@@ -19,8 +16,6 @@ public class InfoPanel extends JPanel {
 
 	public InfoPanel(GuiManager guiManager) {
 		this.car = guiManager.getCar();
-		setBackground(Color.DARK_GRAY);
-		setBorder(bevelledBorder);
 
 		sessionMileage = makeInfoLabel(12.0f);
 		totalMileage = makeInfoLabel(30.0f);
