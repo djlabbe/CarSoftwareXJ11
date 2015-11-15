@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +20,7 @@ public class AnalyticsPanel extends JPanel {
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 	private Car car;
 	
-	public AnalyticsPanel(GuiManager guiManager) {
+	public AnalyticsPanel(final GuiManager guiManager) {
 		this.car = guiManager.getCar();
 		setLayout(new BorderLayout());
 		setBackground(Color.LIGHT_GRAY);
@@ -67,6 +68,8 @@ public class AnalyticsPanel extends JPanel {
 		leftAnalytics.add(driverPhoneTime);
 
 		driverCallLogBtn = new JButton("Call Log");
+		driverCallLogBtn.setBackground(Color.darkGray);
+		driverCallLogBtn.setForeground(Color.white);
 		driverCallLogBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		driverCallLogBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -79,6 +82,8 @@ public class AnalyticsPanel extends JPanel {
 
 		// Display full session history for current driver.
 		sessionHistoryBtn = new JButton("Session History");
+		sessionHistoryBtn.setBackground(Color.darkGray);
+		sessionHistoryBtn.setForeground(Color.white);
 		sessionHistoryBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(guiManager.mainFrame,
@@ -145,6 +150,8 @@ public class AnalyticsPanel extends JPanel {
 		rightAnalytics.add(sessionPhoneTime);
 
 		sessionCallLogBtn = new JButton("Call Log");
+		sessionCallLogBtn.setBackground(Color.darkGray);
+		sessionCallLogBtn.setForeground(Color.white);
 		sessionCallLogBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		sessionCallLogBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -157,6 +164,8 @@ public class AnalyticsPanel extends JPanel {
 
 		// Bottom Analytics Panel
 		viewDriversBtn = new JButton("Driver List");
+		viewDriversBtn.setBackground(Color.darkGray);
+		viewDriversBtn.setForeground(Color.white);
 		viewDriversBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(guiManager.mainFrame,
