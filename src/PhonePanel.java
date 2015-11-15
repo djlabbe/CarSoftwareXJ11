@@ -406,13 +406,12 @@ public class PhonePanel extends JPanel {
 	public void refreshContactList() {
 
 		contactList.clear();
+		contactList.addElement(new Contact());
 		contactArray = car.phone.getContacts();
 
 		if (contactArray.size() > 0){
 			for(int i = 0; i < contactArray.size(); i++)
 				contactList.addElement(contactArray.get(i));
-		} else {
-			contactList.addElement(new Contact());
 		}
 
 		contactText = new JList<Contact>(contactList);
@@ -424,14 +423,10 @@ public class PhonePanel extends JPanel {
 				renderer.setText(name);
 				return renderer;			
 			}
-
 		});
+		
 		contactText.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		contactText.setLayoutOrientation(JList.VERTICAL);
-		GridBagConstraints gb = new GridBagConstraints();
-		gb.insets = new Insets(0,10,10,10);
-		gb.gridy = 1;	
-		gb.fill = GridBagConstraints.BOTH;
 		contactText.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				car.phone.resetNumberBeingDialed();
