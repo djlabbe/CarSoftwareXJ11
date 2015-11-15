@@ -36,12 +36,10 @@ public class Map {
 
 	public Vector<String> getRouteList() {
 		Vector<String> routeList = new Vector<String>();
-
 		for (int i = 0; i < availableRoutes.size(); i++) {
 			routeList.addElement( availableRoutes.get(i).getRouteName() + "  -  " +
 					Double.toString(availableRoutes.get(i).getRouteDistance() / 100 ) + " Mi");	
 		}
-
 		return routeList;
 	}
 }

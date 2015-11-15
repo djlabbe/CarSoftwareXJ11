@@ -15,14 +15,14 @@ public class LoginGuiManager extends JDialog{
 	private JPasswordField passwordEntry;
 	private JLabel usernameLabel, passwordLabel;
 	private JButton btnLogin, btnRegister;
-	
+
 	Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
 
 	// Create the pop-up login frame
 	public LoginGuiManager(Frame parent, final DriverManager driverManager) {
 
 		super(parent, "XJ-11 Login", true);
-		
+
 		JPanel panel = new JPanel(new GridBagLayout());
 		panel.setBackground(Color.DARK_GRAY);
 		GridBagConstraints cs = new GridBagConstraints();
@@ -122,8 +122,7 @@ public class LoginGuiManager extends JDialog{
 					Driver registerResult = driverManager.register(getUsername(), getPassword());
 					driverManager.setCurrentDriver(registerResult);
 					dispose();
-				}
-				
+				}	
 			}
 		});
 

@@ -5,17 +5,15 @@
 
 import java.util.ArrayList;
 
-public class Phone 
-{
-	private boolean isActiveCall;
-	private String numberBeingDialed;
-	private int speakerVol, micVol, currentPhoneTime;
-	private ArrayList<Contact> contacts;
+public class Phone {
 	
+	private boolean isActiveCall;
+	private int speakerVol, micVol, currentPhoneTime;
+	private String numberBeingDialed;
+	private ArrayList<Contact> contacts;
 	protected Call currentCall;
 	
-	public Phone()
-	{
+	public Phone() {
 		currentPhoneTime = 0;
 		isActiveCall = false;
 		numberBeingDialed = "";
@@ -25,98 +23,72 @@ public class Phone
 		contacts = new ArrayList<Contact>();
 	}
 
-	public void dialNumber(String input)
-	{
+	public void dialNumber(String input) {
 		numberBeingDialed = numberBeingDialed.concat(input);
-		if(numberBeingDialed.length() == 3)
-			numberBeingDialed = numberBeingDialed.concat("-");
-		if(numberBeingDialed.length() == 7)
-			numberBeingDialed = numberBeingDialed.concat("-");
-		// reset if the number is larger than 10
-		if(numberBeingDialed.length() > 12)
-			numberBeingDialed = input;
+		if(numberBeingDialed.length() == 3) numberBeingDialed = numberBeingDialed.concat("-");
+		if(numberBeingDialed.length() == 7) numberBeingDialed = numberBeingDialed.concat("-");
+		if(numberBeingDialed.length() > 12) numberBeingDialed = input;
 	}
 		
-	public String getNumberBeingDialed()
-	{
+	public String getNumberBeingDialed() {
 		return numberBeingDialed;
 	}
 	
-	public boolean checkActiveCall()
-	{
+	public boolean checkActiveCall() {
 		return isActiveCall;
 	}
 	
-	public void activateCall()
-	{
+	public void activateCall() {
 		isActiveCall = true;
 		currentCall = new Call(numberBeingDialed);
 	}
 	
-	public void deactivateCall()
-	{
-		if (currentCall != null) {
-			currentCall.setDuration(currentPhoneTime);
-		}
+	public void deactivateCall() {
+		if (currentCall != null) currentCall.setDuration(currentPhoneTime);
 		currentPhoneTime = 0;
 		isActiveCall = false;
 	}
 	
-	public void micVolUp()
-	{
-		if(micVol < 10)
-			micVol++;
+	public void micVolUp() {
+		if (micVol < 10) micVol++;
 	}
 	
-	public void micVolDown()
-	{
-		if(micVol > 0)
-			micVol--;
+	public void micVolDown() {
+		if (micVol > 0) micVol--;
 	}
 	
-	public String getMicVol()
-	{
+	public String getMicVol() {
 		return Integer.toString(micVol);
 	}
 	
-	public void speakVolUp()
-	{
-		if(speakerVol < 10)
-			speakerVol++;
+	public void speakVolUp() {
+		if (speakerVol < 10) speakerVol++;
 	}
 	
-	public void speakVolDown()
-	{
-		if(speakerVol > 0)
-			speakerVol--;
+	public void speakVolDown() {
+		if (speakerVol > 0) speakerVol--;
 	}
 	
-	public String getSpeakVol()
-	{
+	public String getSpeakVol() {
 		return Integer.toString(speakerVol);
 	}
 	
-	public int getCurrentCallTime()
-	{
+	public int getCurrentCallTime() {
 		return currentPhoneTime;
 	}
 	
-	public void incrementCurrentCallTime()
-	{
+	public void incrementCurrentCallTime() {
 		currentPhoneTime++;
 	}
 	
-	public void resetNumberBeingDialed()
-	{
+	public void resetNumberBeingDialed() {
 		numberBeingDialed = "";
 	}
 	public void setContactActive(String contactNum) {
 		numberBeingDialed = contactNum;
 	}
 	
-	
-	public void setContacts(Driver driver)
-	{
+	public void setContacts(Driver driver) {
 		contacts = driver.getContacts();
 	}
 	

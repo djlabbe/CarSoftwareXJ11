@@ -62,17 +62,13 @@ public class Session {
 	}
 
 	public void updateMaxSpeed(int currentSpeed) {
-		if (currentSpeed > maxSpeed) {
-			maxSpeed = currentSpeed;
-		}
+		if (currentSpeed > maxSpeed) maxSpeed = currentSpeed;
+		
 	}
 
 	public double getAverageSpeed() {
-		if (timeDriven != 0) {
-			return distanceDriven / timeDriven * 60 * 60;
-		} else {
-			return 0;
-		}
+		if (timeDriven != 0) return distanceDriven / timeDriven * 60 * 60;
+		else return 0;
 	}	
 
 	public double getFuelUsed() {
@@ -105,9 +101,7 @@ public class Session {
 
 	public String displayCallHistory() {
 		String callHistoryDisplay = "";
-		if (callHistory.size() == 0) {
-			callHistoryDisplay = "No completed calls to display.";
-		}
+		if (callHistory.size() == 0) callHistoryDisplay = "No completed calls to display.";
 		for (int i = 0; i < callHistory.size(); i++){
 			Call call = callHistory.get(i);
 			callHistoryDisplay += ( call.toString() + "\n");

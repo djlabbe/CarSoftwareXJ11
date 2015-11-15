@@ -9,15 +9,14 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GuiManager {
-	
+
 	private Car car;
-	
+
 	protected JFrame mainFrame;
 	protected InfoPanel infoPanel;
 	protected NavPanel navPanel;
 	protected AppPanel appPanel;
 	protected CorePanel corePanel;
-	protected DecorativePanel emptyPanel;
 
 	public GuiManager() {
 		try {
@@ -30,7 +29,6 @@ public class GuiManager {
 		prepareGUI();
 	}
 
-	// Make a new JFrame (main window) and center it.
 	private void prepareGUI() {
 		mainFrame = new JFrame("XJ-11");
 		mainFrame.setBackground(Color.WHITE);
@@ -51,17 +49,16 @@ public class GuiManager {
 		corePanel = new CorePanel(this);
 		appPanel = new AppPanel(this);
 		navPanel = new NavPanel(this);
-		emptyPanel = new DecorativePanel();
-		
+
 		mainFrame.add("North", infoPanel);
 		mainFrame.add("West", navPanel);
 		mainFrame.add("South", corePanel);
 		mainFrame.add("Center", appPanel);
-		mainFrame.add("East", emptyPanel);
+		mainFrame.add("East", new DecorativePanel());
 
 		mainFrame.setVisible(true);
 	}
-	
+
 	public Car getCar() {
 		return car;
 	}

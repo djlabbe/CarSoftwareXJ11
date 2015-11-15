@@ -68,11 +68,8 @@ public class Car {
 	 * Car can only be turned off is it is currently running and is not moving. 
 	 */
 	public void togglePower() {
-		if (isOn && currentSpeed == 0) {
-			isOn = false;
-		} else if (!isOn && currentSpeed == 0){
-			isOn = true;
-		}
+		if (isOn && currentSpeed == 0) isOn = false;
+		else if (!isOn && currentSpeed == 0) isOn = true;
 	}
 
 	public double getOdometer() {
@@ -94,12 +91,8 @@ public class Car {
 	public int accelerate() {
 		if (isOn) {
 			currentSpeed += 5;
-			if (currentSpeed > MAXSPEED) {
-				currentSpeed = MAXSPEED;
-			}
+			if (currentSpeed > MAXSPEED) currentSpeed = MAXSPEED;
 			updateFuel();
-		} else {
-			
 		}
 		return currentSpeed;
 	}
@@ -139,9 +132,6 @@ public class Car {
 			currentFuel = FUELCAPACITY;
 			success = true;
 		}
-		else {
-			success = false;
-		}
 		return success;
 	}
 
@@ -159,7 +149,7 @@ public class Car {
 			@Override
 			public void run() {
 				guiManager.infoPanel.refresh();
-				guiManager.appPanel.analyticsPanel.refresh();
+				guiManager.appPanel.statsPanel.refresh();
 				guiManager.appPanel.phonePanel.refresh();
 
 				deltaDistance = ((double)getCurrentSpeed() / 60 / 60);

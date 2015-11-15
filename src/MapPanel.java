@@ -13,7 +13,7 @@ import javax.swing.JSlider;
 
 @SuppressWarnings("serial")
 public class MapPanel extends JPanel {
-	
+
 	private JSlider mapSlider;
 	private DecimalFormat dfMap = new DecimalFormat("###.00");
 	private JComboBox<String> routeSelector;
@@ -23,7 +23,7 @@ public class MapPanel extends JPanel {
 		this.car = guiManager.getCar();
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
-		
+
 		int routeDistance = (int)car.map.getCurrentRoute().getRouteDistance();
 		mapSlider = new JSlider(0, routeDistance, 0);
 		setSliderSpacing(car, routeDistance);
@@ -54,7 +54,7 @@ public class MapPanel extends JPanel {
 		});
 		add("North", routeSelector);
 	}
-	
+
 	public void setSliderSpacing(Car car, int routeDistance) {
 		mapSlider.setMajorTickSpacing((int)car.map.getCurrentRoute().getRouteDistance() / 4);
 		mapSlider.setLabelTable(mapSlider.createStandardLabels(routeDistance / 4));
@@ -70,9 +70,9 @@ public class MapPanel extends JPanel {
 			label.setText(String.valueOf(dfMap.format((double)i/100.0)));
 			label.setSize(50, 20);
 		}
-				
+
 	}
-	
+
 	// An executable to be run by the event dispatch thread to update a Swing GUI component.
 	Runnable updateSliderPosition = new Runnable () {
 		public void run() {

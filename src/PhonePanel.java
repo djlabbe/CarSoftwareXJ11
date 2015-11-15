@@ -229,7 +229,7 @@ public class PhonePanel extends JPanel {
 							car.driverManager.currentDriver.addContact(newContact);
 							car.refreshContacts();
 							contactDialog.dispose();
-							refreshContactList(car);
+							refreshContactList();
 						}
 					}
 				});
@@ -403,12 +403,12 @@ public class PhonePanel extends JPanel {
 		phoneTimeLabel.setText("Duration: " + Integer.toString(car.phone.getCurrentCallTime()) + " sec");
 	}
 
-	public void refreshContactList(Car car) {
+	public void refreshContactList() {
 
 		contactList.clear();
 		contactArray = car.phone.getContacts();
 
-		if(contactArray.size() > 0){
+		if (contactArray.size() > 0){
 			for(int i = 0; i < contactArray.size(); i++)
 				contactList.addElement(contactArray.get(i));
 		} else {

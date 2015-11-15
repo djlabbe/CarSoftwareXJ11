@@ -32,13 +32,10 @@ public class CorePanel extends JPanel{
 					car.driverManager.currentDriver.saveSession(car.currentSession);
 					car.login();
 					resetApps();
-					guiManager.appPanel.phonePanel.refreshContactList(car);
+					guiManager.appPanel.phonePanel.refreshContactList();
 				}
 				else {
-					JOptionPane.showMessageDialog(guiManager.mainFrame,
-							"Car must be turned off to change drivers.",
-							"Error",
-							JOptionPane.ERROR_MESSAGE);
+					showError("Cannot change drivers while car is running.");
 				}
 			}          
 		});
@@ -58,10 +55,7 @@ public class CorePanel extends JPanel{
 					guiManager.appPanel.appLayout.show(guiManager.appPanel, "WELCOMEPANEL");
 					powerButton.setText("ON");
 				} else {
-					JOptionPane.showMessageDialog(guiManager.mainFrame,
-							"Can't turn off engine while moving.",
-							"Error",
-							JOptionPane.ERROR_MESSAGE);
+					showError("Cannot turn off engine while moving.");
 				}
 			}          
 		});
@@ -70,10 +64,7 @@ public class CorePanel extends JPanel{
 		refuelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!car.refuel()) {
-					JOptionPane.showMessageDialog(guiManager.mainFrame,
-							"Engine must be off to refuel.",
-							"Error",
-							JOptionPane.ERROR_MESSAGE);
+					showError("Cannot refuel with engine running.");
 				}
 			}          
 		});
@@ -113,6 +104,13 @@ public class CorePanel extends JPanel{
 	public void resetApps() {
 		car.phone.resetNumberBeingDialed();
 		parentGuiManager.appPanel.phonePanel.dialNumField.setText("");
+	}
+	
+	public void showError(String message) {
+		JOptionPane.showMessageDialog(parentGuiManager.mainFrame,
+				message,
+				"Error",
+				JOptionPane.ERROR_MESSAGE);
 	}
 
 }
