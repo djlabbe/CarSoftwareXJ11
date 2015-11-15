@@ -41,13 +41,11 @@ public class RadioPanel extends JPanel {
 					updateStationLabel(car);
 					radioVolumeLabel.setText(Integer.toString(car.radio.getVolume()));
 					radioPowerButton.setText("OFF");
-					System.out.println("Radio turned on.");
 				} else {
 					modulusLabel.setVisible(false);
 					stationLabel.setText("OsirusXM");
 					radioVolumeLabel.setText("-");
 					radioPowerButton.setText("ON");
-					System.out.println("Radio turned off.");
 				}
 			}          
 		});
@@ -161,9 +159,6 @@ public class RadioPanel extends JPanel {
 				if (car.radio.getIsOn()) {
 					car.radio.toggleSetIsActive();
 					if (car.radio.getSetIsActive()) {
-						System.out.println("Set favorite activated.");
-					} else {
-						System.out.println("Set favorite cancelled.");
 					}
 				} 
 			}          
@@ -206,11 +201,9 @@ public class RadioPanel extends JPanel {
 						car.driverManager.currentDriver.setFav(car.radio.getIsAm(), favNum, car.radio.getCurrentStation());
 						car.radio.setUserFavorites(car.driverManager.currentDriver);
 						car.radio.toggleSetIsActive();
-						System.out.println("New favorite " + favNum + " saved.");
 					} else {
 						car.radio.goToFav(favNum);
 						updateStationLabel(car);
-						System.out.println("Select favorite " + favNum +".");
 					}  
 				}
 			}          

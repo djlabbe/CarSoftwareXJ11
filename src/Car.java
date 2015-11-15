@@ -44,7 +44,6 @@ public class Car {
 		frame.setLayout(new FlowLayout());
 		LoginGuiManager loginGuiManager = new LoginGuiManager(frame, driverManager);
 		loginGuiManager.setVisible(true);
-		System.out.println(driverManager.currentDriver + " logged in.");
 		if (driverManager.currentDriver != null) {
 			currentSession = new Session(driverManager.currentDriver);
 			setUserFavorites();
@@ -99,9 +98,8 @@ public class Car {
 				currentSpeed = MAXSPEED;
 			}
 			updateFuel();
-			System.out.println("Speed increased by 5 MPH.");
 		} else {
-			System.out.println("Can't accelerate -- car is off.");
+			
 		}
 		return currentSpeed;
 	}
@@ -111,7 +109,6 @@ public class Car {
 	 */
 	public int decelerate() {
 		currentSpeed = currentSpeed <= 10 ? 0 : currentSpeed - 10;
-		System.out.println("Brake applied.");
 		return currentSpeed;
 	}
 
@@ -141,11 +138,9 @@ public class Car {
 		if (currentSpeed == 0 && !isOn) {
 			currentFuel = FUELCAPACITY;
 			success = true;
-			System.out.println("Refueled successfully.");
 		}
 		else {
 			success = false;
-			System.out.println("Unable to refuel, car must be off.");
 		}
 		return success;
 	}

@@ -150,8 +150,6 @@ public class PhonePanel extends JPanel {
 		addContactButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 
-				System.out.println("Creating a contact.");
-
 				// opens a window to create a new contact
 				contactDialog = new JDialog();
 				contactDialog.setResizable(false);
@@ -231,7 +229,6 @@ public class PhonePanel extends JPanel {
 							car.driverManager.currentDriver.addContact(newContact);
 							car.refreshContacts();
 							contactDialog.dispose();
-							System.out.println("Contact created.");
 							refreshContactList(car);
 						}
 					}

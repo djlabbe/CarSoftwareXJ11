@@ -45,10 +45,8 @@ public class Radio {
 		isAm = !isAm;
 		if (isAm) {
 			currentStation = availableAmStations.get(amStationIndex);
-			System.out.println("Radio switched to AM.");
 		} else {
 			currentStation = availableFmStations.get(fmStationIndex);
-			System.out.println("Radio switched to FM.");
 		}
 	}
 	
@@ -91,7 +89,6 @@ public class Radio {
 			if (fmStationIndex >= availableFmStations.size()) fmStationIndex = 0;
 			currentStation = availableFmStations.get(fmStationIndex);
 		}
-		System.out.println("Radio seek forward.");
 	}
 
 	/* Finds the next lower available station in the list of available stations.
@@ -107,7 +104,6 @@ public class Radio {
 			if (fmStationIndex < 0) fmStationIndex = availableFmStations.size() - 1;
 			currentStation = availableFmStations.get(fmStationIndex);
 		}
-		System.out.println("Radio seek back.");
 	}
 
 	/* Jump to the selected favorite based on the button pressed.

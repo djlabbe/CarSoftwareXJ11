@@ -50,7 +50,6 @@ public class CorePanel extends JPanel{
 				if (car.getIsOn() && car.getCurrentSpeed() == 0) {
 					guiManager.appPanel.appLayout.show(guiManager.appPanel, "RADIOPANEL");
 					powerButton.setText("OFF");
-					System.out.println("Engine turned on.");
 					car.runLoop(guiManager);
 				} else if (car.getCurrentSpeed() == 0) {
 					car.timer.cancel();
@@ -58,7 +57,6 @@ public class CorePanel extends JPanel{
 					resetApps();
 					guiManager.appPanel.appLayout.show(guiManager.appPanel, "WELCOMEPANEL");
 					powerButton.setText("ON");
-					System.out.println("Engine turned off.");
 				} else {
 					JOptionPane.showMessageDialog(guiManager.mainFrame,
 							"Can't turn off engine while moving.",

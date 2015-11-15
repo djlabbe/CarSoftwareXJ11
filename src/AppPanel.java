@@ -29,6 +29,6 @@ public class AppPanel extends JPanel {
 		add(radioPanel, "RADIOPANEL");
 		add(phonePanel, "PHONEPANEL");
 		add(mapPanel, "MAPPANEL");
-		add(analyticsPanel, "ANALYTICSPANEL");
+		add(analyticsPanel, "STATSPANEL");
 	}	
 }

@@ -11,8 +11,8 @@ import javax.swing.border.Border;
 public class NavPanel extends JPanel {
 
 	private Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
-	private JButton radioButton, phoneButton, mapButton, statsButton;
 	private AppPanel controlledPanel;
+	private CardLayout cardLayout;
 	private Car car;
 
 	public NavPanel(GuiManager guiManager) {
@@ -21,54 +21,12 @@ public class NavPanel extends JPanel {
 		setLayout(new GridLayout(4, 1));
 		setBackground(Color.DARK_GRAY);
 		setBorder(bevelledBorder);
+		cardLayout = (CardLayout)(controlledPanel.getLayout());
 
-		radioButton = makeNavButton("Radio");
-		radioButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (car.getIsOn()) {
-					CardLayout cardLayout = (CardLayout)(controlledPanel.getLayout());
-					cardLayout.show(controlledPanel, "RADIOPANEL");
-					System.out.println("Show Radio");
-				}			
-			}          
-		});
-		phoneButton = makeNavButton("Phone");
-		phoneButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (car.getIsOn()) {
-					CardLayout cardLayout = (CardLayout)(controlledPanel.getLayout());
-					cardLayout.show(controlledPanel, "PHONEPANEL");
-					System.out.println("Show Phone");
-				}
-			}          
-		});
-		mapButton = makeNavButton("Map");
-		mapButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (car.getIsOn()) {
-					CardLayout cardLayout = (CardLayout)(controlledPanel.getLayout());
-					cardLayout.show(controlledPanel, "MAPPANEL");
-					System.out.println("Show Map");
-				}
-
-			}          
-		});
-		statsButton = makeNavButton("Stats");
-		statsButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (car.getIsOn()) {
-					CardLayout cardLayout = (CardLayout)(controlledPanel.getLayout());
-					cardLayout.show(controlledPanel, "ANALYTICSPANEL");
-					System.out.println("Show Analytics");
-				}
-
-			}          
-		});
-		
-		add(radioButton);
-		add(phoneButton);
-		add(mapButton);
-		add(statsButton);
+		add(makeNavButton("Radio"));
+		add(makeNavButton("Phone"));
+		add(makeNavButton("Map"));
+		add(makeNavButton("Stats"));
 	}
 
 	private JButton makeNavButton(String label) {
@@ -77,6 +35,11 @@ public class NavPanel extends JPanel {
 		button.setBackground(Color.DARK_GRAY);
 		button.setForeground(Color.WHITE);
 		button.setBorder(bevelledBorder);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (car.getIsOn()) cardLayout.show(controlledPanel, label.toUpperCase() + "PANEL");
+			}
+		});
 		return button;
 	}
 

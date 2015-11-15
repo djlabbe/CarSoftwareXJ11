@@ -35,8 +35,6 @@ public class Phone
 		// reset if the number is larger than 10
 		if(numberBeingDialed.length() > 12)
 			numberBeingDialed = input;
-
-		System.out.println("Number being dialed: " + numberBeingDialed);
 	}
 		
 	public String getNumberBeingDialed()
@@ -53,7 +51,6 @@ public class Phone
 	{
 		isActiveCall = true;
 		currentCall = new Call(numberBeingDialed);
-		System.out.println("Call being made.");
 	}
 	
 	public void deactivateCall()
@@ -63,21 +60,18 @@ public class Phone
 		}
 		currentPhoneTime = 0;
 		isActiveCall = false;
-		System.out.println("Call ended.");
 	}
 	
 	public void micVolUp()
 	{
 		if(micVol < 10)
 			micVol++;
-		System.out.println("Microphone volume up.");
 	}
 	
 	public void micVolDown()
 	{
 		if(micVol > 0)
 			micVol--;
-		System.out.println("Microphone volume down.");
 	}
 	
 	public String getMicVol()
@@ -89,14 +83,12 @@ public class Phone
 	{
 		if(speakerVol < 10)
 			speakerVol++;
-		System.out.println("Speaker volume up.");
 	}
 	
 	public void speakVolDown()
 	{
 		if(speakerVol > 0)
 			speakerVol--;
-		System.out.println("Speaker volume down");
 	}
 	
 	public String getSpeakVol()

@@ -40,7 +40,6 @@ public class DriverManager {
 	public Driver register(String inputUsername, String inputPassword) {
 		Driver registeredDriver = new Driver(inputUsername.toUpperCase(), inputPassword);
 		knownDrivers.add(registeredDriver);
-		System.out.println("Registered new driver - " + inputUsername.toUpperCase());
 		return registeredDriver;
 	}
 	

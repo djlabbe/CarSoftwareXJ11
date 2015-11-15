@@ -127,7 +127,6 @@ public class Driver {
 				amFav3 = station;
 				break;
 			default:
-				System.out.println("Error setting driver radio am favorite");
 				break;
 			}
 		} else {
@@ -142,7 +141,6 @@ public class Driver {
 				fmFav3 = station;
 				break;
 			default:
-				System.out.println("Error setting driver radio fm favorite");
 				break;
 			}
 		}

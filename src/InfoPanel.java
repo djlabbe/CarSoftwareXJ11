@@ -22,32 +22,32 @@ public class InfoPanel extends JPanel {
 		setBackground(Color.DARK_GRAY);
 		setBorder(bevelledBorder);
 		
-		sessionMileage = new JLabel("Session: " + dfShort.format(car.currentSession.getDistanceDriven()) + " miles ");
-		sessionMileage.setFont (sessionMileage.getFont().deriveFont (12.0f));
-		sessionMileage.setForeground(Color.WHITE);
+		sessionMileage = makeInfoLabel(12.0f);
+		totalMileage = makeInfoLabel(30.0f);
+		currentSpeed = makeInfoLabel(30.0f);
+		currentFuel = makeInfoLabel(12.0f);
 		
-		totalMileage = new JLabel("| " + dfShort.format(car.getOdometer()) + " miles | ");
-		totalMileage.setFont (totalMileage.getFont().deriveFont (30.0f));
-		totalMileage.setForeground(Color.WHITE);
-		
-		currentSpeed = new JLabel(dfTwo.format(car.getCurrentSpeed()) + " MPH | ");
-		currentSpeed.setFont (currentSpeed.getFont().deriveFont (30.0f));
-		currentSpeed.setForeground(Color.WHITE);
-		
-		currentFuel = new JLabel(dfOne.format(car.getFuelPercent()) + "% Fuel ");
-		currentFuel.setFont (currentFuel.getFont().deriveFont (12.0f));
-		currentFuel.setForeground(Color.WHITE);
+		refresh();
 		
 		add(sessionMileage);
 		add(totalMileage);
 		add(currentSpeed);
 		add(currentFuel);
+		
+		
+	}
+	
+	public JLabel makeInfoLabel(float size) {
+		JLabel newLabel = new JLabel();
+		newLabel.setForeground(Color.WHITE);
+		newLabel.setFont (newLabel.getFont().deriveFont (size));
+		return newLabel;
 	}
 	
 	public void refresh() {
 		sessionMileage.setText("Session: " + dfShort.format(car.currentSession.getDistanceDriven()) + " miles ");
 		totalMileage.setText("| " + dfShort.format(car.getOdometer()) + " miles | ");
-		currentSpeed.setText(dfTwo.format(car.coast()) + " MPH | ");
+		currentSpeed.setText(dfTwo.format(car.getCurrentSpeed()) + " MPH | ");
 		currentFuel.setText(dfOne.format(car.getFuelPercent()) + "% Fuel ");
 	}
 	
