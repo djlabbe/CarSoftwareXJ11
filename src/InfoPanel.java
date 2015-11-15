@@ -45,7 +45,7 @@ public class InfoPanel extends JPanel {
 	public void refresh() {
 		sessionMileage.setText("Session: " + dfShort.format(car.currentSession.getDistanceDriven()) + " miles ");
 		totalMileage.setText("| " + dfShort.format(car.getOdometer()) + " miles | ");
-		currentSpeed.setText(dfTwo.format(car.getCurrentSpeed()) + " MPH | ");
+		currentSpeed.setText(dfTwo.format(car.coast()) + " MPH | ");
 		currentFuel.setText(dfOne.format(car.getFuelPercent()) + "% Fuel ");
 	}
 

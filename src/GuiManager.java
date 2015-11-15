@@ -30,6 +30,7 @@ public class GuiManager {
 	}
 
 	private void prepareGUI() {
+		
 		mainFrame = new JFrame("XJ-11");
 		mainFrame.setBackground(Color.WHITE);
 		mainFrame.setSize(600, 400);
