@@ -108,9 +108,8 @@ public class Car {
 	/* Car is coasting - is called once per second while the car is on.
 	 * Car loses 1 MPH per second, can not go below 0 MPH.
 	 */
-	public int coast() {
+	public void coast() {
 		currentSpeed = currentSpeed <= 1 ? 0 : currentSpeed - 1;
-		return currentSpeed;
 	}
 
 	public void  updateFuel() {
@@ -165,6 +164,8 @@ public class Car {
 					driverManager.currentDriver.incrementRadioTime();
 					currentSession.incrementRadioTime();
 				}
+				
+				coast();
 
 				// Asynchronously update the map position slider
 				SwingUtilities.invokeLater(guiManager.appPanel.mapPanel.updateSliderPosition);

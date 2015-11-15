@@ -9,7 +9,6 @@ public class InfoPanel extends DecorativePanel {
 	private JLabel sessionMileage, totalMileage, currentSpeed, currentFuel;
 	private DecimalFormat dfOne = new DecimalFormat("#00");
 	private DecimalFormat dfTwo = new DecimalFormat("000");
-
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 
 	private Car car;
@@ -40,7 +39,7 @@ public class InfoPanel extends DecorativePanel {
 	public void refresh() {
 		sessionMileage.setText("Session: " + dfShort.format(car.currentSession.getDistanceDriven()) + " miles ");
 		totalMileage.setText("| " + dfShort.format(car.getOdometer()) + " miles | ");
-		currentSpeed.setText(dfTwo.format(car.coast()) + " MPH | ");
+		currentSpeed.setText(dfTwo.format(car.getCurrentSpeed()) + " MPH | ");
 		currentFuel.setText(dfOne.format(car.getFuelPercent()) + "% Fuel ");
 	}
 
