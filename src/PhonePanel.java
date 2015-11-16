@@ -25,7 +25,7 @@ public class PhonePanel extends JPanel {
 	private JTextField nameText, numText;
 	private Car car;
 
-	public PhonePanel(GuiManager guiManager) {
+	public PhonePanel(final GuiManager guiManager) {
 		this.car = guiManager.getCar();
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
@@ -371,7 +371,7 @@ public class PhonePanel extends JPanel {
 		add(rightPhonePanel, BorderLayout.EAST);
 	}
 	
-	private JButton makePhoneButton(Car car, String btnLabel) {
+	private JButton makePhoneButton(final Car car, final String btnLabel) {
 		JButton newButton = new JButton(btnLabel);
 		newButton.setBackground(Color.DARK_GRAY);
 		newButton.setForeground(Color.WHITE);

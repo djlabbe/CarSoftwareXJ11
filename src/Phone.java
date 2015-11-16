@@ -5,8 +5,8 @@
 
 import java.util.ArrayList;
 
-public class Phone {
-	
+public class Phone 
+{
 	private boolean isActiveCall;
 	private int speakerVol, micVol, currentPhoneTime;
 	private String numberBeingDialed;

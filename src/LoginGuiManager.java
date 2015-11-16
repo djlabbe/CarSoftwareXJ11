@@ -19,7 +19,7 @@ public class LoginGuiManager extends JDialog{
 	Border bevelledBorder = BorderFactory.createRaisedBevelBorder();
 
 	// Create the pop-up login frame
-	public LoginGuiManager(Frame parent, final DriverManager driverManager) {
+	public LoginGuiManager(final Frame parent, final DriverManager driverManager) {
 
 		super(parent, "XJ-11 Login", true);
 

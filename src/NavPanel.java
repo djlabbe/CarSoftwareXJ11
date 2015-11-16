@@ -27,7 +27,7 @@ public class NavPanel extends DecorativePanel {
 		add(makeNavButton("Stats"));
 	}
 
-	private JButton makeNavButton(String label) {
+	private JButton makeNavButton(final String label) {
 		JButton button = new JButton(label);
 		button.setFont(button.getFont().deriveFont(18.0f));
 		button.setBackground(Color.DARK_GRAY);
