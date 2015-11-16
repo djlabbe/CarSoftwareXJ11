@@ -59,6 +59,14 @@ public class GuiManager {
 
 		mainFrame.setVisible(true);
 	}
+	
+	public void resetApps() {
+		car.radio.reset();
+		appPanel.radioPanel.reset();
+		
+		car.phone.reset();
+		appPanel.phonePanel.reset();
+	}
 
 	public Car getCar() {
 		return car;

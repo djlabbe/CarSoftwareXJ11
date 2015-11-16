@@ -43,11 +43,16 @@ public class Phone
 		currentCall = new Call(numberBeingDialed);
 	}
 	
+	
+	
 	public void deactivateCall() {
 		if (currentCall != null) currentCall.setDuration(currentPhoneTime);
 		currentPhoneTime = 0;
 		isActiveCall = false;
+		currentCall = null;
+		resetNumberBeingDialed();
 	}
+	
 	
 	public void micVolUp() {
 		if (micVol < 10) micVol++;
@@ -94,5 +99,14 @@ public class Phone
 	
 	public ArrayList<Contact> getContacts() {
 		return contacts;
+	}
+	
+	public void reset() {
+		currentPhoneTime = 0;
+		isActiveCall = false;
+		numberBeingDialed = "";
+		speakerVol = 3;
+		micVol = 3;
+		currentCall = null;
 	}
 }

@@ -30,7 +30,7 @@ public class RadioPanel extends JPanel {
 		
 		topRadioPanel = new DecorativePanel();
 		topRadioPanel.setBackground(Color.DARK_GRAY);
-		radioPowerButton = new DecorativeButton("ON ");
+		radioPowerButton = new DecorativeButton("ON");
 		radioPowerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				car.radio.togglePower();
@@ -206,5 +206,12 @@ public class RadioPanel extends JPanel {
 			}          
 		});
 		return newButton;
+	}
+	
+	public void reset() {
+		radioVolumeLabel.setText("-");
+		radioPowerButton.setText("On");
+		stationLabel.setText("OsirusXM");
+		modulusLabel.setVisible(false);
 	}
 }

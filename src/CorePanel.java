@@ -26,14 +26,13 @@ public class CorePanel extends DecorativePanel {
 		parentGuiManager = guiManager;
 		setLayout(new GridLayout(1,6));
 		
-		loginButton = makeCoreButton("Login");
+		loginButton = makeCoreButton("Logout");
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!car.getIsOn()) {
 					car.driverManager.currentDriver.saveSession(car.currentSession);
+					guiManager.resetApps();
 					car.login();
-					resetApps();
-					guiManager.appPanel.phonePanel.refreshContactList();
 				}
 				else {
 					showError("Cannot change drivers while car is running.");
@@ -50,9 +49,9 @@ public class CorePanel extends DecorativePanel {
 					powerButton.setText("OFF");
 					car.runLoop(guiManager);
 				} else if (car.getCurrentSpeed() == 0) {
+					guiManager.appPanel.phonePanel.endCall();
 					car.timer.cancel();
 					car.timer.purge();
-					resetApps();
 					guiManager.appPanel.appLayout.show(guiManager.appPanel, "WELCOMEPANEL");
 					powerButton.setText("ON");
 				} else {
@@ -100,11 +99,6 @@ public class CorePanel extends DecorativePanel {
 		button.setForeground(Color.WHITE);
 		button.setBorder(bevelledBorder);
 		return button;
-	}
-	
-	public void resetApps() {
-		car.phone.resetNumberBeingDialed();
-		parentGuiManager.appPanel.phonePanel.dialNumField.setText("");
 	}
 	
 	public void showError(String message) {

@@ -130,12 +130,7 @@ public class PhonePanel extends JPanel {
 		gb.gridy = 0;
 		endButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				car.phone.deactivateCall();
-				car.driverManager.currentDriver.saveCall(car.phone.currentCall);
-				car.currentSession.saveCall(car.phone.currentCall);
-				car.phone.currentCall = null;
-				car.phone.resetNumberBeingDialed();
-				dialNumField.setText("");
+				endCall();
 			}
 		});
 		rightPhonePanel.add(endButton, gb);
@@ -433,6 +428,20 @@ public class PhonePanel extends JPanel {
 			}
 		});
 		scrollContact.setViewportView(contactText);
+	}
+	
+	public void endCall() {
+		car.driverManager.currentDriver.saveCall(car.phone.currentCall);
+		car.currentSession.saveCall(car.phone.currentCall);
+		car.phone.deactivateCall();
+		dialNumField.setText("");
+	}
+	
+	public void reset() {
+		endCall();
+		endButton.setVisible(false);
+		callButton.setVisible(true);
+		refreshContactList();
 	}
 	
 }
