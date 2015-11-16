@@ -18,7 +18,8 @@ public class PhonePanel extends JPanel {
 	private ArrayList<Contact> contactArray;
 	protected JTextField dialNumField;
 	protected JList<Contact> contactText;
-	protected JButton endButton, callButton, addContactButton;
+	protected JButton endButton, callButton;
+	protected DecorativeButton addContactButton;
 	private JDialog contactDialog;
 	private JTextField nameText, numText;
 	private Car car;
@@ -29,16 +30,15 @@ public class PhonePanel extends JPanel {
 		setBackground(Color.WHITE);
 
 		// Phone panels
-		JPanel leftPhonePanel = new JPanel(new BorderLayout());
-		JPanel centerPhonePanel = new JPanel(new GridBagLayout());
-		JPanel rightPhonePanel = new JPanel(new GridBagLayout());
+		DecorativePanel leftPhonePanel = new DecorativePanel();
+		leftPhonePanel.setLayout(new BorderLayout());
+		DecorativePanel centerPhonePanel = new DecorativePanel();
+		centerPhonePanel.setLayout(new GridBagLayout());
+		DecorativePanel rightPhonePanel = new DecorativePanel();
+		rightPhonePanel.setLayout(new GridBagLayout());
+		
 		dialpadPanel = new JPanel(new GridLayout(4,3));
 		GridBagConstraints gb = new GridBagConstraints();
-
-		leftPhonePanel.setBackground(Color.LIGHT_GRAY);
-		centerPhonePanel.setBackground(Color.LIGHT_GRAY);
-		rightPhonePanel.setBackground(Color.LIGHT_GRAY);
-		dialpadPanel.setBackground(Color.LIGHT_GRAY);
 
 		final JLabel speakVolLabel;
 		final JLabel micVolLabel;
@@ -46,7 +46,7 @@ public class PhonePanel extends JPanel {
 		// TextField for the dialed number in the center panel
 		dialNumField = new JTextField("", 8);
 		dialNumField.setBackground(Color.WHITE);
-		dialNumField.setFont(new Font("Arial", Font.PLAIN, 30));
+		dialNumField.setFont(new Font("Arial", Font.PLAIN, 23));
 		dialNumField.setHorizontalAlignment(SwingConstants.CENTER);
 		dialNumField.setEditable(false);
 		gb.weightx = 1;
@@ -101,7 +101,7 @@ public class PhonePanel extends JPanel {
 		// Call Button
 		callButton = new JButton("Call");
 		callButton.setBackground(Color.green);
-		gb.insets = new Insets(10,0,0,10);
+		gb.insets = new Insets(10,10,0,10);
 		gb.gridheight = 1;
 		gb.gridx = 0;
 		gb.gridy = 0;
@@ -140,9 +140,8 @@ public class PhonePanel extends JPanel {
 		rightPhonePanel.add(endButton, gb);
 
 		// Add Contact Button
-		addContactButton = new JButton("Add Contact");
-		addContactButton.setBackground(Color.white);
-		gb.insets = new Insets(0,0,0,10);
+		addContactButton = new DecorativeButton("Add Contact");
+		gb.insets = new Insets(10,10,0,10);
 		gb.fill = 0;
 		gb.gridwidth = 2;
 		gb.gridx = 0;
@@ -242,22 +241,22 @@ public class PhonePanel extends JPanel {
 
 		// Panels for the volume controls
 		JPanel speakerPanel = new JPanel(new GridBagLayout());
-		speakerPanel.setBackground(Color.LIGHT_GRAY);
+		speakerPanel.setBackground(Color.DARK_GRAY);
 		JPanel micPanel = new JPanel(new GridBagLayout());
-		micPanel.setBackground(Color.LIGHT_GRAY);
+		micPanel.setBackground(Color.DARK_GRAY);
 
 		// Speaker volume buttons	
 		speakVolLabel = new JLabel("Speaker Vol: " + car.phone.getSpeakVol());
+		speakVolLabel.setForeground(Color.WHITE);
 		speakVolLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		gb.gridx = 0;
 		gb.gridy = 1;
 		gb.gridwidth = 2;
 		speakerPanel.add(speakVolLabel, gb);
 
-		JButton speakUpBut = new JButton("+");
-		speakUpBut.setBackground(Color.white);
+		DecorativeButton speakUpBut = new DecorativeButton("+");
 		gb.fill = GridBagConstraints.HORIZONTAL;
-		gb.insets = new Insets(0,0,0,10);
+		gb.insets = new Insets(0,0,0,0);
 		gb.gridwidth = 1;
 		gb.gridy = 0;
 		gb.gridx = 1;
@@ -269,8 +268,7 @@ public class PhonePanel extends JPanel {
 		});
 		speakerPanel.add(speakUpBut, gb);
 
-		JButton speakDownBut = new JButton("-");
-		speakDownBut.setBackground(Color.white);
+		DecorativeButton speakDownBut = new DecorativeButton("-");
 		gb.insets = new Insets(0,0,0,0);
 		gb.gridx = 0;
 		speakDownBut.addActionListener(new ActionListener(){
@@ -283,6 +281,7 @@ public class PhonePanel extends JPanel {
 
 		// Microphone volume buttons
 		micVolLabel = new JLabel("Mic Vol: " + car.phone.getMicVol());
+		micVolLabel.setForeground(Color.WHITE);
 		micVolLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		gb.insets = new Insets(0,0,0,0);
 		gb.gridx = 0;
@@ -290,9 +289,8 @@ public class PhonePanel extends JPanel {
 		gb.gridwidth = 2;
 		micPanel.add(micVolLabel, gb);
 
-		JButton micVolUpBut = new JButton("+");
-		micVolUpBut.setBackground(Color.white);
-		gb.insets = new Insets(0,0,0,10);
+		DecorativeButton micVolUpBut = new DecorativeButton("+");
+		gb.insets = new Insets(0,0,0,0);
 		gb.gridwidth = 1;
 		gb.gridx = 1;
 		gb.gridy = 0;
@@ -304,8 +302,7 @@ public class PhonePanel extends JPanel {
 		});
 		micPanel.add(micVolUpBut, gb);
 
-		JButton micVolDownBut = new JButton("-");
-		micVolDownBut.setBackground(Color.white);
+		DecorativeButton micVolDownBut = new DecorativeButton("-");
 		gb.insets = new Insets(0,0,0,0);
 		gb.gridx = 0;
 		micVolDownBut.addActionListener(new ActionListener(){
@@ -316,19 +313,21 @@ public class PhonePanel extends JPanel {
 		});
 		micPanel.add(micVolDownBut, gb);
 
-		gb.insets = new Insets(0,0,0,0);
+		gb.insets = new Insets(10,10,0,10);
 		gb.gridwidth = 1;
 		gb.gridy = 2;
 		gb.gridx = 0;
 		gb.gridwidth = 2;
 		rightPhonePanel.add(micPanel, gb);		
 
+		gb.insets = new Insets(0,10,0,10);
 		gb.gridx = 0;
 		gb.gridy = 3;
 		rightPhonePanel.add(speakerPanel, gb);		
 
 		// Time Label
 		phoneTimeLabel = new JLabel("");
+		phoneTimeLabel.setForeground(Color.WHITE);
 		gb.gridy = 4;
 		rightPhonePanel.add(phoneTimeLabel, gb);
 
@@ -340,14 +339,12 @@ public class PhonePanel extends JPanel {
 		makePhoneButton(car, "#");
 
 		// empty panels to insert into the leftPhonePanel
-		JPanel emptyPanel1 = new JPanel();
-		emptyPanel1.setBackground(Color.LIGHT_GRAY);
+		DecorativePanel emptyPanel1 = new DecorativePanel();
 
-		JPanel bottomPadPanel = new JPanel(new GridBagLayout());
-		bottomPadPanel.setBackground(Color.LIGHT_GRAY);
+		DecorativePanel bottomPadPanel = new DecorativePanel();
+		bottomPadPanel.setLayout(new GridBagLayout());
 
-		JButton clearButton = new JButton("Clear");
-		clearButton.setBackground(Color.white);
+		DecorativeButton clearButton = new DecorativeButton("Clear");
 		clearButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				car.phone.resetNumberBeingDialed();
@@ -356,10 +353,8 @@ public class PhonePanel extends JPanel {
 		});
 		bottomPadPanel.add(clearButton);
 
-		JPanel emptyPanel2= new JPanel();
-		emptyPanel2.setBackground(Color.LIGHT_GRAY);
-		JPanel emptyPanel3 = new JPanel();
-		emptyPanel3.setBackground(Color.LIGHT_GRAY);
+		DecorativePanel emptyPanel2= new DecorativePanel();
+		DecorativePanel emptyPanel3 = new DecorativePanel();
 
 		// adding the border panels to leftphonepanel
 		leftPhonePanel.add("Center", dialpadPanel);
@@ -376,7 +371,8 @@ public class PhonePanel extends JPanel {
 	
 	private JButton makePhoneButton(Car car, String btnLabel) {
 		JButton newButton = new JButton(btnLabel);
-		newButton.setBackground(Color.WHITE);
+		newButton.setBackground(Color.DARK_GRAY);
+		newButton.setForeground(Color.WHITE);
 		newButton.setFont(new Font("Courier", Font.PLAIN, 15));
 		newButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){

@@ -1,22 +1,22 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class RadioPanel extends JPanel {
 	
-	protected JPanel topRadioPanel, centerRadioPanel;
+	protected DecorativePanel topRadioPanel, centerRadioPanel;
 	protected JLabel stationLabel, modulusLabel, radioVolumeLabel;
-	protected JButton radioPowerButton, seekDownButton, seekUpButton, amFmButton, volumeUpButton, volumeDownButton, setButton, favButton1,
+	protected DecorativeButton radioPowerButton, seekDownButton, seekUpButton, amFmButton, volumeUpButton, volumeDownButton, setButton, favButton1,
 	favButton2, favButton3;
 	private DecimalFormat dfOne = new DecimalFormat("#00");
 	private Car car;
@@ -28,11 +28,9 @@ public class RadioPanel extends JPanel {
 	
 		// TOP RADIO PANEL
 		
-		topRadioPanel = new JPanel();
-		topRadioPanel.setBackground(Color.LIGHT_GRAY);
-
-		radioPowerButton = new JButton("ON");
-		radioPowerButton.setBackground(Color.WHITE);
+		topRadioPanel = new DecorativePanel();
+		topRadioPanel.setBackground(Color.DARK_GRAY);
+		radioPowerButton = new DecorativeButton("ON ");
 		radioPowerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				car.radio.togglePower();
@@ -50,8 +48,7 @@ public class RadioPanel extends JPanel {
 			}          
 		});
 		
-		seekDownButton = new JButton(" << ");
-		seekDownButton.setBackground(Color.WHITE);
+		seekDownButton = new DecorativeButton(" << ");
 		seekDownButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -61,8 +58,7 @@ public class RadioPanel extends JPanel {
 			}          
 		});
 	
-		seekUpButton = new JButton(" >> ");
-		seekUpButton.setBackground(Color.WHITE);
+		seekUpButton = new DecorativeButton(" >> ");
 		seekUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -72,8 +68,7 @@ public class RadioPanel extends JPanel {
 			}          
 		});
 		
-		amFmButton = new JButton("AM | FM");
-		amFmButton.setBackground(Color.WHITE);
+		amFmButton = new DecorativeButton("AM | FM");
 		amFmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -91,16 +86,19 @@ public class RadioPanel extends JPanel {
 
 		// LEFT RADIO PANEL
 
-		JPanel leftRadioPanel = new JPanel();
-		leftRadioPanel.setLayout(new BoxLayout(leftRadioPanel, 1));
-		leftRadioPanel.setBackground(Color.LIGHT_GRAY);
-
+		DecorativePanel leftRadioPanel = new DecorativePanel();
+		leftRadioPanel.setLayout(new GridBagLayout());
+		leftRadioPanel.setBackground(Color.DARK_GRAY);
+		GridBagConstraints gb = new GridBagConstraints();
+		gb.gridx = 0;
+		gb.gridy = 0;
+		gb.insets = new Insets(0,5,0,5);
 		JLabel radioVolumeTitleLabel = new JLabel("Vol");
 		radioVolumeTitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		radioVolumeTitleLabel.setFont (radioVolumeTitleLabel.getFont().deriveFont (28.0f));
+		radioVolumeTitleLabel.setForeground(Color.WHITE);
 
-		volumeUpButton = new JButton(" + ");
-		volumeUpButton.setBackground(Color.WHITE);
+		volumeUpButton = new DecorativeButton(" + ");
 		volumeUpButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		volumeUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -114,9 +112,9 @@ public class RadioPanel extends JPanel {
 		radioVolumeLabel = new JLabel("-");
 		radioVolumeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		radioVolumeLabel.setFont (radioVolumeLabel.getFont().deriveFont (40.0f));
+		radioVolumeLabel.setForeground(Color.WHITE);
 
-		volumeDownButton = new JButton(" - ");
-		volumeDownButton.setBackground(Color.WHITE);
+		volumeDownButton = new DecorativeButton(" - ");
 		volumeDownButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		volumeDownButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -127,15 +125,16 @@ public class RadioPanel extends JPanel {
 			}          
 		});
 		
-		leftRadioPanel.add(radioVolumeTitleLabel);
-		leftRadioPanel.add(volumeUpButton);
-		leftRadioPanel.add(radioVolumeLabel);
-		leftRadioPanel.add(volumeDownButton);
+		leftRadioPanel.add(radioVolumeTitleLabel, gb); gb.gridy++;
+		leftRadioPanel.add(volumeUpButton, gb); gb.gridy++;
+		leftRadioPanel.add(radioVolumeLabel, gb); gb.gridy++;
+		leftRadioPanel.add(volumeDownButton, gb);
 
 		// CENTER RADIO PANEL
 
-		centerRadioPanel = new JPanel(new GridBagLayout());
-		centerRadioPanel.setBackground(Color.LIGHT_GRAY);
+		centerRadioPanel = new DecorativePanel();
+		centerRadioPanel.setLayout(new GridBagLayout());
+		centerRadioPanel.setBackground(Color.WHITE);
 		centerRadioPanel.setVisible(true);
 
 		stationLabel = new JLabel("OsirusXM");
@@ -149,11 +148,10 @@ public class RadioPanel extends JPanel {
 
 		// BOTTOM RADIO PANEL
 
-		JPanel bottomRadioPanel = new JPanel();
-		bottomRadioPanel.setBackground(Color.LIGHT_GRAY);
+		DecorativePanel bottomRadioPanel = new DecorativePanel();
+		bottomRadioPanel.setBackground(Color.DARK_GRAY);
 
-		setButton = new JButton("Set Favorite");
-		setButton.setBackground(Color.WHITE);
+		setButton = new DecorativeButton("Set Favorite");
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
@@ -171,8 +169,8 @@ public class RadioPanel extends JPanel {
 		
 		//  RIGHT RADIO PANEL
 		
-		JPanel rightRadioPanel = new JPanel();
-		rightRadioPanel.setBackground(Color.LIGHT_GRAY);
+		DecorativePanel rightRadioPanel = new DecorativePanel();
+		rightRadioPanel.setBackground(Color.DARK_GRAY);
 		
 		// COMBINE TO MAIN PANEL
 		
@@ -191,9 +189,8 @@ public class RadioPanel extends JPanel {
 		}
 	}
 	
-	private JButton makeFavButton(Car car, int favNum) {
-		JButton newButton = new JButton(" " + favNum + " ");
-		newButton.setBackground(Color.WHITE);
+	private DecorativeButton makeFavButton(Car car, int favNum) {
+		DecorativeButton newButton = new DecorativeButton(" " + favNum + " ");
 		newButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (car.radio.getIsOn()) {
