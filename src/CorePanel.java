@@ -1,3 +1,5 @@
+
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -20,6 +22,7 @@ public class CorePanel extends DecorativePanel {
 	
 	public CorePanel(GuiManager guiManager) {
 		this.car = guiManager.getCar();
+		
 		parentGuiManager = guiManager;
 		setLayout(new GridLayout(1,6));
 		
