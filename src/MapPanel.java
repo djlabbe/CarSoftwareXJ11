@@ -27,7 +27,7 @@ public class MapPanel extends JPanel {
 		int routeDistance = (int)car.map.getCurrentRoute().getRouteDistance();
 		mapSlider = new JSlider(0, routeDistance, 0);
 		setSliderSpacing(car, routeDistance);
-		mapSlider.setBackground(Color.WHITE);
+		mapSlider.setBackground(Color.DARK_GRAY);
 		mapSlider.setPaintLabels(true);
 		mapSlider.setEnabled(false);
 		add("Center", mapSlider);

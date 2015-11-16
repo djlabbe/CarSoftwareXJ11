@@ -11,7 +11,7 @@ public class DecorativeButton extends JButton {
 	
 	public DecorativeButton(String text) {
 		this.setText(text);
-		this.setFont(this.getFont().deriveFont (20.0f));
+		this.setFont(this.getFont().deriveFont (16.0f));
 		setBackground(Color.DARK_GRAY);
 		setForeground(Color.WHITE);
 		setBorder(bevelledBorder);

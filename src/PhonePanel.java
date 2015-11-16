@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import java.util.ArrayList;
 
@@ -329,6 +330,7 @@ public class PhonePanel extends JPanel {
 		phoneTimeLabel = new JLabel("");
 		phoneTimeLabel.setForeground(Color.WHITE);
 		gb.gridy = 4;
+		gb.insets = new Insets(0,25,0,0);
 		rightPhonePanel.add(phoneTimeLabel, gb);
 
 		for (int i = 1; i <= 9; i++) {

@@ -21,32 +21,32 @@ public class AnalyticsPanel extends JPanel {
 	private JLabel driverMiles, driverTime, driverAvgSpeed, driverMaxSpeed, driverFuelUsed, 
 	driverRadioTime, driverPhoneTime, sessionMiles, sessionTime, sessionAvgSpeed, sessionMaxSpeed, 
 	sessionFuelUsed, sessionRadioTime, sessionPhoneTime, driverTitle;
-	private JButton sessionCallLogBtn, driverCallLogBtn, sessionHistoryBtn, viewDriversBtn;
+	private DecorativeButton sessionCallLogBtn, driverCallLogBtn, sessionHistoryBtn, viewDriversBtn;
 	private DecimalFormat dfShort = new DecimalFormat("###0.00");
 	private Car car;
 
 	public AnalyticsPanel(final GuiManager guiManager) {
 		this.car = guiManager.getCar();
 		setLayout(new BorderLayout());
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(Color.DARK_GRAY);
 		GridBagConstraints gb = new GridBagConstraints();
 
 		JPanel leftAnalytics = new JPanel();
 		leftAnalytics.setLayout(new GridBagLayout());
-		leftAnalytics.setBackground(Color.LIGHT_GRAY);
+		leftAnalytics.setBackground(Color.DARK_GRAY);
 		gb.insets = new Insets(2,5,2,5);
 
 		JPanel centerAnalytics = new JPanel();
 		centerAnalytics.setLayout(new GridBagLayout());
-		centerAnalytics.setBackground(Color.LIGHT_GRAY);
+		centerAnalytics.setBackground(Color.DARK_GRAY);
 
 		JPanel rightAnalytics= new JPanel();
 		rightAnalytics.setLayout(new GridBagLayout());
-		rightAnalytics.setBackground(Color.LIGHT_GRAY);
+		rightAnalytics.setBackground(Color.DARK_GRAY);
 
 		JPanel bottomAnalytics = new JPanel();
 		bottomAnalytics.setLayout(new FlowLayout());
-		bottomAnalytics.setBackground(Color.LIGHT_GRAY);
+		bottomAnalytics.setBackground(Color.DARK_GRAY);
 
 		// The left column displays data associated with the currentDriver.
 		
@@ -87,7 +87,7 @@ public class AnalyticsPanel extends JPanel {
 
 		// Button displays list of calls made by the current driver
 		
-		driverCallLogBtn = new JButton("Call Log");
+		driverCallLogBtn = new DecorativeButton("Call Log");
 		driverCallLogBtn.setBackground(Color.darkGray);
 		driverCallLogBtn.setForeground(Color.white);
 		driverCallLogBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -135,7 +135,7 @@ public class AnalyticsPanel extends JPanel {
 		gb.gridy=7;
 		centerAnalytics.add(phoneTimeLabel, gb);
 
-		viewDriversBtn = new JButton("Driver List");
+		viewDriversBtn = new DecorativeButton("Driver List");
 		viewDriversBtn.setBackground(Color.darkGray);
 		viewDriversBtn.setForeground(Color.white);
 		viewDriversBtn.addActionListener(new ActionListener() {
@@ -185,7 +185,7 @@ public class AnalyticsPanel extends JPanel {
 		rightAnalytics.add(sessionPhoneTime, gb);
 
 		// A button displays the call log for the current session.
-		sessionCallLogBtn = new JButton("Call Log");
+		sessionCallLogBtn = new DecorativeButton("Call Log");
 		sessionCallLogBtn.setBackground(Color.darkGray);
 		sessionCallLogBtn.setForeground(Color.white);
 		sessionCallLogBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -201,7 +201,7 @@ public class AnalyticsPanel extends JPanel {
 		// The bottom panel features data not otherwise displayed in a column.
 		
 		// A button to display full session history for current driver.
-		sessionHistoryBtn = new JButton(car.driverManager.currentDriver + "'s Sessions");
+		sessionHistoryBtn = new DecorativeButton(car.driverManager.currentDriver + "'s Sessions");
 		sessionHistoryBtn.setBackground(Color.darkGray);
 		sessionHistoryBtn.setForeground(Color.white);
 		sessionHistoryBtn.addActionListener(new ActionListener() {
@@ -242,6 +242,7 @@ public class AnalyticsPanel extends JPanel {
 	// Constructor used to generate formatted labels for the AnalyticsPanel.
 	private JLabel makeAnalyticsLabel(String label) {
 		JLabel newJLabel = new JLabel(label);
+		newJLabel.setForeground(Color.WHITE);
 		newJLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		return newJLabel;
 	}
