@@ -1,6 +1,6 @@
 /* The appPanel uses a "CardLayout" which works like a stack of playing cards,
- * appPanel will contain 5 other panels which can individually be made active.
- * */
+* appPanel will contain 5 other panels which can individually be made active.
+* */
 
 import java.awt.CardLayout;
 import javax.swing.JPanel;

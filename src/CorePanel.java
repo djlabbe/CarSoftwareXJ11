@@ -20,7 +20,7 @@ public class CorePanel extends DecorativePanel {
 	private Car car;
 	private GuiManager parentGuiManager;
 	
-	public CorePanel(GuiManager guiManager) {
+	public CorePanel(final GuiManager guiManager) {
 		this.car = guiManager.getCar();
 		
 		parentGuiManager = guiManager;

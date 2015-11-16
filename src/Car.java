@@ -140,7 +140,7 @@ public class Car {
 	 * 
 	 * Basic timer structure based on threads on Stackoverflow.
 	 */
-	public void runLoop(GuiManager guiManager) {
+	public void runLoop(final GuiManager guiManager) {
 		int begin = 0; // start immediately 
 		int timeinterval = 1000; // tick every 1 second
 		timer = new Timer();

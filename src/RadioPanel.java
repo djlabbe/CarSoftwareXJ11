@@ -189,7 +189,7 @@ public class RadioPanel extends JPanel {
 		}
 	}
 	
-	private DecorativeButton makeFavButton(Car car, int favNum) {
+	private DecorativeButton makeFavButton(final Car car, final int favNum) {
 		DecorativeButton newButton = new DecorativeButton(" " + favNum + " ");
 		newButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
